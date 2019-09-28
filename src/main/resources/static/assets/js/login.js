@@ -76,7 +76,7 @@ layui.use(['form', 'jquery', 'sliderVerify'], function () {
                     layer.msg("登录成功！");
                     setTimeout(function () {
                         location.href =
-                            resp.redirectUrl !== null && resp.redirectUrl !== ""
+                            resp.redirectUrl !== null && resp.redirectUrl !== "" && resp.redirectUrl !== undefined
                                 ? resp.redirectUrl : NBV5.url.manage_index;
                     }, 1000);
                 } else {

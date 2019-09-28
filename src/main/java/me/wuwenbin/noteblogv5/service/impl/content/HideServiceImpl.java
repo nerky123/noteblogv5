@@ -1,7 +1,9 @@
 package me.wuwenbin.noteblogv5.service.impl.content;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.wuwenbin.noteblogv5.mapper.HideMapper;
+import me.wuwenbin.noteblogv5.model.bo.HideBo;
 import me.wuwenbin.noteblogv5.model.entity.Hide;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,9 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class HideServiceImpl extends ServiceImpl<HideMapper, Hide> implements HideService {
 
     private final JdbcTemplate jdbcTemplate;
+    private final HideMapper hideMapper;
 
-    public HideServiceImpl(JdbcTemplate jdbcTemplate) {
+    public HideServiceImpl(JdbcTemplate jdbcTemplate, HideMapper hideMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.hideMapper = hideMapper;
     }
 
     @Override
@@ -36,7 +40,12 @@ public class HideServiceImpl extends ServiceImpl<HideMapper, Hide> implements Hi
 
     @Override
     public int purchaseArticleHideContent(String articleId, String hideId, Long userId) {
-        String sql = "insert into refer_hide_user_purchase(article_id,hide_id,user_id) values (?,?,?)";
+        String sql = "insert into refer_hide_user_purchase(article_id,hide_id,user_id,purchase_time) values (?,?,?,now())";
         return jdbcTemplate.update(sql, articleId, hideId, userId);
+    }
+
+    @Override
+    public IPage<HideBo> findMyPurchases(IPage<HideBo> page, Long userId) {
+        return hideMapper.findMyPurchases(page, userId);
     }
 }

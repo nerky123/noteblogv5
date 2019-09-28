@@ -38,7 +38,8 @@ public class AdminCommentController extends BaseController {
                                                    String sort, String order, String nickname, String clearComment,
                                                    @RequestParam(required = false, value = "articleIds[]") List<String> articleIds) {
         addPageOrder(page, order, sort);
-        IPage<CommentBo> commentPage = commentService.findCommentPage(page, nickname, clearComment, articleIds, true);
+        IPage<CommentBo> commentPage = commentService
+                .findCommentPage(page, nickname, clearComment, articleIds, null, true);
         return new LayuiTable<>(commentPage.getTotal(), commentPage.getRecords());
     }
 

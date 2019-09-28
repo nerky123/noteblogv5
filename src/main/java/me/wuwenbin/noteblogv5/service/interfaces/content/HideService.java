@@ -1,7 +1,10 @@
 package me.wuwenbin.noteblogv5.service.interfaces.content;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.wuwenbin.noteblogv5.model.bo.HideBo;
 import me.wuwenbin.noteblogv5.model.entity.Hide;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -35,4 +38,13 @@ public interface HideService extends IService<Hide> {
      * @return
      */
     int purchaseArticleHideContent(String articleId, String hideId, Long userId);
+
+    /**
+     * 查找用户购买的主题
+     *
+     * @param page
+     * @param userId
+     * @return
+     */
+    IPage<HideBo> findMyPurchases(IPage<HideBo> page, @Param("userId") Long userId);
 }

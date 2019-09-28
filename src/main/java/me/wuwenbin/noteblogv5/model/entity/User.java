@@ -31,4 +31,5 @@ public class User implements Serializable {
     private String password;
     private String openId;
     private String username;
+    private Integer remainCoin;
 }

@@ -10,9 +10,7 @@
     <!--/*@thymesVar id="status" type="java.lang.String"*/-->
     <title th:text="'出错了 - '+${status}+'页面'"></title>
     <style>
-        blockquote {
-            border-left: 5px solid rgba(244, 67, 54, 1) !important;
-        }
+        blockquote {border-left: 5px solid rgba(244, 67, 54, 1) !important;}
     </style>
 </head>
 <body style="background: #f8f8f8;padding-top: 2rem;">
@@ -34,7 +32,7 @@
             <blockquote class="layui-elem-quote layui-elip"><b>错误</b>：<span th:text="${error}"></span></blockquote>
             <!--/*@thymesVar id="message" type="java.lang.String"*/-->
             <blockquote class="layui-elem-quote layui-elip"><b>信息</b>：<span style="color: #ff6464;font-weight: bold;"
-                                                                            th:text="${message}"></span></blockquote>
+                                                                            th:text="${message eq null ? trace : message}"></span></blockquote>
             <!--/*@thymesVar id="path" type="java.lang.String"*/-->
             <blockquote class="layui-elem-quote"><b>路径</b>：<span th:text="${path}"></span></blockquote>
         </div>

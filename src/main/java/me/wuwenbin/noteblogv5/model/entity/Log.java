@@ -24,5 +24,6 @@ public class Log implements Serializable {
     private String username;
     private Date time;
     private String browser;
+    private Long userId;
 
 }

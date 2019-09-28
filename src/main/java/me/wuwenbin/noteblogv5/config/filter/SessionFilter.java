@@ -36,6 +36,7 @@ public class SessionFilter extends BaseController implements HandlerInterceptor 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView mv) throws Exception {
         String username = "";
+        Long userId = null;
         if (mv != null) {
             User user = getSessionUser(request);
             if (user == null) {
@@ -43,6 +44,7 @@ public class SessionFilter extends BaseController implements HandlerInterceptor 
                 mv.getModelMap().addAttribute("nbv5su", null);
             } else {
                 username = user.getUsername();
+                userId = user.getId();
                 Map<Object, Object> userMap = MapUtil.of(new Object[][]{
                         {"id", user.getId()},
                         {"username", user.getUsername()},
@@ -72,6 +74,9 @@ public class SessionFilter extends BaseController implements HandlerInterceptor 
                     .requestMethod(request.getMethod())
                     .contentType(request.getContentType())
                     .build();
+            if (userId != null) {
+                logger.setUserId(userId);
+            }
             Browser browser = UserAgentUtil.parse(logger.getUserAgent()).getBrowser();
             logger.setBrowser(browser.getName());
             //noinspection unchecked

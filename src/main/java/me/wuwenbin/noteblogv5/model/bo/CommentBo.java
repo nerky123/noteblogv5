@@ -19,4 +19,5 @@ public class CommentBo extends Comment {
     private String nickname;
     private String avatar;
     private String title;
+    private String role;
 }

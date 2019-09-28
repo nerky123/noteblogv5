@@ -23,9 +23,10 @@ var nbv5front = {
             , closeBtn: false
             , shadeClose: true
             , maxWidth: 10000
+            ,offset:'40%'
             , skin: 'fly-layer-search'
             , content: ['<form action="/s/w" method="get">'
-                , '<input autocomplete="off" placeholder="搜索文章，回车跳转" type="text" name="q">'
+                , '<input class="layui-icon" autocomplete="off" placeholder="&#xe615; 搜索文章，回车跳转" type="text" name="q">'
                 , '</form>'].join('')
         });
     }

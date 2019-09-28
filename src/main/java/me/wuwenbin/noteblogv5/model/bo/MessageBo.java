@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import me.wuwenbin.noteblogv5.model.entity.Comment;
 import me.wuwenbin.noteblogv5.model.entity.Message;
 
 /**
@@ -18,4 +17,5 @@ public class MessageBo extends Message {
 
     private String nickname;
     private String avatar;
+    private String role;
 }

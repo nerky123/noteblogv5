@@ -5,7 +5,7 @@
 <mapper namespace="me.wuwenbin.noteblogv5.mapper.MessageMapper">
 
     <select id="findMessagePage" resultType="me.wuwenbin.noteblogv5.model.bo.MessageBo">
-        select m.*, u.avatar, u.nickname
+        select m.*, u.avatar, u.nickname, u.role
         from nb_message m
         left join nb_user u on u.id = m.user_id
         <where>

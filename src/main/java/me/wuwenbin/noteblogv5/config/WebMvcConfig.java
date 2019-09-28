@@ -55,7 +55,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         List<String> excludePaths = Arrays.asList("/static/**", "/error/**", "/init/**");
         registry.addInterceptor(new InitFilter()).addPathPatterns("/**").excludePathPatterns(excludePaths);
         registry.addInterceptor(new SessionFilter()).addPathPatterns("/**").excludePathPatterns(excludePaths);
-        registry.addInterceptor(new TokenFilter()).addPathPatterns("/token/**");
+        registry.addInterceptor(new TokenFilter()).addPathPatterns("/token/**", "/**/token/**");
         registry.addInterceptor(new AdminFilter()).addPathPatterns("/management/**");
     }
 }

@@ -45,6 +45,10 @@
                     <i class="layui-icon layui-icon-chat"></i>
                     <span th:text="${settings.menu_message}"></span>
                 </a>
+                <a href="/ubs/token/index" data-title="用户">
+                    <i class="layui-icon layui-icon-user"></i>
+                    <span>用户</span>
+                </a>
                 <a class="active" href="javascript:nbv5front.searchDialog();" data-title="搜索">
                     <i class="layui-icon layui-icon-search"></i>
                     <span>搜索</span>
@@ -109,7 +113,7 @@
                    class="layui-btn layui-btn-sm layui-btn-primary">登录</a>
                 <span th:if="${nbv5su !=null}" class="layui-mr15">
                     <img th:src="${nbv5su.avatar}" class="layui-circle" style="width: 30px;"/>
-                    <span th:text="${nbv5su.nickname}" class="layui-text layui-word-aux"></span>
+                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux" href="/ubs/token/index"></a>
                 </span>
                 <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
             </p>
@@ -127,6 +131,7 @@
             <a href="/index" th:text="${settings.menu_home}"></a>
             <a href="/note" th:text="${settings.menu_note}"></a>
             <a href="/message" th:text="${settings.menu_message}"></a>
+            <a href="/ubs/token/index">用户</a>
             <a href="/s/w">搜索</a>
         </p>
         <ul class="layui-timeline"

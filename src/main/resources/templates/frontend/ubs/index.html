@@ -13,8 +13,40 @@
     <link rel="stylesheet" href="/static/assets/css/layui-theme-nbv5.css">
     <link rel="stylesheet" href="/static/plugins/pushbar/pushbar.css">
     <link rel="stylesheet" href="/static/assets/css/simple.css">
-    <link rel="stylesheet" href="/static/assets/css/article.css">
-    <title>用户留言</title>
+    <title th:text="${nbv5su!=null?nbv5su.nickname:''}+'用户中心'"></title>
+    <style>
+        .layui-nav-tree .layui-this, .layui-nav-tree .layui-this > a {
+            background-color: #f44336cc !important
+        }
+
+        .left-nav > ul {
+            height: 600px !important;
+            padding-top: 15px !important;
+            width: 100% !important;
+            background-color: #fff !important;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1) !important
+        }
+
+        .right-nav div.layui-card {
+            height: 600px !important
+        }
+
+        .layui-nav-tree .layui-nav-item a:hover {
+            background-color: #fff !important
+        }
+
+        .layui-nav .layui-nav-item a:hover, .layui-nav .layui-nav-itemed a.layui-this {
+            color: #f8f8f8 !important
+        }
+
+        .layui-nav .layui-nav-item a, .layui-nav .layui-this a {
+            color: #000 !important
+        }
+
+        .layui-nav-tree .layui-nav-item a:hover {
+            background-color: #f44336cc !important
+        }
+    </style>
 </head>
 <body class="layui-anim layui-anim-fadein simple">
 <!--顶部导航栏-->
@@ -41,11 +73,11 @@
                     <i class="layui-icon layui-icon-form"></i>
                     <span th:text="${settings.menu_note}"></span>
                 </a>
-                <a href="/message" class="active" th:data-title="${settings.menu_message}">
+                <a href="/message" th:data-title="${settings.menu_message}">
                     <i class="layui-icon layui-icon-chat"></i>
                     <span th:text="${settings.menu_message}"></span>
                 </a>
-                <a href="/ubs/token/index" data-title="用户">
+                <a href="/ubs/token/index" class="active" data-title="用户">
                     <i class="layui-icon layui-icon-user"></i>
                     <span>用户</span>
                 </a>
@@ -64,7 +96,7 @@
     <blockquote class="layui-elem-quote">
         <span class="layui-breadcrumb">
             <a href="/">网站首页</a>
-            <a href="/message">网友留言</a>
+            <a href="/ubs/token/index">用户中心</a>
         </span>
         <div class="clock layui-show-md-inline-block layui-show-lg-inline-block layui-hide-xs layui-hide-sm">
             <span class="clock-font">当前日期</span>：<span id="current-datetime"></span>
@@ -73,8 +105,85 @@
 </div>
 
 <!--内容文章正体-->
-<div id="main-body" class="layui-container">
+<div id="main-body" class="layui-container layui-mt40" style="margin-bottom: 30px;">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md2 layui-hide-sm layui-hide-xs layui-show-md-inline-block left-nav">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="/ubs/token/index" class="layui-this"><i class="fa fa-user-secret"></i> 用户中心</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/ubs/token/message"><i class="fa fa-reply"></i> 我的消息</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/ubs/token/comment"><i class="fa fa-comment"></i> 我的评论</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/ubs/token/purchase"><i class="fa fa-shopping-cart"></i> 我的购买</a>
+                </li>
+            </ul>
 
+        </div>
+        <div class="layui-col-md10 right-nav animated fadeInUp">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding: 30px;">
+                    <blockquote class="layui-elem-quote"
+                                th:text="'Hi!,'+${nbv5su.nickname}+'。'+${settings.ubs_top_notice}"></blockquote>
+                    <hr class="layui-mt20">
+                    <div class="layui-row layui-mt20">
+                        <img th:src="${nbv5su.avatar}"
+                             style="width: 60px;height: 60px;border: 1px solid #e0e0e0;cursor:pointer;"
+                             class="layui-circle">
+                        <label th:text="${nbv5su.nickname}" style="margin-left: 5px;"></label>
+                        <label style="color: #F44336;" th:if="${nbv5su.role == 1}"><b>[管理员]</b></label>
+                        <label th:if="${nbv5su.role == 2}"><b>[注册用户]</b></label>
+                        <label th:if="${nbv5su.role == 3}"><b>[QQ用户]</b></label>
+                        <label th:if="${nbv5su.role == 4}"><b>[Github用户]</b></label>
+                        <a href="/token/logout" class="layui-btn layui-btn-primary layui-btn-sm"><i
+                                class="fa fa-sign-out"></i> 退出</a>
+                    </div>
+                    <div class="layui-row layui-mt20">
+                        <label style="font-size: 16px;margin-top: 15px;">你所持有的硬币个数为：<img
+                                src="/static/assets/img/coin.png"
+                                style="width: 15px;margin-top: -5px;">
+                            <span style="color: #ff262e;">666</span>
+                            <div class="layui-btn-group" style="margin-left: 5px;">
+                                <a class="layui-btn-sm layui-btn" style="margin-left: 10px"><i
+                                        class="fa fa-credit-card"></i> 卡号充值</a>
+                                <a class="layui-btn-sm layui-btn layui-bg-blue" style="margin-left: 10px;"><i
+                                        class="fa fa-paypal"></i>
+                                    支付宝充值</a>
+                                <a class="layui-btn-sm layui-btn layui-bg-black"><i
+                                        class="fa fa-check"></i> 签到</a>
+                            </div>
+                        </label>
+                    </div>
+                    <hr class="layui-mt20">
+                    <div class="layui-row layui-mt20">
+                        <label for="nickname">
+                            <input type="text" id="nickname" th:value="${nbv5su.nickname}" class="layui-input"
+                                   style="max-width: 200px;display: inline-block;">
+                        </label>
+                        <button type="button" class="layui-btn layui-btn-primary">修改</button>
+                    </div>
+                    <hr class="layui-mt20">
+                    <div class="layui-row layui-mt20" th:if="${nbv5su.role == 2}">
+                        <p style="max-width: 200px;">
+                            <input class="layui-input" type="password" name="password" placeholder="输入新密码">
+                        </p>
+                        <p style="max-width: 200px;margin-top: 20px;">
+                            <input class="layui-input" type="text" name="mailCode" placeholder="输入邮箱中的验证码">
+                        </p>
+                        <p class="layui-mt20">
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">发送验证码</button>
+                            <button type="button" class="layui-btn  layui-btn-sm">提交修改</button>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -112,7 +221,7 @@
                    class="layui-btn layui-btn-sm layui-btn-primary">登录</a>
                 <span th:if="${nbv5su !=null}" class="layui-mr15">
                     <img th:src="${nbv5su.avatar}" class="layui-circle" style="width: 30px;"/>
-                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux" href="/ubs/token/index"></a>
+                    <span th:text="${nbv5su.nickname}" class="layui-text layui-word-aux"></span>
                 </span> <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
             </p>
         </div>
@@ -186,21 +295,12 @@
         });
 
 
-        layui.use(['layer', 'element', 'message'], function () {
+        layui.use(['layer', 'element'], function () {
             var layer = layui.layer,
-                element = layui.element,
-                message = layui.message;
-
-            var settings = [[${settings}]];
-            var linkList = [[${linkList}]];
-            var nbv5su = [[${nbv5su}]];
-            var messages = [[${messages}]];
-
-            nbv5front.miniHeaderNavBtn(layer);
-
+                element = layui.element;
             element.render();
 
-            message(settings, linkList, nbv5su, messages);
+            nbv5front.miniHeaderNavBtn(layer);
         });
 
     });

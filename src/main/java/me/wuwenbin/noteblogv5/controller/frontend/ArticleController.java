@@ -71,7 +71,9 @@ public class ArticleController extends BaseController {
         }
         OrderItem oi = OrderItem.desc("post");
         commentPage.addOrder(oi);
-        model.addAttribute("comments", commentService.findCommentPage(commentPage, null, null, Collections.singletonList(aId), true));
+        model.addAttribute("comments",
+                commentService.findCommentPage(
+                        commentPage, null, null, Collections.singletonList(aId), null, true));
 
         //处理隐藏标签
         articleService.handleShowArticle(article, getSessionUser(request));
@@ -91,7 +93,8 @@ public class ArticleController extends BaseController {
     public IPage<CommentBo> comments(Page<CommentBo> page, String articleId) {
         OrderItem oi = OrderItem.desc("post");
         page.addOrder(oi);
-        return commentService.findCommentPage(page, null, null, Collections.singletonList(articleId), true);
+        return commentService
+                .findCommentPage(page, null, null, Collections.singletonList(articleId), null, true);
     }
 
 

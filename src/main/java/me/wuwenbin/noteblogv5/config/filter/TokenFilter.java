@@ -22,6 +22,8 @@ public class TokenFilter extends BaseController implements HandlerInterceptor {
         if (sessionUser == null) {
             if (isAjaxRequest(request)) {
                 handleAjaxRequest(request, response);
+            } else {
+                response.sendRedirect("/login");
             }
             log.info("未登录用户");
             return false;

@@ -171,7 +171,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<div class="layui-row layui-form layui-mt20">' +
         '<div class="layui-col-sm1 layui-hide-xs layui-show-sm-inline-block layui-user-avatar">' +
         '       {{# if(d.nbv5su != null){ }}' +
-        '<img src="{{d.nbv5su.avatar}}" class="layui-circle">' +
+        '<a href="/ubs/token/index"><img src="{{d.nbv5su.avatar}}" class="layui-circle"></a> ' +
         '       {{# }else{ }}' +
         '<a href="{{ loginUrl()}}" id="nologin"><img src="/static/assets/img/nologin.jpg" class="layui-circle"></a>' +
         '       {{# } }}' +
@@ -203,7 +203,14 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<img src="{{item.avatar}}" class="layui-circle">' +
         '</div>' +
         '<div class="layui-col-xs11 comment-content" style="color: #929292;">' +
-        '<label>{{item.nickname}} (#{{item.id}}</label>,' +
+        '<label>' +
+        '{{# if(item.role == 1){ }}' +
+        '<span style="color: #ff262e;">{{item.nickname}}</span>' +
+        '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg>' +
+        '{{#}else{}}' +
+        '<span>{{item.nickname}}</span>' +
+        '{{#}}}' +
+        ' (#{{item.id}}</label>,' +
         '<span class="timeago" datetime="{{ nbv5front.timeAgo(item.post) }}"></span>)：' +
         '<span class="comment-txt" style="color: #000;line-height: 24px;word-break: break-all;">{{item.comment}}</span>' +
         '<a class="reply" data-comment-id="{{item.id}}" style="display: none;">回复</a> ' +
@@ -567,8 +574,15 @@ function commentPage(laypage, comments, articleId, tpl, timeago) {
                         '<div class="layui-col-xs1 layui-user-avatar" style="min-width: 45px;">' +
                         '<img src="{{item.avatar}}" class="layui-circle">' +
                         '</div>' +
-                        '<div class="layui-col-xs11 comment-content">' +
-                        '<label>{{item.nickname}} (#{{item.id}}</label>,' +
+                        '<div class="layui-col-xs11 comment-content" style="color: #929292;">' +
+                        '<label>' +
+                        '{{# if(item.role == 1){ }}' +
+                        '<span style="color: #ff262e;">{{item.nickname}}</span>' +
+                        '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg>' +
+                        '{{#}else{}}' +
+                        '<span>{{item.nickname}}</span>' +
+                        '{{#}}}' +
+                        ' (#{{item.id}}</label>,' +
                         '<span class="timeago" datetime="{{ nbv5front.timeAgo(item.post) }}"></span>)：' +
                         '<span class="comment-txt" style="color: #000;line-height: 24px;word-break: break-all;">{{item.comment}}</span>' +
                         '<a class="reply" data-comment-id="{{item.id}}" style="display: none;">回复</a> ' +

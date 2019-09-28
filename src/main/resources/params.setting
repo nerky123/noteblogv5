@@ -52,6 +52,7 @@ info_label_nickname = 信息板上的名称
 index_top_text = 首页顶部的一些文字,欢迎加入QQ群：697053454
 comment_top_text = 评论面板上方的公告,欢迎加入QQ群：697053454
 message_top_notice = 留言页面顶部的文字,欢迎加入QQ群：697053454
+ubs_top_notice = 用户中心页面顶部的文字,欢迎加入QQ群：697053454
 qrcode_alipay = 支付宝二维码,/static/assets/img/noqrcode.jpg
 qrcode_wechat = 微信支付二维码,/static/assets/img/noqrcode.jpg
 typesetting = 网站排版设置,left3right9

@@ -6,6 +6,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.code.kaptcha.Constants;
 import me.wuwenbin.noteblogv5.constant.NBV5;
+import me.wuwenbin.noteblogv5.constant.RoleEnum;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.login.GithubLoginData;
 import me.wuwenbin.noteblogv5.model.bo.login.QqLoginData;
@@ -59,10 +60,10 @@ public class UserController extends BaseController {
 
     @GetMapping("/login")
     public ModelAndView loginPage(String redirectUrl, HttpServletRequest request) {
-        request.getSession().setAttribute("tempUrl", redirectUrl);
+        request.getSession().setAttribute("tempUrl", StringUtils.isEmpty(redirectUrl) ? "/" : redirectUrl);
         User sessionUser = getSessionUser(request);
         if (sessionUser != null) {
-            if (StrUtil.isNotEmpty(redirectUrl)) {
+            if (StrUtil.isNotEmpty(redirectUrl) && sessionUser.getRole() != RoleEnum.ADMIN) {
                 return new ModelAndView(new RedirectView(redirectUrl));
             } else {
                 return new ModelAndView(new RedirectView(MANAGEMENT_INDEX));
@@ -136,7 +137,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBean login(SimpleLoginData data, String redirectUrl) {
+    public ResultBean login(SimpleLoginData data) {
         if (StringUtils.isEmpty(data.getNbv5code())) {
             return ResultBean.error("验证码为空！");
         } else {
