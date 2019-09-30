@@ -6,13 +6,16 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
+import me.wuwenbin.noteblogv5.constant.OperateType;
 import me.wuwenbin.noteblogv5.constant.RoleEnum;
+import me.wuwenbin.noteblogv5.mapper.UserCoinRecordMapper;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.login.QqLoginData;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 import me.wuwenbin.noteblogv5.service.interfaces.LoginService;
-import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
+import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +33,13 @@ public class QqLoginServiceImpl implements LoginService<ResultBean, QqLoginData>
 
     private final UserService userService;
     private final ParamService paramService;
+    private final UserCoinRecordMapper userCoinRecordMapper;
 
     @Autowired
-    public QqLoginServiceImpl(UserService userService, ParamService paramService) {
+    public QqLoginServiceImpl(UserService userService, ParamService paramService, UserCoinRecordMapper userCoinRecordMapper) {
         this.userService = userService;
         this.paramService = paramService;
+        this.userCoinRecordMapper = userCoinRecordMapper;
     }
 
     @Override
@@ -79,6 +84,11 @@ public class QqLoginServiceImpl implements LoginService<ResultBean, QqLoginData>
                             .build();
                     boolean qqRegUser = userService.save(qqRegisterUser);
                     if (qqRegUser) {
+                        userCoinRecordMapper.insert(
+                                UserCoinRecord.builder().operateTime(new Date()).operateType(OperateType.INIT_REG)
+                                        .operateValue(0).remainCoin(0).remark(OperateType.INIT_REG.getDesc())
+                                        .userId(qqRegisterUser.getId()).build()
+                        );
                         return ResultBean.ok("授权成功！", "/").put(NBV5.SESSION_USER_KEY, qqRegisterUser);
                     } else {
                         return ResultBean.error("QQ授权成功，注册到系统中失败，请稍候重试！");

@@ -156,7 +156,9 @@ public class UserController extends BaseController {
             setSessionUser(request, nbv5su);
         }
         Object url = request.getSession().getAttribute("tempUrl");
-        if (!StringUtils.isEmpty(url)) {
+        if (getSessionUser(request).getRole() == RoleEnum.ADMIN) {
+            loginResult.put("redirectUrl", MANAGEMENT_INDEX);
+        } else if (!StringUtils.isEmpty(url)) {
             loginResult.put("redirectUrl", url.toString());
         }
         return loginResult;

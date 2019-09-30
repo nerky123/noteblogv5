@@ -28,4 +28,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     int countRegUserEmailAndUsername(@Param("email") String email, @Param("username") String username);
+
+    /**
+     * 更新余额硬币
+     *
+     * @param userId
+     * @param remainCoin
+     */
+    void updateRemainCoin(@Param("userId") long userId,@Param("remainCoin") int remainCoin);
 }

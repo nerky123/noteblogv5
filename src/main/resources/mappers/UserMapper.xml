@@ -16,4 +16,10 @@
         where email = #{email}
            or username = #{username}
     </select>
+
+    <update id="updateRemainCoin">
+        update nb_user
+        set remain_coin = #{remainCoin}
+        where id = #{id}
+    </update>
 </mapper>

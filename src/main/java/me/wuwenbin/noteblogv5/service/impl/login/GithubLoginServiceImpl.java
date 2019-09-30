@@ -4,16 +4,20 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
+import me.wuwenbin.noteblogv5.constant.OperateType;
 import me.wuwenbin.noteblogv5.constant.RoleEnum;
+import me.wuwenbin.noteblogv5.mapper.UserCoinRecordMapper;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.login.GithubLoginData;
 import me.wuwenbin.noteblogv5.model.entity.Param;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 import me.wuwenbin.noteblogv5.service.interfaces.LoginService;
-import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
+import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +36,13 @@ public class GithubLoginServiceImpl implements LoginService<ResultBean, GithubLo
 
     private final ParamService paramService;
     private final UserService userService;
+    private final UserCoinRecordMapper userCoinRecordMapper;
 
     @Autowired
-    public GithubLoginServiceImpl(ParamService paramService, UserService userService) {
+    public GithubLoginServiceImpl(ParamService paramService, UserService userService, UserCoinRecordMapper userCoinRecordMapper) {
         this.paramService = paramService;
         this.userService = userService;
+        this.userCoinRecordMapper = userCoinRecordMapper;
     }
 
     @Override
@@ -60,6 +66,8 @@ public class GithubLoginServiceImpl implements LoginService<ResultBean, GithubLo
             String login = jsonObject.getStr("login");
             User githubUser = userService.findByGithub(login, true);
             if (githubUser != null) {
+                String avatar = jsonObject.getStr("avatar_url");
+                userService.update(Wrappers.<User>update().set("avatar", avatar).eq("id", githubUser.getId()));
                 return ResultBean.ok("授权成功！", "/").put(NBV5.SESSION_USER_KEY, githubUser);
             } else {
                 User lockedUser = userService.findByGithub(login, false);
@@ -81,6 +89,11 @@ public class GithubLoginServiceImpl implements LoginService<ResultBean, GithubLo
                 }
                 boolean githubRegUser = userService.save(registerUser);
                 if (githubRegUser) {
+                    userCoinRecordMapper.insert(
+                            UserCoinRecord.builder().operateTime(new Date()).operateType(OperateType.INIT_REG)
+                                    .operateValue(0).remainCoin(0).remark(OperateType.INIT_REG.getDesc())
+                                    .userId(registerUser.getId()).build()
+                    );
                     return ResultBean.ok("授权成功！", "/").put(NBV5.SESSION_USER_KEY, registerUser);
                 } else {
                     return ResultBean.error("GITHUB授权失败，原因：注册失败！");

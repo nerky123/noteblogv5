@@ -3,9 +3,12 @@ package me.wuwenbin.noteblogv5.service.impl;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.wuwenbin.noteblogv5.constant.OperateType;
 import me.wuwenbin.noteblogv5.constant.RoleEnum;
+import me.wuwenbin.noteblogv5.mapper.UserCoinRecordMapper;
 import me.wuwenbin.noteblogv5.mapper.UserMapper;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +25,11 @@ import java.util.Date;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
+    private final UserCoinRecordMapper userCoinRecordMapper;
 
-    public UserServiceImpl(UserMapper userMapper) {
+    public UserServiceImpl(UserMapper userMapper, UserCoinRecordMapper userCoinRecordMapper) {
         this.userMapper = userMapper;
+        this.userCoinRecordMapper = userCoinRecordMapper;
     }
 
     @Override
@@ -70,6 +75,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .password(SecureUtil.md5(password))
                 .role(RoleEnum.REG_USER)
                 .build();
-        return userMapper.insert(regUser);
+        int res = userMapper.insert(regUser);
+        if (res == 1) {
+            userCoinRecordMapper.insert(
+                    UserCoinRecord.builder().operateTime(new Date()).operateType(OperateType.INIT_REG)
+                            .operateValue(0).remainCoin(0).remark(OperateType.INIT_REG.getDesc())
+                            .userId(regUser.getId()).build()
+            );
+        }
+        return res;
     }
+
+
 }
