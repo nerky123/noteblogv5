@@ -22,7 +22,7 @@
 
 ---
 ## 截图预览
-[请查看](https://github.com/miyakowork/noteblogv5/screenshot)
+[请查看](https://gitee.com/wuwenbn/noteblogv5/tree/master/screenshot)
 ## 视频教程
 完善中...
 
