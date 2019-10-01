@@ -54,7 +54,7 @@ layui.define(function (exports) {
             //访客浏览器
             {
                 title: {
-                    text: '访客浏览器',
+                    text: '访客访问浏览器分布（近30天）',
                     x: 'center',
                     textStyle: {
                         fontSize: 14
@@ -100,7 +100,7 @@ layui.define(function (exports) {
             //访客浏IP分布
             {
                 title: {
-                    text: '访客IP分部',
+                    text: '访客IP访问分布（近30天）',
                     x: 'center',
                     textStyle: {
                         fontSize: 14
@@ -126,7 +126,7 @@ layui.define(function (exports) {
             //新增的用户量
             {
                 title: {
-                    text: '访问统计：PV',
+                    text: '访问PV统计',
                     x: 'center',
                     textStyle: {
                         fontSize: 14

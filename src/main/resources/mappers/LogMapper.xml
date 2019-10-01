@@ -29,4 +29,11 @@
         from nb_log l
         where DATE_FORMAT(l.time, '%Y-%m-%d') = DATE_FORMAT(curdate(), '%Y-%m-%d')
     </select>
+
+    <delete id="removeLogBeyondMonth">
+        delete
+        from nb_log
+        where TIMESTAMPDIFF(DAY, time, DATE_FORMAT(NOW(), '%Y-%m-%d')) >= 31
+    </delete>
+
 </mapper>

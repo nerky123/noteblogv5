@@ -41,4 +41,9 @@ public interface LogMapper extends BaseMapper<Log> {
      * @return
      */
     long todayVisit();
+
+    /**
+     * 删除30天之前的日志
+     */
+    void removeLogBeyondMonth();
 }

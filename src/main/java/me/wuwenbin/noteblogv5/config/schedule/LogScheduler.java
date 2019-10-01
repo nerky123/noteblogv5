@@ -21,6 +21,9 @@ public class LogScheduler {
     private LogMapper logMapper = NbUtils.getBean(LogMapper.class);
     private ServletContext nbServletContext = NbUtils.getServletContext();
 
+    /**
+     * 每整10分钟插入访问日志，防止频繁插入消耗资源
+     */
     @Scheduled(cron = "0 0,10,20,30,40,50 * * * ? ")
     public void logInsert() {
         //noinspection unchecked
@@ -31,5 +34,13 @@ public class LogScheduler {
             }
             nbServletContext.removeAttribute(NBV5.LOG_CACHE_KEY);
         }
+    }
+
+    /**
+     * 每天定时清理30天以外的访问日志
+     */
+    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    public void logRemove() {
+        logMapper.removeLogBeyondMonth();
     }
 }
