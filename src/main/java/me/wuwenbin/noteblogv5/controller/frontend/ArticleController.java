@@ -7,11 +7,14 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.wuwenbin.noteblogv5.constant.DictGroup;
+import me.wuwenbin.noteblogv5.constant.OperateType;
 import me.wuwenbin.noteblogv5.controller.common.BaseController;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.CommentBo;
 import me.wuwenbin.noteblogv5.model.entity.Article;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
+import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.ArticleService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
@@ -25,6 +28,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -39,15 +43,17 @@ public class ArticleController extends BaseController {
     private final UserService userService;
     private final CommentService commentService;
     private final HideService hideService;
+    private final UserCoinRecordService userCoinRecordService;
 
     public ArticleController(ArticleService articleService, DictService dictService,
                              UserService userService, CommentService commentService,
-                             HideService hideService) {
+                             HideService hideService, UserCoinRecordService userCoinRecordService) {
         this.articleService = articleService;
         this.dictService = dictService;
         this.userService = userService;
         this.commentService = commentService;
         this.hideService = hideService;
+        this.userCoinRecordService = userCoinRecordService;
     }
 
     @GetMapping("/{aId}")
@@ -114,8 +120,25 @@ public class ArticleController extends BaseController {
             return ResultBean.error("请先登录再进行购买操作！").put("base", basePath(request));
         } else {
             long userId = purchaseUser.getId();
-            int cnt = hideService.purchaseArticleHideContent(articleId, hideId, userId);
-            return handle(cnt == 1, "购买成功！", "购买失败！");
+            int remainCoin = purchaseUser.getRemainCoin();
+            int hidePrice = hideService.getById(hideId).getHidePrice();
+            if (remainCoin >= hidePrice) {
+                boolean r = userService.update(Wrappers.<User>update().set("remain_coin", remainCoin - hidePrice).eq("id", userId));
+                if (r) {
+                    int cnt = hideService.purchaseArticleHideContent(articleId, hideId, userId);
+                    if (cnt == 1) {
+                        UserCoinRecord record = UserCoinRecord.builder()
+                                .operateTime(new Date()).remainCoin(remainCoin - hidePrice).userId(userId).operateType(OperateType.PURCHASE_MINUS)
+                                .operateValue(hidePrice).remark(OperateType.PURCHASE_MINUS.getDesc()).build();
+                        userCoinRecordService.save(record);
+                    }
+                    return handle(cnt == 1, "购买成功！", "购买失败！");
+                } else {
+                    return ResultBean.error("购买失败，请稍后再试！");
+                }
+            } else {
+                return ResultBean.error("您的硬币不足，请充值之后再购买！");
+            }
         }
     }
 }

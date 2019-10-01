@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -17,6 +18,7 @@ import me.wuwenbin.noteblogv5.constant.UploadConstant;
 import me.wuwenbin.noteblogv5.constant.uploader.LayUploader;
 import me.wuwenbin.noteblogv5.constant.uploader.NkUploader;
 import me.wuwenbin.noteblogv5.mapper.ParamMapper;
+import me.wuwenbin.noteblogv5.mapper.UploadMapper;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.entity.Param;
 import me.wuwenbin.noteblogv5.model.entity.Upload;
@@ -38,7 +40,7 @@ import java.util.function.Consumer;
 @Slf4j
 @Service("qiniuUpload")
 @Transactional(rollbackFor = Exception.class)
-public class QiniuUploadServiceImpl implements UploadService<Object> {
+public class QiniuUploadServiceImpl extends ServiceImpl<UploadMapper, Upload> implements UploadService<Object> {
 
     private final ParamMapper paramMapper;
 

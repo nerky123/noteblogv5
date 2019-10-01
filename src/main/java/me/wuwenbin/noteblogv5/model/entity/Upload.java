@@ -21,4 +21,5 @@ public class Upload implements Serializable {
     private Date upload;
     private String type;
     private Long userId;
+    private String articleId;
 }

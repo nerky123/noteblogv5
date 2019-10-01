@@ -1,5 +1,6 @@
 package me.wuwenbin.noteblogv5.service.impl.upload;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.UploadConstant;
 import me.wuwenbin.noteblogv5.constant.uploader.LayUploader;
@@ -25,7 +26,7 @@ import java.util.function.Consumer;
 @Slf4j
 @Service("localUpload")
 @Transactional(rollbackFor = Exception.class)
-public class LocalUploadServiceImpl implements UploadService<Object> {
+public class LocalUploadServiceImpl extends ServiceImpl<UploadMapper, Upload> implements UploadService<Object> {
 
     private final UploadMapper uploadMapper;
 

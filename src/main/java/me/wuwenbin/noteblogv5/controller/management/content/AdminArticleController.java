@@ -14,6 +14,7 @@ import me.wuwenbin.noteblogv5.service.interfaces.content.ArticleService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
+import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author wuwen
@@ -88,7 +90,10 @@ public class AdminArticleController extends BaseController {
             article.setAuthorId(su.getId());
             try {
                 int cnt = articleService.createArticle(article, cateIds, tagNames);
-                return handle(cnt > 0, "发布成功！", "发布失败！");
+                Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
+                        .update(Wrappers.<Upload>update()
+                                .set(cnt == 1, "article_id", article.getId()).eq("article_id", null));
+                return handle(cnt == 1, "发布成功！", "发布失败！");
             } catch (PinyinException e) {
                 return ResultBean.error("自定义文章链接出现非法值，请重新输入！");
             }
@@ -126,6 +131,9 @@ public class AdminArticleController extends BaseController {
             article.setAuthorId(su.getId());
             try {
                 int cnt = articleService.updateArticle(article, cateIds, tagNames);
+                Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
+                        .update(Wrappers.<Upload>update()
+                                .set(cnt == 1, "article_id", article.getId()).eq("article_id", null));
                 return handle(cnt > 0, "修改成功！", "修改失败！");
             } catch (PinyinException e) {
                 return ResultBean.error("自定义文章链接出现非法值，请重新定义！");
@@ -138,12 +146,15 @@ public class AdminArticleController extends BaseController {
 
     @PostMapping("/delete")
     @ResponseBody
-    public ResultBean delete(String id) {
+    public ResultBean delete(String id, HttpServletRequest request) {
         boolean res = articleService.removeById(id);
         dictService.deleteArticleRefer(id);
         hideService.deleteArticlePurchaseRefer(id);
         hideService.remove(Wrappers.<Hide>query().eq("article_id", id));
         commentService.remove(Wrappers.<Comment>query().eq("article_id", id));
+        Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
+                .remove(Wrappers.<Upload>update()
+                        .eq("article_id", id).eq("user_id", getSessionUser(request).getId()));
         return handle(res, "删除成功！", "删除失败！");
     }
 }

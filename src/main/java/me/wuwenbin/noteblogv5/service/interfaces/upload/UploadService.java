@@ -2,6 +2,7 @@ package me.wuwenbin.noteblogv5.service.interfaces.upload;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.extension.service.IService;
 import me.wuwenbin.noteblogv5.constant.UploadConstant;
 import me.wuwenbin.noteblogv5.model.entity.Upload;
 import me.wuwenbin.noteblogv5.util.NbUtils;
@@ -22,7 +23,7 @@ import java.util.function.Consumer;
  *
  * @author wuwenbin
  */
-public interface UploadService<T> {
+public interface UploadService<T> extends IService<Upload> {
 
     /**
      * layui上传组件

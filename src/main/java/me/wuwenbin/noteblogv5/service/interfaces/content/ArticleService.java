@@ -42,7 +42,7 @@ public interface ArticleService extends IService<Article> {
 
     String HIDE_COMMENT_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容回复可见，" +
             "<a class=\"layui-text\" href=\"#comment-list\">点我回复</a></blockquote>";
-    String HIDE_PURCHASE_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容需购买，" +
+    String HIDE_PURCHASE_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容需购买（{price}硬币），" +
             "<a class=\"layui-text\" onclick=\"purchaseContent('{articleId}','{hideId}');\">点我购买</a></blockquote>";
     String HIDE_LOGIN_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容登录之后可见，" +
             "<a class=\"layui-text\" href=\"/login?t={currentTimes}\" target=\"_blank\">点我登录</a></blockquote>";
@@ -173,6 +173,7 @@ public interface ArticleService extends IService<Article> {
         for (JXNode purchase : hidePurchases) {
             String html = purchase.asElement().outerHtml();
             String hideId = purchase.asElement().attr("data-hid");
+            String hidePrice = purchase.asElement().attr("data-price");
             if (StrUtil.isEmptyOrUndefined(hideId)) {
                 hideId = IdUtil.objectId();
                 contentHtml = contentHtml.replace("data-hid=\"\"", StrUtil.format("data-hid=\"{}\"", hideId));
@@ -182,6 +183,7 @@ public interface ArticleService extends IService<Article> {
             hideMap.put("hideId", hideId);
             hideMap.put("hideType", HIDE_PURCHASE);
             hideMap.put("articleId", article.getId());
+            hideMap.put("price",hidePrice);
             String replacement = StrUtil.format(HIDE_PURCHASE_REPLACEMENT, hideMap);
             contentHtml = contentHtml.replace(html, replacement);
             if (hideService.getById(hideId) == null) {
@@ -189,6 +191,7 @@ public interface ArticleService extends IService<Article> {
                         .id(hideId)
                         .articleId(article.getId())
                         .hideType(HIDE_PURCHASE)
+                        .hidePrice(Integer.valueOf(hidePrice))
                         .hideHtml(html).build();
                 hideService.save(hide);
             } else {
