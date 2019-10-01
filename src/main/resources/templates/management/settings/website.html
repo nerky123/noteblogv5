@@ -329,7 +329,23 @@
                 </div>
             </div>
 
-
+            <div class="layui-card">
+                <div class="layui-card-header">签到设置</div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item" id="sign-coin">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">签到硬币</label>
+                            <div class="layui-input-inline" style="min-width: 350px;">
+                                <input type="number" name="sign_check_coin" placeholder="请输入硬币，每次签到增加的硬币数量" min="0"
+                                       th:value="${sign_check_coin}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="layui-col-md4">
 
