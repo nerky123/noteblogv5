@@ -16,7 +16,7 @@
     </select>
 
     <select id="sumArticleWords" resultType="long">
-        select sum(length(text_content))
+        select sum(if(text_content is null, 0, length(text_content)))
         from nb_article;
     </select>
 

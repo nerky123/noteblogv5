@@ -50,6 +50,7 @@ public class ParamServiceImpl extends ServiceImpl<ParamMapper, Param> implements
 
     @Override
     public void saveInitParam(Map<String, Object> map) {
+        CacheUtils.clearAllParamCache();
         for (Map.Entry<String, Object> next : map.entrySet()) {
             String key = next.getKey();
             if (!"username".equals(key) && !"password".equals(key)) {

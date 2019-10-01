@@ -190,24 +190,28 @@
                 <div class="layui-card-body layadmin-takerates">
                     <p>
                         <span class="layui-word-aux">文章：</span>
-                        <a th:href="'/article/'+${latestComment.articleId}"
-                           target="_blank">[[${latestComment.title}]]</a>
+                        <a th:href="${latestComment ne null ? '/article/'+latestComment.articleId : 'javascript:;'}"
+                           target="_blank">[[${latestComment ne null ? latestComment.title : '-'}]]</a>
                     </p>
                     <hr>
                     <p>
                         <span class="layui-word-aux">用户：</span>
-                        <img th:src="${latestComment.avatar}" style="width: 40px;" class="layui-circle">
-                        [[${latestComment.nickname}]]
+                        <img th:if="${latestComment ne null}"
+                             th:src="${latestComment ne null ? latestComment.avatar : 'javascript:;'}"
+                             style="width: 40px;" class="layui-circle">
+                        [[${latestComment ne null ? latestComment.nickname : '-'}]]
                     </p>
                     <hr>
                     <p style="word-break: break-all;">
                         <span class="layui-word-aux">评论：</span>
-                        [[${latestComment.clearComment.substring(0,#strings.length(latestComment.clearComment)>100?100:#strings.length(latestComment.clearComment))}]]
+                        [[${latestComment ne null
+                        ?latestComment.clearComment.substring(0,#strings.length(latestComment.clearComment)>100?100:#strings.length(latestComment.clearComment))
+                        : '-'}]]
                     </p>
                     <hr>
                     <p th:inline="text">
                         <span class="layui-word-aux">时间：</span>
-                        [[${#temporals.format(latestComment.post, 'yyyy/MM/dd HH:mm')}]]
+                        [[${latestComment ne null ? #temporals.format(latestComment.post, 'yyyy/MM/dd HH:mm') : '-'}]]
                     </p>
                 </div>
             </div>
@@ -217,18 +221,22 @@
                 <div class="layui-card-body layadmin-takerates">
                     <p>
                         <span class="layui-word-aux">用户：</span>
-                        <img th:src="${latestComment.avatar}" style="width: 40px;" class="layui-circle">
-                        [[${latestMessage.nickname}]]
+                        <img th:if="${latestMessage ne null}"
+                             th:src="${latestMessage ne null ? latestMessage.avatar : 'javascript:;'}"
+                             style="width: 40px;" class="layui-circle">
+                        [[${latestMessage ne null ? latestMessage.nickname : '-'}]]
                     </p>
                     <hr>
                     <p style="word-break: break-all;">
                         <span class="layui-word-aux">留言：</span>
-                        [[${latestMessage.clearComment.substring(0,#strings.length(latestMessage.clearComment)>100?100:#strings.length(latestMessage.comment))}]]
+                        [[${latestMessage ne null ?
+                        latestMessage.clearComment.substring(0,#strings.length(latestMessage.clearComment)>100?100:#strings.length(latestMessage.comment))
+                        : '-'}]]
                     </p>
                     <hr>
                     <p th:inline="text">
                         <span class="layui-word-aux">时间：</span>
-                        [[${#temporals.format(latestMessage.post, 'yyyy/MM/dd HH:mm')}]]
+                        [[${latestMessage ne null ?#temporals.format(latestMessage.post, 'yyyy/MM/dd HH:mm') : '-'}]]
                     </p>
                 </div>
             </div>

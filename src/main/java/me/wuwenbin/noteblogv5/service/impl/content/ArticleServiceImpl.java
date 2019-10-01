@@ -91,7 +91,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public long sumArticleWords() {
-        return articleMapper.sumArticleWords();
+        int cnt = articleMapper.selectCount(Wrappers.emptyWrapper());
+        return cnt == 0 ? cnt : articleMapper.sumArticleWords();
     }
 
     @Override

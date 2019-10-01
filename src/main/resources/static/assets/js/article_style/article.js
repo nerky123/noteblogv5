@@ -614,10 +614,12 @@ function purchaseContent(articleId, hideId) {
                 setTimeout(function () {
                     location.reload();
                 }, 888);
-            } else {
+            } else if (resp.code === -1) {
                 layer.confirm('请先登录再操作，是否现在登录？', {icon: 4, title: '消息提示'}, function (index) {
                     window.location.href = "/login?redirectUrl=" + resp.base + "article/" + articleId;
                 });
+            } else {
+                layer.msg(resp.message);
             }
         }, error: function () {
             layer.msg("请稍后再试！");

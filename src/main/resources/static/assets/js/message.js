@@ -108,7 +108,6 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<p>QQ群：<a href="https://jq.qq.com/?_wv=1027&k=5ZEGGl8" target="_blank">697053454</a> </p>' +
         '<p class="layui-mt5">GitHub：<a href="https://github.com/miyakowork/noteblogv5" target="_blank">noteblogv5</a> </p>' +
         '<p class="layui-mt5">Gitee：<a href="https://gitee.com/wuwenbn/" target="_blank">noteblogv5</a> </p>' +
-        '<p class="layui-mt5">官网：<a href="https://noteblog.vip" target="_blank">noteblog.vip</a> </p>' +
         '</div>' +
         '</div>' +
         '</div>' +

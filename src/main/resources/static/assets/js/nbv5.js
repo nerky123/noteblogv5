@@ -19,11 +19,12 @@ var nbv5front = {
     , searchDialog: function () {
         layer.open({
             type: 1
+            , id: 'search-dialog'
             , title: false
             , closeBtn: false
             , shadeClose: true
             , maxWidth: 10000
-            ,offset:'40%'
+            , offset: '40%'
             , skin: 'fly-layer-search'
             , content: ['<form action="/s/w" method="get">'
                 , '<input class="layui-icon" autocomplete="off" placeholder="&#xe615; 搜索文章，回车跳转" type="text" name="q">'
@@ -67,7 +68,7 @@ var nbv5front = {
         })
     }
 
-    ,  miniHeader: function (bodyId) {
+    , miniHeader: function (bodyId) {
         var $body = $("#" + bodyId);
         window._justResult = $body.offset().top - $(window).scrollTop();
         nbv5front.animateNav($body);

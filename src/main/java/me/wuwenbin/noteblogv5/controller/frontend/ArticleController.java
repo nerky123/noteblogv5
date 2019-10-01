@@ -117,7 +117,7 @@ public class ArticleController extends BaseController {
                                    @RequestParam String hideId, HttpServletRequest request) {
         User purchaseUser = getSessionUser(request);
         if (purchaseUser == null) {
-            return ResultBean.error("请先登录再进行购买操作！").put("base", basePath(request));
+            return ResultBean.custom(ResultBean.LOGIN_INVALID, "请先登录再进行购买操作！").put("base", basePath(request));
         } else {
             long userId = purchaseUser.getId();
             int remainCoin = purchaseUser.getRemainCoin();
