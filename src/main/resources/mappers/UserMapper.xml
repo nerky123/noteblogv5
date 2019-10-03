@@ -20,6 +20,6 @@
     <update id="updateRemainCoin">
         update nb_user
         set remain_coin = #{remainCoin}
-        where id = #{id}
+        where id = #{userId}
     </update>
 </mapper>

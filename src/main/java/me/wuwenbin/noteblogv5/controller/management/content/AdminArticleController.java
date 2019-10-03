@@ -14,6 +14,7 @@ import me.wuwenbin.noteblogv5.service.interfaces.content.ArticleService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
+import me.wuwenbin.noteblogv5.util.CacheUtils;
 import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,7 +93,12 @@ public class AdminArticleController extends BaseController {
                 int cnt = articleService.createArticle(article, cateIds, tagNames);
                 Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
                         .update(Wrappers.<Upload>update()
-                                .set(cnt == 1, "article_id", article.getId()).eq("article_id", null));
+                                .set(cnt == 1, "article_id", article.getId())
+                                .eq("user_id", su.getId()).isNull("article_id"));
+                if (cnt == 1) {
+                    CacheUtils.removeDefaultCache("articleCount");
+                    CacheUtils.removeDefaultCache("articleWords");
+                }
                 return handle(cnt == 1, "发布成功！", "发布失败！");
             } catch (PinyinException e) {
                 return ResultBean.error("自定义文章链接出现非法值，请重新输入！");
@@ -133,7 +139,11 @@ public class AdminArticleController extends BaseController {
                 int cnt = articleService.updateArticle(article, cateIds, tagNames);
                 Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
                         .update(Wrappers.<Upload>update()
-                                .set(cnt == 1, "article_id", article.getId()).eq("article_id", null));
+                                .set(cnt == 1, "article_id", article.getId())
+                                .eq("user_id", su.getId()).isNull("article_id"));
+                if (cnt > 0) {
+                    CacheUtils.removeDefaultCache("articleWords");
+                }
                 return handle(cnt > 0, "修改成功！", "修改失败！");
             } catch (PinyinException e) {
                 return ResultBean.error("自定义文章链接出现非法值，请重新定义！");
@@ -155,6 +165,10 @@ public class AdminArticleController extends BaseController {
         Objects.requireNonNull(NbUtils.getUploadServiceByConfig())
                 .remove(Wrappers.<Upload>update()
                         .eq("article_id", id).eq("user_id", getSessionUser(request).getId()));
+        if (res) {
+            CacheUtils.removeDefaultCache("articleCount");
+            CacheUtils.removeDefaultCache("articleWords");
+        }
         return handle(res, "删除成功！", "删除失败！");
     }
 }

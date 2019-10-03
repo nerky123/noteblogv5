@@ -51,11 +51,36 @@ public class GlobalController {
             model.addAttribute("settings", settingsMap);
         }
         if (!request.getRequestURL().toString().contains("/management/")) {
-            model.addAttribute("cateList", dictService.findList(DictGroup.GROUP_CATE));
-            model.addAttribute("blogCount", articleService.count());
-            model.addAttribute("blogWords", articleService.sumArticleWords());
+            Object cateGroupList = CacheUtils.getDefaultCache().get("cateGroupList");
+            if (cateGroupList == null) {
+                cateGroupList = dictService.findList(DictGroup.GROUP_CATE);
+                CacheUtils.putIntoDefaultCache("cateGroupList", cateGroupList);
+            }
+
+            Object articleCount = CacheUtils.getDefaultCache().get("articleCount");
+            if (articleCount == null) {
+                articleCount = articleService.count();
+                CacheUtils.putIntoDefaultCache("articleCount", articleCount);
+            }
+
+            Object articleWords = CacheUtils.getDefaultCache().get("articleWords");
+            if (articleWords == null) {
+                articleWords = articleService.sumArticleWords();
+                CacheUtils.putIntoDefaultCache("articleWords", articleWords);
+            }
+
+            Object commentCount = CacheUtils.getDefaultCache().get("commentCount");
+            if (commentCount == null) {
+                commentCount = commentService.count();
+                CacheUtils.putIntoDefaultCache("commentCount", commentCount);
+            }
+            model.addAttribute("cateList", cateGroupList);
+            model.addAttribute("blogCount", articleCount);
+            model.addAttribute("blogWords", articleWords);
             model.addAttribute("runningDays", paramService.calcRunningDays());
-            model.addAttribute("commentCount", commentService.count());
+            model.addAttribute("commentCount", commentCount);
         }
     }
+
+
 }

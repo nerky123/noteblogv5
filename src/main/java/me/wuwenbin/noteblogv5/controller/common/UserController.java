@@ -84,7 +84,10 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/reg")
-    public ModelAndView register() {
+    public ModelAndView register(HttpServletRequest request) {
+        if (getSessionUser(request) != null) {
+            return new ModelAndView(new RedirectView("/"));
+        }
         Param reg = paramService.getOne(Wrappers.<Param>query().eq("name", NBV5.USER_SIMPLE_REG_ONOFF));
         boolean isOpenRegister = reg != null && "1".equals(reg.getValue());
         request.setAttribute("isOpenRegister", isOpenRegister);
@@ -99,6 +102,14 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResultBean sendMailCode(String email) {
         try {
+            if (StrUtil.isEmpty(email)) {
+                User su = getSessionUser(request);
+                if (su == null) {
+                    return ResultBean.error("发送失败，未知邮箱！");
+                } else {
+                    email = su.getEmail();
+                }
+            }
             mailService.sendMailCode(email);
             return ResultBean.ok("发送成功，请在您的邮箱中查收！");
         } catch (Exception e) {
@@ -154,12 +165,12 @@ public class UserController extends BaseController {
         if (loginResult.get(ResultBean.CODE).equals(ResultBean.SUCCESS)) {
             User nbv5su = (User) loginResult.get("nbv5su");
             setSessionUser(request, nbv5su);
-        }
-        Object url = request.getSession().getAttribute("tempUrl");
-        if (getSessionUser(request).getRole() == RoleEnum.ADMIN) {
-            loginResult.put("redirectUrl", MANAGEMENT_INDEX);
-        } else if (!StringUtils.isEmpty(url)) {
-            loginResult.put("redirectUrl", url.toString());
+            Object url = request.getSession().getAttribute("tempUrl");
+            if (getSessionUser(request).getRole() == RoleEnum.ADMIN) {
+                loginResult.put("redirectUrl", MANAGEMENT_INDEX);
+            } else if (!StringUtils.isEmpty(url)) {
+                loginResult.put("redirectUrl", url.toString());
+            }
         }
         return loginResult;
     }

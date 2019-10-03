@@ -173,14 +173,19 @@ public abstract class BaseController {
         response.setCharacterEncoding("UTF-8");
         if (isRouter(request)) {
             JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.putAll(ResultBean.custom(ResultBean.LOGIN_INVALID, message, LOGIN_URL));
+            Map<String, Object> respMap = ResultBean.custom(ResultBean.LOGIN_INVALID, message, LOGIN_URL);
+            respMap.put("base", basePath(request));
+            jsonObject.putAll(respMap);
             response.getWriter().write(jsonObject.toString());
         } else if (isAjaxRequest(request) && !isRouter(request)) {
             JSONObject jsonObject = JSONUtil.createObj();
-            jsonObject.putAll(ResultBean.custom(ResultBean.LOGIN_INVALID, message, LOGIN_URL));
+            Map<String, Object> respMap = ResultBean.custom(ResultBean.LOGIN_INVALID, message, LOGIN_URL);
+            respMap.put("base", basePath(request));
+            jsonObject.putAll(respMap);
+            jsonObject.putAll(respMap);
             response.getWriter().write(jsonObject.toString());
         } else {
-            response.sendRedirect(LOGIN_URL);
+            response.sendRedirect(LOGIN_URL.concat("&redirectUrl=").concat(request.getRequestURL().toString()));
         }
     }
 
@@ -199,4 +204,8 @@ public abstract class BaseController {
         request.getSession().invalidate();
     }
 
+    protected void updateSessionUser(HttpServletRequest request, User newUser) {
+        request.getSession().removeAttribute(NBV5.SESSION_USER_KEY);
+        setSessionUser(request, newUser);
+    }
 }

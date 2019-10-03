@@ -15,4 +15,20 @@ public interface UserCoinRecordService extends IService<UserCoinRecord> {
      * @param userId
      */
     void calcAdminInsertRecord(int targetCoinValue, long userId);
+
+    /**
+     * 用户今日是否已签到，返回签到的记录数
+     *
+     * @param userId
+     * @return
+     */
+    int todayIsSigned(long userId);
+
+    /**
+     * 用户签到
+     *
+     * @param userId
+     * @return
+     */
+    boolean userSign(long userId);
 }

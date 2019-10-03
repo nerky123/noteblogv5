@@ -7,6 +7,7 @@ import me.wuwenbin.noteblogv5.controller.common.BaseController;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.entity.Dict;
 import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
+import me.wuwenbin.noteblogv5.util.CacheUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +86,9 @@ public class DictController extends BaseController {
         Dict t = dictService.getOne(Wrappers.<Dict>query().eq("`group`", DictGroup.GROUP_TAG).eq("name", tagName));
         if (t == null) {
             boolean res = dictService.save(Dict.builder().name(tagName).group(DictGroup.GROUP_TAG).build());
+            if (res) {
+                CacheUtils.removeDefaultCache("cateGroupList");
+            }
             return handle(res, "添加成功！", "添加失败！");
         } else {
             return ResultBean.error("已经有此标签，不能重复添加！");
@@ -126,6 +130,9 @@ public class DictController extends BaseController {
             return ResultBean.error("请删除所有相关的文章再做操作！");
         } else {
             boolean res = dictService.removeById(id);
+            if (res) {
+                CacheUtils.removeDefaultCache("cateGroupList");
+            }
             return handle(res, "删除成功！", "删除失败！");
         }
     }

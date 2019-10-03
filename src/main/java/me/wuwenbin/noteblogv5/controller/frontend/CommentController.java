@@ -17,6 +17,7 @@ import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
 import me.wuwenbin.noteblogv5.service.interfaces.mail.MailService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
 import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
+import me.wuwenbin.noteblogv5.util.CacheUtils;
 import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,7 @@ public class CommentController extends BaseController {
                     if ("1".equals(paramService.findByName(NBV5.COMMENT_MAIL_NOTICE_ONOFF).getValue())) {
                         mailService.sendNoticeMail(basePath(request), articleService.getById(comment.getArticleId()), comment.getComment());
                     }
+                    CacheUtils.removeDefaultCache("commentCount");
                     return ResultBean.ok("发表评论成功");
                 } else {
                     return ResultBean.error("发表评论失败");

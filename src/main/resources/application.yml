@@ -17,7 +17,7 @@ spring:
   cache:
     #使用默认的ConcurrentMap
     type: simple
-    cache-names: paramCache
+    cache-names: paramCache,defaultCache
   http:
     encoding:
       force: true

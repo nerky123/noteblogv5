@@ -131,7 +131,7 @@
                                 th:text="'Hi!,'+${nbv5su.nickname}+'。'+${settings.ubs_top_notice}"></blockquote>
                     <hr class="layui-mt20">
                     <div class="layui-row layui-mt20">
-                        <img th:src="${nbv5su.avatar}"
+                        <img th:src="${nbv5su.avatar}" id="avatar"
                              style="width: 60px;height: 60px;border: 1px solid #e0e0e0;cursor:pointer;"
                              class="layui-circle">
                         <label th:text="${nbv5su.nickname}" style="margin-left: 5px;"></label>
@@ -143,8 +143,13 @@
                                 class="fa fa-sign-out"></i> 退出</a>
                     </div>
                     <div class="layui-row layui-mt20">
-                        <a class="layui-btn-sm layui-btn layui-bg-black"><i
-                                class="fa fa-check"></i> 签到</a><small class="layui-text layui-word-aux">每日一次，一次 n 个</small>
+                        <a th:if="${signed eq 0}" class="layui-btn-sm layui-btn layui-bg-black" id="sign">
+                            <i class="fa fa-check"></i> 签到
+                        </a>
+                        <span th:if="${signed eq 1}" style="border: 1px solid #cccccc;padding: 5px 10px;"><i
+                                class="fa fa-check"></i> 已签到</span>
+                        <small class="layui-text layui-word-aux">每日一次，一次 n
+                            个</small>
                     </div>
                     <div class="layui-row layui-mt20">
                         <label style="font-size: 16px;margin-top: 15px;">你所持有的硬币个数为：<img
@@ -166,19 +171,23 @@
                             <input type="text" id="nickname" th:value="${nbv5su.nickname}" class="layui-input"
                                    style="max-width: 200px;display: inline-block;">
                         </label>
-                        <button type="button" class="layui-btn layui-btn-primary">修改</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="nickname-change">修改</button>
                     </div>
                     <hr class="layui-mt20">
                     <div class="layui-row layui-mt20" th:if="${nbv5su.role == 2}">
                         <p style="max-width: 200px;">
-                            <input class="layui-input" type="password" name="password" placeholder="输入新密码">
+                            <input class="layui-input" type="password" name="password" placeholder="输入新密码（至少6位）"
+                                   minlength="6">
                         </p>
                         <p style="max-width: 200px;margin-top: 20px;">
                             <input class="layui-input" type="text" name="mailCode" placeholder="输入邮箱中的验证码">
                         </p>
                         <p class="layui-mt20">
-                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">发送验证码</button>
-                            <button type="button" class="layui-btn  layui-btn-sm">提交修改</button>
+                            <button id="sendMailCode" class="layui-btn layui-btn-primary layui-btn-sm"
+                                    type="button">
+                                <span id="sendCode">点击发送</span><span id="sendSeconds"></span>
+                            </button>
+                            <button type="button" class="layui-btn  layui-btn-sm" id="pass-change">提交修改</button>
                         </p>
 
                     </div>
@@ -285,6 +294,7 @@
 <script src="/static/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="/static/assets/js/script.js"></script>
 <script src="/static/assets/js/nbv5.js"></script>
+<script src="/static/plugins/md5/md5.min.js"></script>
 <script src="/static/plugins/hc-sticky/hc-sticky.min.js"></script>
 <script src="/static/plugins/pushbar/pushbar.js"></script>
 <script th:inline="javascript">
@@ -297,12 +307,106 @@
         });
 
 
-        layui.use(['layer', 'element'], function () {
+        layui.use(['layer', 'element', 'upload'], function () {
             var layer = layui.layer,
-                element = layui.element;
+                element = layui.element,
+                upload = layui.upload;
             element.render();
 
             nbv5front.miniHeaderNavBtn(layer);
+
+            upload.render({
+                elem: '#avatar' //绑定元素
+                , url: '/ubs//token/avatar/change' //上传接口
+                , done: function (res) {
+                    if (res.code === 0) {
+                        $("#avatar").find("img").attr("src", res.data.src);
+                        layer.msg(res.msg || res.message);
+                    } else {
+                        layer.msg(res.message)
+                    }
+                }
+                , error: function () {
+                    layer.msg("上传失败！");
+                }
+            });
+
+            $("#nickname-change").click(function () {
+                $.post("/ubs/token/nickname/change"
+                    , {
+                        nickname: $("#nickname").val()
+                    }
+                    , function (resp) {
+                        layer.msg(resp.message);
+                        if (resp.code === 200) {
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                    });
+            })
+
+            $("#sendMailCode").click(function () {
+                var $sendCodeBtn = $("#sendCode");
+                $sendCodeBtn.text("已发送");
+                $("#sendSeconds").text("(60)");
+                var $this = $("#sendMailCode");
+                $this.addClass("send-code");
+                $this.attr("disabled", true);
+                var num = 60;
+                var i = setInterval(function () {
+                    num--;
+                    var $second = $("#sendSeconds");
+                    $second.text("(" + num + ")");
+                    if (num === 0) {
+                        clearInterval(i);
+                        $sendCodeBtn.text("重新发送");
+                        $second.text("");
+                        $this.removeClass("send-code");
+                        $this.attr("disabled", false);
+                    }
+                }, 1000);
+                $.post("/sendMailCode", {}, function (resp) {
+                    layer.msg(resp.message);
+                })
+            });
+
+            $("#pass-change").click(function () {
+                $.post("/ubs/token/password/change", {
+                    pass: md5($("input[name=password]").val()),
+                    code: $("input[name=mailCode]").val()
+                }, function (resp) {
+                    layer.msg(resp.message);
+                })
+            });
+
+            var sign_temp = true;
+            $("#sign").click(function () {
+                if (sign_temp) {
+                    $.ajax({
+                        url: '/ubs/token/sign'
+                        , data: {}
+                        , type: "post"
+                        , dataType: "json"
+                        , beforeSend: function () {
+                            sign_temp = false;
+                        }
+                        , success: function (resp) {
+                            layer.msg(resp.message);
+                            setTimeout(function () {
+                                if (resp.code === 200) {
+                                    location.reload();
+                                }
+                            }, 800);
+                        }, complete: function () {
+                            sign_temp = true;
+                        }
+                    })
+                } else {
+                    layer.msg("不要心急，请稍等一会...");
+                }
+            });
+
         });
 
     });

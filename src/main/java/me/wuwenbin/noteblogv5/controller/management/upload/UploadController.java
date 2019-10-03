@@ -7,8 +7,8 @@ import me.wuwenbin.noteblogv5.controller.common.BaseController;
 import me.wuwenbin.noteblogv5.model.entity.Upload;
 import me.wuwenbin.noteblogv5.model.entity.User;
 import me.wuwenbin.noteblogv5.util.NbUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +37,7 @@ public class UploadController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @PostMapping("/upload")
     public Object upload(@RequestParam(value = LAY_UPLOADER_FILE_NAME, required = false) MultipartFile file, @RequestParam("reqType") String reqType) {
         String base64 = request.getParameter("base64");
         String GRAFFITI = "1";
@@ -51,7 +51,7 @@ public class UploadController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/upload/editorMD", method = RequestMethod.POST)
+    @PostMapping("/upload/editorMD")
     public Object uploadEditorMd(@RequestParam(value = EDITOR_MD_FILE_NAME) MultipartFile file) {
         try {
             User su = getSessionUser(request);

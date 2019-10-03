@@ -61,9 +61,13 @@ public class ArticleController extends BaseController {
                           @ModelAttribute("settings") Map settingsMap,
                           Page<CommentBo> commentPage,
                           HttpServletRequest request) {
+        Article article = articleService.getById(aId);
+        if (article.getDraft()) {
+            //noinspection SpringMVCViewInspection
+            return "redirect:/";
+        }
         articleService.updateViewsById(aId);
 
-        Article article = articleService.getById(aId);
         model.addAttribute("author", userService.getById(article.getAuthorId()).getNickname());
 
         model.addAttribute("cateList", dictService.findList(DictGroup.GROUP_CATE));

@@ -35,5 +35,6 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userId
      * @param remainCoin
      */
-    void updateRemainCoin(@Param("userId") long userId,@Param("remainCoin") int remainCoin);
+    void updateRemainCoin(@Param("userId") long userId, @Param("remainCoin") int remainCoin);
+
 }

@@ -12,4 +12,12 @@
         limit 1
     </select>
 
+    <select id="todayIsSigned" resultType="int">
+        select count(1)
+        from nb_user_coin_record
+        where date_format(operate_time, '%Y-%m-%d') = date_format(curdate(), '%Y-%m-%d')
+          and operate_type = #{operateType}
+          and user_id = #{userId}
+    </select>
+
 </mapper>
