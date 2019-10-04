@@ -59,6 +59,7 @@ typesetting = 网站排版设置,left3right9
 article_page_style = 文章详细页面的风格，有无侧边栏,0
 bottom_logo = 网站底部LOGO图片,/static/assets/img/nblogo.png
 sign_check_coin = 每天签到加的硬币数量,0
+cash_recharge_url = 充值卡购买地址
 
 
 

@@ -77,7 +77,7 @@
                     <i class="layui-icon layui-icon-chat"></i>
                     <span th:text="${settings.menu_message}"></span>
                 </a>
-                <a href="/ubs/token/index" class="active" data-title="用户">
+                <a href="/login?redirectUrl=/ubs/token/index" class="active" data-title="用户">
                     <i class="layui-icon layui-icon-user"></i>
                     <span>用户</span>
                 </a>
@@ -96,7 +96,7 @@
     <blockquote class="layui-elem-quote">
         <span class="layui-breadcrumb">
             <a href="/">网站首页</a>
-            <a href="/ubs/token/index">用户中心</a>
+            <a href="/login?redirectUrl=/ubs/token/index">用户中心</a>
         </span>
         <div class="clock layui-show-md-inline-block layui-show-lg-inline-block layui-hide-xs layui-hide-sm">
             <span class="clock-font">当前日期</span>：<span id="current-datetime"></span>
@@ -110,7 +110,8 @@
         <div class="layui-col-md2 layui-hide-sm layui-hide-xs layui-show-md-inline-block left-nav">
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="/ubs/token/index" class="layui-this"><i class="fa fa-user-secret"></i> 用户中心</a>
+                    <a href="/login?redirectUrl=/ubs/token/index" class="layui-this"><i class="fa fa-user-secret"></i>
+                        用户中心</a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="/ubs/token/message"><i class="fa fa-envelope"></i> 我的消息</a>
@@ -148,7 +149,7 @@
                         </a>
                         <span th:if="${signed eq 1}" style="border: 1px solid #cccccc;padding: 5px 10px;"><i
                                 class="fa fa-check"></i> 已签到</span>
-                        <small class="layui-text layui-word-aux">每日一次，一次 n
+                        <small class="layui-text layui-word-aux">每日一次，一次 [[${settings.sign_check_coin}]]
                             个</small>
                     </div>
                     <div class="layui-row layui-mt20">
@@ -157,7 +158,8 @@
                                 style="width: 15px;margin-top: -5px;">
                             <span style="color: #ff262e;" th:text="${nbv5su.remainCoin}"></span>
                             <div class="layui-btn-group" style="margin-left: 5px;">
-                                <a class="layui-btn-sm layui-btn" style="margin-left: 10px"><i
+                                <a class="layui-btn-sm layui-btn layui-hide-xs layui-show-sm-inline-block"
+                                   id="cash-recharge" style="margin-left: 10px"><i
                                         class="fa fa-credit-card"></i> 卡号充值</a>
                                 <a class="layui-btn-sm layui-btn layui-bg-blue" style="margin-left: 10px;"><i
                                         class="fa fa-paypal"></i>
@@ -232,7 +234,8 @@
                    class="layui-btn layui-btn-sm layui-btn-primary">登录</a>
                 <span th:if="${nbv5su !=null}" class="layui-mr15">
                     <img th:src="${nbv5su.avatar}" class="layui-circle" style="width: 30px;"/>
-                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux" href="/ubs/token/index"></a>
+                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux"
+                       href="/login?redirectUrl=/ubs/token/index"></a>
                 </span> <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
             </p>
         </div>
@@ -249,7 +252,7 @@
             <a href="/index" th:text="${settings.menu_home}"></a>
             <a href="/note" th:text="${settings.menu_note}"></a>
             <a href="/message" th:text="${settings.menu_message}"></a>
-            <a href="/ubs/token/index">用户</a>
+            <a href="/login?redirectUrl=/ubs/token/index">用户</a>
             <a href="/s/w">搜索</a>
         </p>
         <ul class="layui-timeline"
@@ -344,7 +347,7 @@
                             }, 1000);
                         }
                     });
-            })
+            });
 
             $("#sendMailCode").click(function () {
                 var $sendCodeBtn = $("#sendCode");
@@ -405,6 +408,24 @@
                 } else {
                     layer.msg("不要心急，请稍等一会...");
                 }
+            });
+
+            $("#cash-recharge").click(function () {
+                var html =
+                    '<div class="layui-container layui-mt10" style="width: 100%;">' +
+                    '<p class="layui-elem-quote">充值卡购买地址：<a href="' + [[${settings.cash_recharge_url}]] + '" target="_blank">点击前往购买</a></p>' +
+                    '<p class="layui-mt20"><input class="layui-input" style="width: 100%;"placeholder="输入16位卡密（不包含短线），如：ABCD-EFGH-IJKL-MNOP"></p>' +
+                    '<p class="layui-mt20 pull-right"><button type="button" class="layui-btn layui-btn-sm layui-btn-primary">确认充值</button></p>' +
+                    '</div>';
+                var rechargeIndex = layer.open({
+                    type: 1,
+                    title: '卡号充值',
+                    area: ['450px', '280px'],
+                    offset: '20%',
+                    closeBtn: 1,
+                    resize: false,
+                    content: html
+                });
             });
 
         });

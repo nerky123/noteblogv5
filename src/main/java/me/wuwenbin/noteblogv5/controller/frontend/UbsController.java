@@ -20,6 +20,7 @@ import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
+import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,15 +42,18 @@ public class UbsController extends BaseController {
     private final UserService userService;
     private final Cache<String, String> codeCache;
     private final UserCoinRecordService userCoinRecordService;
+    private final ParamService paramService;
 
 
     public UbsController(CommentService commentService, HideService hideService,
-                         UserService userService, Cache<String, String> codeCache, UserCoinRecordService userCoinRecordService) {
+                         UserService userService, Cache<String, String> codeCache,
+                         UserCoinRecordService userCoinRecordService, ParamService paramService) {
         this.commentService = commentService;
         this.hideService = hideService;
         this.userService = userService;
         this.codeCache = codeCache;
         this.userCoinRecordService = userCoinRecordService;
+        this.paramService = paramService;
     }
 
     @GetMapping("/{page}")

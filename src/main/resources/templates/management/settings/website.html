@@ -330,7 +330,7 @@
             </div>
 
             <div class="layui-card">
-                <div class="layui-card-header">签到设置</div>
+                <div class="layui-card-header">其他设置</div>
                 <div class="layui-card-body">
                     <div class="layui-form-item" id="sign-coin">
                         <div class="layui-inline">
@@ -344,6 +344,21 @@
                             <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
                         </div>
                     </div>
+
+                    <div class="layui-form-item" id="recharge-url">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">充值卡购买地址</label>
+                            <div class="layui-input-inline" style="min-width: 350px;">
+                                <input type="url" name="cash_recharge_url" placeholder="输入充值卡购买url，一般为发卡平台" min="0"
+                                       th:value="${cash_recharge_url}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

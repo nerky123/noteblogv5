@@ -77,8 +77,8 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card" id="info-panel">' +
         '<div class="layui-card-body text-center" style="padding: 20px;">' +
-        '<a href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
-        '<p class="layui-text" style="margin: 10px;color: #F44336;"><b>{{d.settings.info_label_nickname}}</b></p>' +
+        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
+        '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
         '<hr>' +
         '<div>{{d.settings.info_label_text}}</div>' +
         '</div>' +

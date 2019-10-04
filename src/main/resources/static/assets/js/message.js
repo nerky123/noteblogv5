@@ -23,7 +23,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<div class="layui-row layui-form layui-mt20">' +
         '<div class="layui-col-sm1 layui-hide-xs layui-show-sm-inline-block layui-user-avatar">' +
         '       {{# if(d.nbv5su != null){ }}' +
-        '<a href="/ubs/token/index"><img src="{{d.nbv5su.avatar}}" class="layui-circle"></a> ' +
+        '<a href="/login?redirectUrl=/ubs/token/index"><img src="{{d.nbv5su.avatar}}" class="layui-circle"></a> ' +
         '       {{# }else{ }}' +
         '<a href="{{ loginUrl()}}" id="nologin"><img src="/static/assets/img/nologin.jpg" class="layui-circle"></a>' +
         '       {{# } }}' +
@@ -85,8 +85,8 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="info-panel">' +
         '<div class="layui-card-body text-center" style="padding: 20px;">' +
-        '<a href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
-        '<p class="layui-text" style="margin: 10px;color: #F44336;"><b>{{d.settings.info_label_nickname}}</b></p>' +
+        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
+        '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
         '<hr>' +
         '<div>{{d.settings.info_label_text}}</div>' +
         '</div>' +

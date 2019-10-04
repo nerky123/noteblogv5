@@ -350,8 +350,12 @@ col12
     border: 1px solid #cccc
 }
 
-a:hover > img {
+a:hover:not(.no-hover) > img {
     transform: scale(1.02);
+}
+
+.nbv5-font {
+    font-family: "Exo 2", "Trebuchet MS", "Helvetica", "Arial", 'PingFang SC', 'Hiragino Sans GB', 'STHeiti Light', 'Microsoft YaHei', 'SimHei', 'WenQuanYi Micro Hei', sans-serif !important;
 }
 
 @keyframes fade-in {

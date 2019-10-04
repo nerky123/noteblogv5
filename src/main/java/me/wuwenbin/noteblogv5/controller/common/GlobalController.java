@@ -51,25 +51,25 @@ public class GlobalController {
             model.addAttribute("settings", settingsMap);
         }
         if (!request.getRequestURL().toString().contains("/management/")) {
-            Object cateGroupList = CacheUtils.getDefaultCache().get("cateGroupList");
+            List cateGroupList = CacheUtils.fetchFromDefaultCache("cateGroupList", List.class);
             if (cateGroupList == null) {
                 cateGroupList = dictService.findList(DictGroup.GROUP_CATE);
                 CacheUtils.putIntoDefaultCache("cateGroupList", cateGroupList);
             }
 
-            Object articleCount = CacheUtils.getDefaultCache().get("articleCount");
+            Integer articleCount = CacheUtils.fetchFromDefaultCache("articleCount", Integer.class);
             if (articleCount == null) {
                 articleCount = articleService.count();
                 CacheUtils.putIntoDefaultCache("articleCount", articleCount);
             }
 
-            Object articleWords = CacheUtils.getDefaultCache().get("articleWords");
+            Long articleWords = CacheUtils.fetchFromDefaultCache("articleWords", Long.class);
             if (articleWords == null) {
                 articleWords = articleService.sumArticleWords();
                 CacheUtils.putIntoDefaultCache("articleWords", articleWords);
             }
 
-            Object commentCount = CacheUtils.getDefaultCache().get("commentCount");
+            Integer commentCount = CacheUtils.fetchFromDefaultCache("commentCount", Integer.class);
             if (commentCount == null) {
                 commentCount = commentService.count();
                 CacheUtils.putIntoDefaultCache("commentCount", commentCount);
