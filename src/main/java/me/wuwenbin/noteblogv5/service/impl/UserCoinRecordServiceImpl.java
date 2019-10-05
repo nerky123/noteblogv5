@@ -42,13 +42,13 @@ public class UserCoinRecordServiceImpl extends ServiceImpl<UserCoinRecordMapper,
                 .remainCoin(targetCoinValue)
                 .build();
         if (targetCoinValue >= latestRemainCoin) {
-            newLine.setOperateType(OperateType.ADMIN_DEDUCT_MINUS);
-            newLine.setOperateValue(targetCoinValue - latestRemainCoin);
-            newLine.setRemark(OperateType.ADMIN_DEDUCT_MINUS.getDesc());
-        } else {
             newLine.setOperateType(OperateType.ADMIN_RECHARGE_ADD);
-            newLine.setOperateValue(latestRemainCoin - targetCoinValue);
+            newLine.setOperateValue(targetCoinValue - latestRemainCoin);
             newLine.setRemark(OperateType.ADMIN_RECHARGE_ADD.getDesc());
+        } else {
+            newLine.setOperateType(OperateType.ADMIN_DEDUCT_MINUS);
+            newLine.setOperateValue(latestRemainCoin - targetCoinValue);
+            newLine.setRemark(OperateType.ADMIN_DEDUCT_MINUS.getDesc());
         }
         userCoinRecordMapper.insert(newLine);
         userMapper.updateRemainCoin(userId, targetCoinValue);
