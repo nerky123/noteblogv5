@@ -1,6 +1,7 @@
 package me.wuwenbin.noteblogv5.service.interfaces;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.wuwenbin.noteblogv5.model.entity.User;
 import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 
 /**
@@ -31,4 +32,13 @@ public interface UserCoinRecordService extends IService<UserCoinRecord> {
      * @return
      */
     boolean userSign(long userId);
+
+    /**
+     * 用户卡密充值硬币
+     *
+     * @param user
+     * @param cashNoWithLine
+     * @return
+     */
+    boolean userCashRecharge(User user, String cashNoWithLine);
 }

@@ -600,29 +600,34 @@ function commentPage(laypage, comments, articleId, tpl, timeago) {
 }
 
 function purchaseContent(articleId, hideId) {
-    $.ajax({
-        type: "post",
-        dataType: "json",
-        url: "/article/token/purchase",
-        data: {
-            articleId: articleId,
-            hideId: hideId
-        },
-        success: function (resp) {
-            if (resp.code === 200) {
-                layer.msg(resp.message);
-                setTimeout(function () {
-                    location.reload();
-                }, 888);
-            } else if (resp.code === -1) {
-                layer.confirm('请先登录再操作，是否现在登录？', {icon: 4, title: '消息提示'}, function (index) {
-                    window.location.href = "/login?redirectUrl=" + resp.base + "article/" + articleId;
-                });
-            } else {
-                layer.msg(resp.message);
+    layer.confirm('确定购买此内容吗？', {icon: 3, title: '提示'}, function (index) {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "/article/token/purchase",
+            data: {
+                articleId: articleId,
+                hideId: hideId
+            },
+            success: function (resp) {
+                if (resp.code === 200) {
+                    layer.msg(resp.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 888);
+                } else if (resp.code === -1) {
+                    layer.confirm('请先登录再操作，是否现在登录？', {icon: 4, title: '消息提示'}, function (index) {
+                        window.location.href = "/login?redirectUrl=" + resp.base + "article/" + articleId;
+                    });
+                } else {
+                    layer.msg(resp.message);
+                }
+            }, error: function () {
+                layer.msg("请稍后再试！");
             }
-        }, error: function () {
-            layer.msg("请稍后再试！");
-        }
-    })
+        })
+        layer.close(index);
+    });
+
+
 }

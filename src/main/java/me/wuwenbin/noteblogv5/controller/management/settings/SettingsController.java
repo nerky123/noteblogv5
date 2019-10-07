@@ -2,6 +2,9 @@ package me.wuwenbin.noteblogv5.controller.management.settings;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.controller.common.BaseController;
@@ -54,6 +57,19 @@ public class SettingsController extends BaseController {
     public String websitePage(Model model) {
         List<Param> params = paramService.list(Wrappers.<Param>query().ge("`group`", 0));
         Map<String, Object> attributeMap = params.stream().collect(Collectors.toMap(Param::getName, p -> p.getValue() == null ? "" : p.getValue()));
+        String rechargeUrl = attributeMap.getOrDefault("cash_recharge_url", "{\"name\":\"\",\"url\":\"\"}").toString();
+        JSONArray jsonArray = JSONUtil.parseArray(rechargeUrl);
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+            String name = object.getStr("name");
+            String url = object.getStr("url");
+            res.append(name.concat(",").concat(url));
+            if (i < jsonArray.size() - 1) {
+                res.append("\n");
+            }
+        }
+        attributeMap.put("recharges", res.toString());
         model.addAllAttributes(attributeMap);
         return "management/settings/website";
     }

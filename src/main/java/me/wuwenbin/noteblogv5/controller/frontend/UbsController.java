@@ -42,7 +42,6 @@ public class UbsController extends BaseController {
     private final UserService userService;
     private final Cache<String, String> codeCache;
     private final UserCoinRecordService userCoinRecordService;
-    private final ParamService paramService;
 
 
     public UbsController(CommentService commentService, HideService hideService,
@@ -53,7 +52,6 @@ public class UbsController extends BaseController {
         this.userService = userService;
         this.codeCache = codeCache;
         this.userCoinRecordService = userCoinRecordService;
-        this.paramService = paramService;
     }
 
     @GetMapping("/{page}")
@@ -164,5 +162,16 @@ public class UbsController extends BaseController {
             }
             return handle(res, "√ 已签到！", "× 签到失败！");
         }
+    }
+
+    @PostMapping("/cash/recharge")
+    @ResponseBody
+    public ResultBean cashRecharge(HttpServletRequest request, String cashNo) {
+        User user = getSessionUser(request);
+        boolean res = userCoinRecordService.userCashRecharge(user, cashNo);
+        if (res) {
+            updateSessionUser(request, userService.getById(user.getId()));
+        }
+        return handle(res, "充值成功！", "充值失败！");
     }
 }

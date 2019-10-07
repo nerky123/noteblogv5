@@ -17,7 +17,8 @@ layui.config({
     article: 'article_style/article',
     search: 'search',
     note: 'note',
-    message: 'message'
+    message: 'message',
+    ubs: 'ubs'
 });
 
 layui.use(['util', 'clock'], function () {

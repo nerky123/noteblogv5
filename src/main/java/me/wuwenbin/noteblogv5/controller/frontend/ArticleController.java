@@ -135,6 +135,7 @@ public class ArticleController extends BaseController {
                                 .operateTime(new Date()).remainCoin(remainCoin - hidePrice).userId(userId).operateType(OperateType.PURCHASE_MINUS)
                                 .operateValue(hidePrice).remark(OperateType.PURCHASE_MINUS.getDesc()).build();
                         userCoinRecordService.save(record);
+                        updateSessionUser(request, userService.getById(userId));
                     }
                     return handle(cnt == 1, "购买成功！", "购买失败！");
                 } else {

@@ -99,7 +99,7 @@
                                 th:text="'Hi!,'+${nbv5su.nickname}+'。'+${settings.ubs_top_notice}"></blockquote>
                     <hr class="layui-mt20">
                     <div class="layui-row layui-mt20">
-                        <div id="purchase-table" class="layui-table"></div>
+                        <table id="purchase-table" class="layui-table" lay-filter="purchaseTable"></table>
                     </div>
                 </div>
             </div>
@@ -245,7 +245,7 @@
                             }
                         }
                         , {field: 'hidePrice', width: 100, title: '硬币', sort: true}
-                        , {field: 'hideHtml', title: '购买内容'}
+                        , {field: 'hideHtml', title: '购买内容', event: 'showContent', style: 'cursor: pointer;'}
                         , {
                         field: 'purchaseTime', title: '购买时间', sort: true, width: 150, templet: function (d) {
                             return nbv5front.formatDate(d.purchaseTime, 'yy/MM/dd HH:mm:ss');
@@ -253,6 +253,21 @@
                     }
                     ]
                 ]
+            });
+
+            table.on('tool(purchaseTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'showContent') {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        area: ['600px'],
+                        skin: 'max-height450',
+                        shadeClose: true,
+                        content: data.hideHtml
+                    });
+                }
             });
 
         });

@@ -111,7 +111,8 @@
                    class="layui-btn layui-btn-sm layui-btn-primary">登录</a>
                 <span th:if="${nbv5su !=null}" class="layui-mr15">
                     <img th:src="${nbv5su.avatar}" class="layui-circle" style="width: 30px;"/>
-                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux" href="/login?redirectUrl=/ubs/token/index"></a>
+                    <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux"
+                       href="/login?redirectUrl=/ubs/token/index"></a>
                 </span>
                 <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
             </p>
@@ -205,6 +206,7 @@
             var tagList = [[${tagList}]];
             var linkList = [[${linkList}]];
             var randomArticles = [[${randomArticles}]];
+            var nbv5su = [[${nbv5su}]];
 
             nbv5front.miniHeaderNavBtn(layer);
 
@@ -213,9 +215,9 @@
             if (typesetting === 'no_sidebar_12') {
                 col12(pageObj, articleCatesMap, articleAuthors, articleCommentCountMap);
             } else if ((typesetting === 'left3right9')) {
-                col39(settings, pageObj, cateList, randomArticles, tagList, linkList, articleAuthors, articleCatesMap, articleCommentCountMap);
+                col39(nbv5su, settings, pageObj, cateList, randomArticles, tagList, linkList, articleAuthors, articleCatesMap, articleCommentCountMap);
             } else if (typesetting === 'left9right3') {
-                col93(settings, pageObj, cateList, randomArticles, tagList, linkList, articleAuthors, articleCatesMap, articleCommentCountMap);
+                col93(nbv5su, settings, pageObj, cateList, randomArticles, tagList, linkList, articleAuthors, articleCatesMap, articleCommentCountMap);
             } else if (typesetting === 'card_media') {
                 card_media('layui-col-xs4', pageObj, articleAuthors, articleTagsMap, articleCatesMap, articleCommentCountMap);
             } else if (typesetting === 'long_card') {

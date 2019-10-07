@@ -1,5 +1,7 @@
 package me.wuwenbin.noteblogv5.controller.common;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import me.wuwenbin.noteblogv5.constant.DictGroup;
 import me.wuwenbin.noteblogv5.model.entity.Param;
@@ -43,10 +45,20 @@ public class GlobalController {
         String genParams = "gen_params";
         Map settingsMap = CacheUtils.getParamCache().get(genParams, Map.class);
         if (settingsMap != null && settingsMap.size() > 0) {
+            //noinspection unchecked
+            Object rechargeUrl = settingsMap.getOrDefault("cash_recharge_url", "{\"name\":\"\",\"url\":\"\"}");
+            JSONArray jsonArray = JSONUtil.parseArray(rechargeUrl);
+            //noinspection unchecked
+            settingsMap.put("recharges", jsonArray);
             model.addAttribute("settings", settingsMap);
         } else {
             List<Param> params = paramService.list(Wrappers.<Param>query().ge("`group`", 0));
             settingsMap = params.stream().collect(Collectors.toMap(Param::getName, p -> p.getValue() == null ? "" : p.getValue()));
+            //noinspection unchecked
+            Object rechargeUrl = settingsMap.getOrDefault("cash_recharge_url", "{\"name\":\"\",\"url\":\"\"}");
+            JSONArray jsonArray = JSONUtil.parseArray(rechargeUrl);
+            //noinspection unchecked
+            settingsMap.put("recharges", jsonArray);
             CacheUtils.getParamCache().put(genParams, settingsMap);
             model.addAttribute("settings", settingsMap);
         }

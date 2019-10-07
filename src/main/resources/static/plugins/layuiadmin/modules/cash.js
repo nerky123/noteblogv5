@@ -55,7 +55,8 @@ layui.define(['form', 'layer', 'table', 'element', 'tableSelect'], function (exp
         }
         , cols: [[
             {field: 'id', title: 'ID', width: 80}
-            , {field: 'cashNo', minWidth: 250, title: '充值卡号'}
+            , {field: 'cashNo', minWidth: 220, title: '充值卡号'}
+            , {field: 'cashValue', title: '卡密含硬币'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
             , {field: 'rechargeTime', title: '充值时间', sort: true, minWidth: 150}
             , {field: 'userId', title: '用户ID', width: 80}
@@ -103,14 +104,17 @@ layui.define(['form', 'layer', 'table', 'element', 'tableSelect'], function (exp
             });
         },
         generate: function () {
-            NBV5.post("/management/cash/generate", {}, function (resp) {
-                layer.msg(resp.message)
-                setTimeout(function () {
-                    if (resp.code === NBV5.status.ok) {
-                        location.reload();
-                    }
-                }, 1000);
-            })
+            layer.prompt(function (value, index, elem) {
+                NBV5.post("/management/cash/generate", {cashValue: value}, function (resp) {
+                    layer.msg(resp.message);
+                    setTimeout(function () {
+                        if (resp.code === NBV5.status.ok) {
+                            location.reload();
+                        }
+                    }, 1000);
+                });
+                layer.close(index);
+            });
         }
     };
 

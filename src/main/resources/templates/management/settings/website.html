@@ -349,12 +349,14 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">充值卡购买地址</label>
                             <div class="layui-input-inline" style="min-width: 350px;">
-                                <input type="url" name="cash_recharge_url" placeholder="输入充值卡购买url，一般为发卡平台" min="0"
-                                       th:value="${cash_recharge_url}" autocomplete="off" class="layui-input">
+                                <input type="hidden" name="cash_recharge_url" th:value="${cash_recharge_url}">
+                                <textarea name="cash_recharge_url" placeholder="输入充值卡购买信息：<平台名称>,<购买url>，如：快发卡,https://www.xx.xx，多个平台请换行"
+                                          th:text="${recharges}" autocomplete="off"
+                                          class="layui-textarea"></textarea>
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
+                        <div class="layui-row" style="margin-left: 130px;margin-top: 5px;">
+                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="rechargeUrl">提交</button>
                         </div>
                     </div>
 

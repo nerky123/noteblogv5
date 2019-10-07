@@ -3,10 +3,13 @@ package me.wuwenbin.noteblogv5.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.wuwenbin.noteblogv5.constant.OperateType;
+import me.wuwenbin.noteblogv5.mapper.CashMapper;
 import me.wuwenbin.noteblogv5.mapper.ParamMapper;
 import me.wuwenbin.noteblogv5.mapper.UserCoinRecordMapper;
 import me.wuwenbin.noteblogv5.mapper.UserMapper;
+import me.wuwenbin.noteblogv5.model.entity.Cash;
 import me.wuwenbin.noteblogv5.model.entity.Param;
+import me.wuwenbin.noteblogv5.model.entity.User;
 import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import org.springframework.stereotype.Service;
@@ -24,12 +27,14 @@ public class UserCoinRecordServiceImpl extends ServiceImpl<UserCoinRecordMapper,
     private final UserCoinRecordMapper userCoinRecordMapper;
     private final UserMapper userMapper;
     private final ParamMapper paramMapper;
+    private final CashMapper cashMapper;
 
     public UserCoinRecordServiceImpl(UserCoinRecordMapper userCoinRecordMapper,
-                                     UserMapper userMapper, ParamMapper paramMapper) {
+                                     UserMapper userMapper, ParamMapper paramMapper, CashMapper cashMapper) {
         this.userCoinRecordMapper = userCoinRecordMapper;
         this.userMapper = userMapper;
         this.paramMapper = paramMapper;
+        this.cashMapper = cashMapper;
     }
 
     @Override
@@ -74,5 +79,30 @@ public class UserCoinRecordServiceImpl extends ServiceImpl<UserCoinRecordMapper,
             userMapper.updateRemainCoin(userId, remainCoinAfterSign);
         }
         return cnt == 1;
+    }
+
+    @Override
+    public boolean userCashRecharge(User user, String cashNoWithLine) {
+        Cash cash = cashMapper.selectOne(Wrappers.<Cash>query().eq("cash_no", cashNoWithLine));
+        if (cash != null && cash.isEnable() && cash.getUserId() == null) {
+            int value = cash.getCashValue();
+            UserCoinRecord userCoinRecord = userCoinRecordMapper.findLatestRecordByUserId(user.getId());
+            int remainCoin = userCoinRecord.getRemainCoin();
+            int remainCoinAfterSign = remainCoin + value;
+            UserCoinRecord ucr = UserCoinRecord.builder()
+                    .operateTime(new Date()).remainCoin(remainCoinAfterSign).userId(user.getId()).operateType(OperateType.CASH_RECHARGE_ADD)
+                    .operateValue(value).remark(OperateType.CASH_RECHARGE_ADD.getDesc()).build();
+            int cnt = userCoinRecordMapper.insert(ucr);
+            if (cnt == 1) {
+                userMapper.updateRemainCoin(user.getId(), remainCoinAfterSign);
+                cash.setRechargeTime(new Date());
+                cash.setEnable(false);
+                cash.setUserId(user.getId());
+                cash.setNickname(user.getNickname());
+                cashMapper.updateById(cash);
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -42,6 +42,23 @@ layui.define(['element', 'form', 'upload'], function (exports) {
         })
     });
 
+    form.on('submit(rechargeUrl)', function (data) {
+        var d = $("textarea[name=cash_recharge_url]").val();
+        var recharges = d.split("\n");
+        var obj = [];
+        for (var i = 0; i < recharges.length; i++) {
+            var name = recharges[i].split(",")[0];
+            var url = recharges[i].split(",")[1];
+            obj.push({"name": name, "url": url});
+        }
+        NBV5.post("/management/settings/update", {
+            name: 'cash_recharge_url',
+            value: JSON.stringify(obj)
+        }, function (json) {
+            NBV5.okMsgHandle(json);
+        });
+        return false;
+    });
 
     form.on('submit(settings)', function (data) {
         var $this = $(data.elem);

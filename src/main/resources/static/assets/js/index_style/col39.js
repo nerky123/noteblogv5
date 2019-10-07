@@ -17,7 +17,14 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
         '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
         '<hr>' +
-        '<div>{{d.settings.info_label_text}}</div>' +
+        '{{# if(d.nbv5su != null){}}' +
+        '<p>Login With: <a href="/login?redirectUrl=/ubs/token/index" class="no-hover"><img src="{{d.nbv5su.avatar}}" style="width: 30px;height: 30px;" class="layui-circle"></a>' +
+        '<label style="color: #F44336;font-weight: bolder;margin-left: 10px;"><a href="/login?redirectUrl=/ubs/token/index">{{d.nbv5su.nickname}}</a></label>' +
+        '</p>' +
+        '{{#}else{}}' +
+        '<p class="layui-text">未检测到用户，<a href="/login?redirectUrl=/ubs/token/index" class="no-hover" style="color: #F44336;">点我</a>登录</p>' +
+        '{{#}}}' +
+        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '</div>' +
         '</div>' +
 
@@ -97,7 +104,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       {{# } }}' +
         '       {{# if(item.reprinted){ }}' +
         '       <span class="zhuanzai">转载</span>' +
-        '       {{# } }}'+
+        '       {{# } }}' +
         '       {{# if(item.urlSeq != null && item.urlSeq !=""){ }}' +
         '       <a href="/article/u{{ item.urlSeq }}">{{ item.title }}</a>' +
         '       {{# }else{ }}' +
@@ -150,7 +157,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '</div>';
 
 
-    exports('col39', function (settings, page, cateList, randomArticles, tagList, linkList, articleAuthors, catesMap, articleCommentCountMap) {
+    exports('col39', function (nbv5su, settings, page, cateList, randomArticles, tagList, linkList, articleAuthors, catesMap, articleCommentCountMap) {
         var obj = {
             settings: settings,
             page: page,
@@ -160,7 +167,8 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
             linkList: linkList,
             articleAuthors: articleAuthors,
             catesMap: catesMap,
-            articleCommentCountMap: articleCommentCountMap
+            articleCommentCountMap: articleCommentCountMap,
+            nbv5su: nbv5su
         };
         tpl(col_l3r9).render(obj, function (html) {
             $("#main-body").prepend(html);

@@ -59,13 +59,20 @@ public class AdminCashController extends BaseController {
 
     @RequestMapping("/generate")
     @ResponseBody
-    public ResultBean generateNewCash() {
+    public ResultBean generateNewCash(@RequestParam(defaultValue = "100") Integer cashValue) {
         String cashNo = RandomUtil.randomString(16).toUpperCase();
         String regex = "(.{4})";
         cashNo = cashNo.replaceAll(regex, "$1-");
         cashNo = cashNo.substring(0, cashNo.length() - 1);
+        int cnt = cashService.count(Wrappers.<Cash>query().eq("cash_no", cashNo));
+        for (; cnt > 0; ) {
+            cashNo = RandomUtil.randomString(16).toUpperCase();
+            cashNo = cashNo.replaceAll(regex, "$1-");
+            cashNo = cashNo.substring(0, cashNo.length() - 1);
+            cnt = cashService.count(Wrappers.<Cash>query().eq("cash_no", cashNo));
+        }
         Cash cash = Cash.builder().cashNo(cashNo).createTime(new Date())
-                .enable(true).build();
+                .cashValue(cashValue).enable(true).build();
         boolean res = cashService.save(cash);
         return handle(res, "成功生成新的卡号", "生成新的卡号失败！");
     }

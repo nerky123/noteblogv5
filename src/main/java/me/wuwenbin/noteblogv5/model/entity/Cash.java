@@ -15,6 +15,7 @@ public class Cash implements Serializable {
 
     private Long id;
     private String cashNo;
+    private int cashValue;
     private Date createTime;
     private Date rechargeTime;
     private boolean enable;
