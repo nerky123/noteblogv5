@@ -15,6 +15,10 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-col-md9 animated fadeInUp">' +
 
+        '<div class="layui-card" id="users">' +
+        '' +
+        '</div>' +
+
         '<div class="layui-card" id="message-panel">' +
         '<div class="layui-card-body" style="padding: 20px 15px !important;">' +
         '<div class="layui-row">' +

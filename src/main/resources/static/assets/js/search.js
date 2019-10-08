@@ -19,16 +19,20 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<div class="layui-card-body search">' +
         '<h2 class="search-title">' +
         '{{# if(item.type === "article"){ }}' +
-        '<span class="article">文章</span>' +
+        '<span class="article"><i class="fa fa-file-text-o"></i> 文章</span>' +
         '{{# } }}' +
         '{{# if(item.type === "note"){ }}' +
-        '<span class="note">笔记</span>' +
+        '<span class="note"><i class="fa fa-hashtag"></i> 笔记</span>' +
         '{{# } }}' +
         '{{# if(item.type === "article"){ }}' +
         '<a href="/article/{{item.id}}" target="_blank">' +
         '{{item.title}}' +
         '</a>' +
-        '{{# }else{ }}' +
+        '{{# }else if(item.type ==="note"){ }}' +
+        '<a href="/note?w={{item.title}}" target="_blank">' +
+        '{{item.title}}' +
+        '</a>' +
+        '{{#}else{}}' +
         '<span>{{item.title}}</span>' +
         '{{# } }}' +
         '</spa>' +

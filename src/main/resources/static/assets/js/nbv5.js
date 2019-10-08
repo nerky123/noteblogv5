@@ -21,13 +21,14 @@ var nbv5front = {
             type: 1
             , id: 'search-dialog'
             , title: false
+            , zIndex: 198910140
             , closeBtn: false
             , shadeClose: true
             , maxWidth: 10000
             , offset: '40%'
             , skin: 'fly-layer-search'
             , content: ['<form action="/s/w" method="get">'
-                , '<input class="layui-icon" autocomplete="off" placeholder="&#xe615; 搜索文章，回车跳转" type="text" name="q">'
+                , '<input class="layui-icon" autocomplete="off" placeholder="&#xe615; 搜一搜你想要的内容" type="text" name="q">'
                 , '</form>'].join('')
         });
     }

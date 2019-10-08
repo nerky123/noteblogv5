@@ -61,7 +61,7 @@ layui.define(['form', 'layer', 'table', 'element', 'tableSelect'], function (exp
             , {field: 'rechargeTime', title: '充值时间', sort: true, minWidth: 150}
             , {field: 'userId', title: '用户ID', width: 80}
             , {field: 'nickname', title: '用户昵称'}
-            , {title: '状态', width: 95, align: 'center', toolbar: '#enableTpl', fixed: 'right'}
+            , {title: '状态', width: 110, align: 'center', toolbar: '#enableTpl', fixed: 'right'}
         ]]
     });
 

@@ -49,7 +49,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '{{# if(item.top){}}' +
         '<span class="layui-badge">置顶</span>\n' +
         '{{#}}}' +
-        '<i class="fa fa-file-text-o"></i> ' +
+        '<i class="fa fa-hashtag"></i> ' +
         '{{item.title}}' +
         '<small class="timeago" style="margin-left: 10px;font-style: italic;color: #cccccc;" datetime="{{nbv5front.timeAgo(item.post) }}">' +
         '</small>' +
