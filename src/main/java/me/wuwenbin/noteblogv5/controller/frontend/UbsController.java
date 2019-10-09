@@ -1,6 +1,8 @@
 package me.wuwenbin.noteblogv5.controller.frontend;
 
 import cn.hutool.cache.Cache;
+import cn.hutool.core.img.Img;
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,11 +12,13 @@ import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.constant.uploader.LayUploader;
 import me.wuwenbin.noteblogv5.constant.uploader.NkUploader;
 import me.wuwenbin.noteblogv5.controller.common.BaseController;
+import me.wuwenbin.noteblogv5.mapper.UploadMapper;
 import me.wuwenbin.noteblogv5.model.LayuiTable;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.CommentBo;
 import me.wuwenbin.noteblogv5.model.bo.HideBo;
 import me.wuwenbin.noteblogv5.model.bo.ReplyBo;
+import me.wuwenbin.noteblogv5.model.entity.Upload;
 import me.wuwenbin.noteblogv5.model.entity.User;
 import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
@@ -28,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
+import java.io.File;
 import java.util.Objects;
 
 /**
@@ -101,11 +107,13 @@ public class UbsController extends BaseController {
         if (res instanceof LayUploader) {
             LayUploader layRes = (LayUploader) res;
             Object newAvatar = layRes.getData().get("src");
+            scaleAvatar(newAvatar.toString());
             boolean r = userService.update(Wrappers.<User>update().set("avatar", newAvatar).eq("id", su.getId()));
             return handle(r, "修改成功，重新登录生效！", "修改失败！");
         } else if (res instanceof NkUploader) {
             NkUploader nkRes = (NkUploader) res;
             Object newAvatar = nkRes.getItem().get("url");
+            scaleAvatar(newAvatar.toString());
             boolean r = userService.update(Wrappers.<User>update().set("avatar", newAvatar).eq("id", su.getId()));
             return handle(r, "修改成功，重新登录生效！", "修改失败！");
         } else {
@@ -173,5 +181,17 @@ public class UbsController extends BaseController {
             updateSessionUser(request, userService.getById(user.getId()));
         }
         return handle(res, "充值成功！", "充值失败！");
+    }
+
+    private void scaleAvatar(String imgSrc) {
+        UploadMapper uploadMapper = NbUtils.getBean(UploadMapper.class);
+        Upload upload = uploadMapper.selectOne(Wrappers.<Upload>query().eq("virtual_path", imgSrc));
+        String trueDiskPath = upload.getDiskPath();
+        File f = new File(trueDiskPath);
+        Img img = Img.from(f);
+        int width = img.scale(1).getImg().getWidth(null);
+        int height = img.scale(1).getImg().getHeight(null);
+        int num = Math.min(width, height);
+        ImgUtil.cut(f, f, new Rectangle(0, 0, num, num));
     }
 }

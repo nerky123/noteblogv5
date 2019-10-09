@@ -15,7 +15,7 @@ layui.define(['layer', 'element', 'upload'], function (exports) {
 
     upload.render({
         elem: '#avatar' //绑定元素
-        , url: '/ubs//token/avatar/change' //上传接口
+        , url: '/ubs/token/avatar/change' //上传接口
         , done: function (res) {
             if (res.code === 0) {
                 $("#avatar").find("img").attr("src", res.data.src);

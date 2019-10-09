@@ -15,9 +15,6 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-col-md9 animated fadeInUp">' +
 
-        '<div class="layui-card" id="users">' +
-        '' +
-        '</div>' +
 
         '<div class="layui-card" id="message-panel">' +
         '<div class="layui-card-body" style="padding: 20px 15px !important;">' +
@@ -92,7 +89,14 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
         '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
         '<hr>' +
-        '<div>{{d.settings.info_label_text}}</div>' +
+        '{{# if(d.nbv5su != null){}}' +
+        '<p>当前登录: <a href="/login?redirectUrl=/ubs/token/index" class="no-hover"><img src="{{d.nbv5su.avatar}}" style="width: 30px;height: 30px;" class="layui-circle"></a>' +
+        '<label style="color: #F44336;font-weight: bolder;margin-left: 10px;"><a href="/login?redirectUrl=/ubs/token/index">{{d.nbv5su.nickname}}</a></label>' +
+        '</p>' +
+        '{{#}else{}}' +
+        '<p class="layui-text">未检测到用户，<a href="/login?redirectUrl=/ubs/token/index" class="no-hover" style="color: #F44336;">点我</a>登录</p>' +
+        '{{#}}}' +
+        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '</div>' +
         '</div>' +
 
@@ -110,8 +114,8 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<div class="layui-card-body">' +
         '<div class="layui-text">' +
         '<p>QQ群：<a href="https://jq.qq.com/?_wv=1027&k=5ZEGGl8" target="_blank">697053454</a> </p>' +
-        '<p class="layui-mt5">GitHub：<a href="https://github.com/miyakowork/noteblogv5" target="_blank">noteblogv5</a> </p>' +
-        '<p class="layui-mt5">Gitee：<a href="https://gitee.com/wuwenbn/" target="_blank">noteblogv5</a> </p>' +
+        '<p class="layui-mt5">GitHub：<a href="https://github.com/miyakowork/noteblogv5" target="_blank">5.0初始版(不包含后续更新)</a> </p>' +
+        '<p class="layui-mt5">Gitee：<a href="https://gitee.com/wuwenbn/" target="_blank">5.0初始版(不包含后续更新)</a> </p>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -136,7 +140,6 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
 
     exports('message', function (settings, linkList, nbv5su, messages) {
-
         var obj = {
             settings: settings,
             linkList: linkList,

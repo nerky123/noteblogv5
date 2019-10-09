@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.constant.OperateType;
@@ -66,8 +65,6 @@ public class GithubLoginServiceImpl implements LoginService<ResultBean, GithubLo
             String login = jsonObject.getStr("login");
             User githubUser = userService.findByGithub(login, true);
             if (githubUser != null) {
-                String avatar = jsonObject.getStr("avatar_url");
-                userService.update(Wrappers.<User>update().set("avatar", avatar).eq("id", githubUser.getId()));
                 return ResultBean.ok("授权成功！", "/").put(NBV5.SESSION_USER_KEY, githubUser);
             } else {
                 User lockedUser = userService.findByGithub(login, false);
