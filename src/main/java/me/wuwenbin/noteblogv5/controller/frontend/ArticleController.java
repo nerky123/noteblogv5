@@ -119,7 +119,7 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public ResultBean purchaseHide(@RequestParam String articleId,
                                    @RequestParam String hideId, HttpServletRequest request) {
-        User purchaseUser = getSessionUser(request);
+        User purchaseUser = userService.getById(getSessionUser(request).getId());
         if (purchaseUser == null) {
             return ResultBean.custom(ResultBean.LOGIN_INVALID, "请先登录再进行购买操作！").put("base", basePath(request));
         } else {
