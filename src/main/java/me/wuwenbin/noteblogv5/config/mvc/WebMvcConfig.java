@@ -1,4 +1,4 @@
-package me.wuwenbin.noteblogv5.config;
+package me.wuwenbin.noteblogv5.config.mvc;
 
 import me.wuwenbin.noteblogv5.config.filter.AdminFilter;
 import me.wuwenbin.noteblogv5.config.filter.InitFilter;

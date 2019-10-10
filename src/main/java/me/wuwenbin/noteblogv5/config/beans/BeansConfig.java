@@ -1,4 +1,4 @@
-package me.wuwenbin.noteblogv5.config;
+package me.wuwenbin.noteblogv5.config.beans;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
@@ -20,6 +20,8 @@ import java.util.Properties;
 
 /**
  * created by Wuwenbin on 2019/3/19 at 16:52
+ *
+ * @author wuwenbin
  */
 @Configuration
 public class BeansConfig {
@@ -96,6 +98,5 @@ public class BeansConfig {
         factory.setLocation(temp);
         return factory.createMultipartConfig();
     }
-
 
 }

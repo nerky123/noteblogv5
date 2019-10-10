@@ -1,4 +1,4 @@
-package me.wuwenbin.noteblogv5.config;
+package me.wuwenbin.noteblogv5.config.mvc;
 
 import me.wuwenbin.noteblogv5.exception.AppRunningException;
 import me.wuwenbin.noteblogv5.exception.AppSetException;

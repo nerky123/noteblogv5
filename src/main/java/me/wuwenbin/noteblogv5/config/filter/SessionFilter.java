@@ -52,7 +52,6 @@ public class SessionFilter extends BaseController implements HandlerInterceptor 
                         {"nickname", user.getNickname()},
                         {"avatar", user.getAvatar()},
                         {"role", user.getRole().getValue()},
-                        {"remainCoin", user.getRemainCoin()},
                         {"roleName", user.getRole().getDescp()}});
                 //统一设置会话用户的值，不需要再controller中设置
                 mv.getModelMap().addAttribute("nbv5su", userMap);

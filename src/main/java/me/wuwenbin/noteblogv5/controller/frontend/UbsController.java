@@ -183,6 +183,17 @@ public class UbsController extends BaseController {
         return handle(res, "充值成功！", "充值失败！");
     }
 
+    @PostMapping("/getUserRemainCoin")
+    @ResponseBody
+    public ResultBean getUserRemainCoin(@RequestParam(value = "userId") Long userId) {
+        if (userId == null) {
+            return ResultBean.error("加载失败", 0);
+        } else {
+            User u = userService.getById(userId);
+            return ResultBean.ok("加载成功", u.getRemainCoin());
+        }
+    }
+
     private void scaleAvatar(String imgSrc) {
         UploadMapper uploadMapper = NbUtils.getBean(UploadMapper.class);
         Upload upload = uploadMapper.selectOne(Wrappers.<Upload>query().eq("virtual_path", imgSrc));

@@ -1,4 +1,4 @@
-package me.wuwenbin.noteblogv5.config;
+package me.wuwenbin.noteblogv5.config.datasource;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;

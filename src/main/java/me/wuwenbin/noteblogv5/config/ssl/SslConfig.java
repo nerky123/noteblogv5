@@ -1,4 +1,4 @@
-package me.wuwenbin.noteblogv5.config;
+package me.wuwenbin.noteblogv5.config.ssl;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
@@ -16,7 +16,7 @@ import org.springframework.core.env.Environment;
  * @author wuwenbin
  */
 @Configuration
-public class SSLConfig {
+public class SslConfig {
 
     private static final String SSL_ENABLED = "server.ssl.enabled";
     private static final String SERVER_HTTP_PORT = "server.http.port";
@@ -25,7 +25,7 @@ public class SSLConfig {
 
 
     @Autowired
-    public SSLConfig(Environment environment) {
+    public SslConfig(Environment environment) {
         this.environment = environment;
     }
 

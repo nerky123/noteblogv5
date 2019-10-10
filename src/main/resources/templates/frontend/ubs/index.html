@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/static/assets/css/simple.css">
     <link rel="stylesheet" href="/static/plugins/ubs-font/iconfont.css">
     <link rel="stylesheet" href="/static/assets/css/ubs.css">
-    <title th:text="${nbv5su!=null?nbv5su.nickname:''}+'用户中心'"></title>
+    <title th:text="${nbv5su!=null?nbv5su.nickname:'用户中心'}"></title>
 </head>
 <body class="layui-anim layui-anim-fadein simple">
 <!--顶部导航栏-->
@@ -123,7 +123,7 @@
                         <label style="font-size: 16px;margin-top: 15px;">你所持有的硬币个数为：<img
                                 src="/static/assets/img/coin.png"
                                 style="width: 15px;margin-top: -2px;">
-                            <span style="color: #ff262e;" th:text="${nbv5su.remainCoin}"></span>
+                            <span style="color: #ff262e;" id="remainCoin">loading...</span>
                         </label>
                     </div>
                     <div class="layui-row layui-mt10">
@@ -277,7 +277,9 @@
                            placeholder="输入16位卡密，如：ABCD-EFGH-IJKL-MNOP">
                 </p>
                 <p class="layui-mt20 text-center layui-row">
-                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-col-xs3" id="cash-cancel">取消</button>
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-col-xs3"
+                            id="cash-cancel">取消
+                    </button>
                     <button type="button" class="layui-btn layui-btn-sm layui-col-xs8" id="cash-recharge">点我充值</button>
                 </p>
                 <p class="layui-mt20">
@@ -357,7 +359,13 @@
 
         layui.use('ubs', function () {
             var ubs = layui.ubs;
+            $.post("/ubs/token/getUserRemainCoin", {
+                userId: [[${nbv5su.id}]]
+            }, function (resp) {
+                $("#remainCoin").text(resp.data)
+            });
         });
+
     });
 </script>
 </body>
