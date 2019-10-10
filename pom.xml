@@ -23,6 +23,7 @@
         <hutool.version>4.5.17</hutool.version>
         <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
         <kaptcha.version>2.3.2</kaptcha.version>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
