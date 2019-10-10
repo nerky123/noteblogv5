@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,10 +31,13 @@ public class InitController extends BaseController {
     }
 
     @RequestMapping("/init")
-    public String initPage() {
+    public ModelAndView initPage() {
+        if (NbUtils.noteBlogIsInstalled()) {
+            return new ModelAndView(new RedirectView("/"));
+        }
         request.setAttribute("uploadPathInEnv",
                 NbUtils.getEnvPropertyByKey(NBV5.APP_UPLOAD_PATH, String.class));
-        return "init";
+        return new ModelAndView("init");
     }
 
     @RequestMapping("/init/submit")

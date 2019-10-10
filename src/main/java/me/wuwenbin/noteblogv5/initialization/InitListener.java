@@ -1,20 +1,22 @@
 package me.wuwenbin.noteblogv5.initialization;
 
 import cn.hutool.setting.Setting;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.exception.AppSetException;
 import me.wuwenbin.noteblogv5.mapper.ParamMapper;
 import me.wuwenbin.noteblogv5.model.entity.Param;
+import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,18 +36,21 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
     private final ParamMapper paramMapper;
     private final Environment environment;
 
-    public InitListener(ParamMapper paramMapper, Environment environment) {
+    private final JdbcTemplate jdbcTemplate;
+
+    public InitListener(ParamMapper paramMapper, Environment environment,
+                        JdbcTemplate jdbcTemplate) {
         this.paramMapper = paramMapper;
         this.environment = environment;
+
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent applicationReadyEvent) {
-        boolean appInstalled = environment.getProperty("app.installed", Boolean.class, false);
-        Param initStatusParam = paramMapper.selectOne(Wrappers.<Param>query().eq("name", NBV5.INIT_STATUS));
-        if (!appInstalled && initStatusParam == null) {
+        if (!NbUtils.noteBlogIsInstalled()) {
             log.info("开始设置参数表");
-            paramMapper.truncateParam();
+            truncateTables(jdbcTemplate);
             List<Param> params = getParams();
             for (Param param : params) {
                 paramMapper.insert(param);
@@ -55,6 +60,8 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
         }
         setUploadPath();
         setUpSystemStartedTime();
+        boolean setStatus = setInstalledFile();
+        log.info(setStatus ? "创建成功" : "");
     }
 
     private List<Param> getParams() {
@@ -120,5 +127,52 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
         LocalDateTime now = LocalDateTime.now();
         paramMapper.updateValueByName("system_init_datetime",
                 now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    }
+
+    private boolean setInstalledFile() {
+        String filePath = NbUtils.rootPath().concat("/nbv5.installed");
+        File file = new File(filePath);
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void truncateTables(JdbcTemplate jdbcTemplate) {
+        String[] nbTables = new String[]{
+                "article", "cash", "comment",
+                "dict", "hide", "log",
+                "message", "note", "param",
+                "upload", "user", "user_coin_record"
+        };
+
+        String[] referTables = new String[]{
+                "article_cate", "article_tag", "hide_user_purchase"
+        };
+
+        String[] autoTables = new String[]{
+                "cash", "comment", "dict",
+                "log", "message", "note",
+                "param", "upload", "user",
+                "user_coin_record"
+        };
+
+        for (String nb : nbTables) {
+            String sql = String.format("TRUNCATE  nb_%s", nb);
+            jdbcTemplate.update(sql);
+        }
+
+        for (String refer : referTables) {
+            String sql = String.format("TRUNCATE  refer_%s", refer);
+            jdbcTemplate.update(sql);
+        }
+
+        for (String auto : autoTables) {
+            String sql = String.format("ALTER TABLE nb_%s auto_increment = 1;", auto);
+            jdbcTemplate.update(sql);
+        }
+
     }
 }

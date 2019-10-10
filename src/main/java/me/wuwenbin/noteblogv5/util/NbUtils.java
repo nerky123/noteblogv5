@@ -9,12 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.constant.UploadConstant;
 import me.wuwenbin.noteblogv5.exception.AppRunningException;
+import me.wuwenbin.noteblogv5.initialization.InitListener;
+import me.wuwenbin.noteblogv5.mapper.ParamMapper;
 import me.wuwenbin.noteblogv5.model.bo.Base64MultipartFile;
 import me.wuwenbin.noteblogv5.model.bo.IpInfo;
 import me.wuwenbin.noteblogv5.model.entity.Param;
 import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.service.interfaces.upload.UploadService;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
@@ -30,6 +33,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -417,6 +421,24 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
         return newListMap;
     }
 
+
+    public static String rootPath() {
+        ApplicationHome applicationHome = new ApplicationHome(InitListener.class);
+        File jar = applicationHome.getSource();
+        return jar.getParentFile().toString();
+    }
+
+    public static boolean installedFileIsExist() {
+        String filePath = rootPath().concat("/nbv5.installed");
+        return new File(filePath).exists();
+    }
+
+    public static boolean noteBlogIsInstalled() {
+        boolean appInstalled = NbUtils.installedFileIsExist();
+        Param initStatusParam = NbUtils.getBean(ParamMapper.class).selectOne(Wrappers.<Param>query().eq("name", NBV5.INIT_STATUS));
+        return appInstalled && initStatusParam != null && "1".equals(initStatusParam.getValue());
+    }
+
     public static ApplicationContext getApplicationContext() {
         return NbUtils.applicationContext;
     }
@@ -430,8 +452,15 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
         return NbUtils.servletContext;
     }
 
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         NbUtils.servletContext = sce.getServletContext();
+    }
+
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        NbUtils.servletContext = null;
     }
 }

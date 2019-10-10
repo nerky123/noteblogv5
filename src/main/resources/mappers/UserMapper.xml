@@ -22,4 +22,5 @@
         set remain_coin = #{remainCoin}
         where id = #{userId}
     </update>
+
 </mapper>

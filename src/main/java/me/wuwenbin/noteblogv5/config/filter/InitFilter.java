@@ -1,7 +1,5 @@
 package me.wuwenbin.noteblogv5.config.filter;
 
-import me.wuwenbin.noteblogv5.exception.AppSetException;
-import me.wuwenbin.noteblogv5.model.entity.Param;
 import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -23,14 +21,11 @@ public class InitFilter extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Param param = paramService.getInitStatus();
-        if (param == null) {
-            throw new AppSetException("程序设置初始化异常");
-        } else if (!INIT_SUCCESS.equals(param.getValue())) {
+        if (NbUtils.noteBlogIsInstalled()) {
+            return true;
+        } else {
             response.sendRedirect(INIT_URL);
             return false;
-        } else {
-            return true;
         }
     }
 }

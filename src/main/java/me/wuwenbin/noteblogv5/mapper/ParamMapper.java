@@ -13,11 +13,6 @@ import me.wuwenbin.noteblogv5.model.entity.Param;
 public interface ParamMapper extends BaseMapper<Param> {
 
     /**
-     * 清除表数据
-     */
-    void truncateParam();
-
-    /**
      * 更新参数
      *
      * @param name
