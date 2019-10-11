@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.wuwenbin</groupId>
     <artifactId>noteblogv5</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1</version>
     <name>noteblogv5</name>
     <description>笔记博客v5</description>
 
