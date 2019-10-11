@@ -265,10 +265,19 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
             return res.length > 1 ?
                     IpInfo.builder().address(res[0]).line(res[1]).build() :
                     IpInfo.builder().address(res[0]).build();
+        } catch (cn.hutool.json.JSONException je) {
+            String[] res = resp.split(" ");
+            return res.length > 1 ?
+                    IpInfo.builder().address(res[0]).line(res[1]).build() :
+                    IpInfo.builder().address(res[0]).build();
         } catch (Exception e) {
             log.error("获取ip地理位置信息失败", e);
-            return IpInfo.builder().address("地球").build();
+            return IpInfo.builder().address("未知位置").build();
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getIpInfo("112.10.34.204").getAddress());
     }
 
     /**
