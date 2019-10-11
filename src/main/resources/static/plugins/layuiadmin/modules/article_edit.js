@@ -39,6 +39,7 @@ layui.define(['element', 'form', 'layer', 'upload', 'formSelects', 'inputTags'],
 
     var post = function (data, draft, msg) {
         data.field.draft = draft;
+        data.field.urlSeq = $urlSeqInput.val();
         data.field.cateIds = formSelects.value('cateId', 'val');
         if (data.field.editor === 'html') {
             data.field.mdContent = "";
@@ -307,14 +308,6 @@ $(function () {
 });
 
 
-function isTop(iframeBody) {
-    var stop = $(iframeBody).scrollTop();
-    if (stop > 0) {
-        $("i[name=fullscreen]").parents("li").hide();
-    } else {
-        $("i[name=fullscreen]").parents("li").show();
-    }
-}
 
 
 

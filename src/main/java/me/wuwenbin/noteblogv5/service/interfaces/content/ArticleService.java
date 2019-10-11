@@ -129,7 +129,7 @@ public interface ArticleService extends IService<Article> {
             article.setCommented(false);
         }
         if (StringUtils.isEmpty(article.getReprinted())) {
-            article.setCommented(false);
+            article.setReprinted(false);
         }
         if (StringUtils.isEmpty(article.getTop())) {
             article.setTop(0);

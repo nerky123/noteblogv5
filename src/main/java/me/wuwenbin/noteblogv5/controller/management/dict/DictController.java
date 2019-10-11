@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuwen
@@ -74,10 +78,29 @@ public class DictController extends BaseController {
         Dict c = dictService.getOne(Wrappers.<Dict>query().eq("`group`", DictGroup.GROUP_CATE).eq("name", cateName));
         if (c == null) {
             boolean res = dictService.save(Dict.builder().name(cateName).group(DictGroup.GROUP_CATE).build());
+            if (res) {
+                CacheUtils.removeDefaultCache("cateGroupList");
+            }
             return handle(res, "添加成功！", "添加失败！");
         } else {
             return ResultBean.error("已经有此分类，不能重复添加！");
         }
+    }
+
+    @GetMapping("/cate/list")
+    @ResponseBody
+    public ResultBean cateList() {
+        List<Dict> dictList = dictService.findList(DictGroup.GROUP_CATE);
+        List<Map<String, Object>> cates = new ArrayList<>(dictList.size());
+        for (Dict cate : dictList) {
+            Map<String, Object> c = new HashMap<>(4);
+            c.put("name", cate.getName());
+            c.put("value", cate.getId());
+            c.put("selected", "");
+            c.put("disabled", "");
+            cates.add(c);
+        }
+        return ResultBean.ok("获取成功", cates);
     }
 
     @PostMapping("/tag/add")
@@ -162,4 +185,5 @@ public class DictController extends BaseController {
         boolean res = dictService.removeById(id);
         return handle(res, "删除成功！", "删除失败！");
     }
+
 }

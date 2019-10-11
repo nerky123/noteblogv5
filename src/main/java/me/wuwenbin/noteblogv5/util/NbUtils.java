@@ -276,10 +276,6 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(getIpInfo("112.10.34.204").getAddress());
-    }
-
     /**
      * 根据设定的上传方式（本地服务器上传还是七牛云上传）来匹配相应的service实例
      *

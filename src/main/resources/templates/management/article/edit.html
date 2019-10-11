@@ -15,16 +15,39 @@
     <link rel="stylesheet" href="/static/plugins/layuiadmin/style/formSelects-v4.css" media="all">
     <link rel="stylesheet" type="text/css" href="/static/plugins/editormd/css/editormd.min.css">
     <style>
-        input[disabled] {color: #cccccc;background-color: rgba(194, 194, 194, 0.3);}
-        .ke-container .ke-toolbar .ke-separator {height: 20px !important;margin: 8px 3px !important;}
-        .ke-icon-hide4comment, .ke-icon-hide4login, .ke-icon-hide4purchase, .ke-icon-br {width: 16px;height: 16px;}
-        .ke-icon-hide4comment {background-image: url(/static/plugins/nkeditor/plugins/hide4comment/comment.png) !important;}
-        .ke-icon-hide4login {background-image: url(/static/plugins/nkeditor/plugins/hide4login/login.png) !important;}
-        .ke-icon-hide4purchase {background-image: url(/static/plugins/nkeditor/plugins/hide4purchase/purchase.png) !important;}
-        .ke-icon-br {background-image: url(/static/plugins/nkeditor/plugins/br/br.png) !important;}
+        input[disabled] {
+            color: #cccccc;
+            background-color: rgba(194, 194, 194, 0.3);
+        }
+
+        .ke-container .ke-toolbar .ke-separator {
+            height: 20px !important;
+            margin: 8px 3px !important;
+        }
+
+        .ke-icon-hide4comment, .ke-icon-hide4login, .ke-icon-hide4purchase, .ke-icon-br {
+            width: 16px;
+            height: 16px;
+        }
+
+        .ke-icon-hide4comment {
+            background-image: url(/static/plugins/nkeditor/plugins/hide4comment/comment.png) !important;
+        }
+
+        .ke-icon-hide4login {
+            background-image: url(/static/plugins/nkeditor/plugins/hide4login/login.png) !important;
+        }
+
+        .ke-icon-hide4purchase {
+            background-image: url(/static/plugins/nkeditor/plugins/hide4purchase/purchase.png) !important;
+        }
+
+        .ke-icon-br {
+            background-image: url(/static/plugins/nkeditor/plugins/br/br.png) !important;
+        }
     </style>
 </head>
-<body onscroll="isTop(this)">
+<body onscroll="isTop(this);">
 <div class="layui-fluid layui-anim layui-anim-upbit" id="LAY-article-add" style="padding-bottom: 50px;">
     <div class="layui-row layui-col-space20 layui-form">
         <input name="id" type="hidden" th:value="${editArticle.id}" required lay-required>
@@ -222,8 +245,17 @@
         hide4comment: '回复可见',
         hide4login: '登录可见',
         hide4purchase: '购买可见',
-        br:'换行'
+        br: '换行'
     });
+
+    function isTop(iframeBody) {
+        var stop = $(iframeBody).scrollTop();
+        if (stop > 0) {
+            $("i[name=fullscreen]").parents("li").hide();
+        } else {
+            $("i[name=fullscreen]").parents("li").show();
+        }
+    }
 </script>
 </body>
 </html>
