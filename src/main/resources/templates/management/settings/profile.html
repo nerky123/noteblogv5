@@ -81,7 +81,7 @@
                         </div>
                         <div class="layui-form-item" style="margin-left: 20px;">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="profileForm">提交更改</button>
+                                <button type="button" class="layui-btn" lay-submit lay-filter="profileForm">提交更改</button>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                 <div class="layui-card-body">
 
 
-                    <div class="layui-form" lay-filter="mailServer">
+                    <div class="layui-form">
                         <div class="layui-form-item">
                             <label class="layui-form-label">SMTP服务器</label>
                             <div class="layui-input-inline">
@@ -107,7 +107,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">SMTP端口号</label>
                             <div class="layui-input-inline" style="width: 80px;">
-                                <input type="text" name="mail_smpt_server_port" lay-verify="number"
+                                <input type="number" name="mail_smpt_server_port"
                                        th:value="${settings.mail_smpt_server_port}"
                                        class="layui-input">
                             </div>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block" style="margin-left: 130px;">
-                                <button class="layui-btn" lay-submit lay-filter="set_system_email">确认保存</button>
+                                <button type="button" class="layui-btn" lay-submit lay-filter="set_system_email">确认保存</button>
                             </div>
                         </div>
                     </div>

@@ -76,6 +76,21 @@ layui.define(['element', 'form', 'upload'], function (exports) {
         return false;
     });
 
+    form.on('submit(settingsBatch)', function (data) {
+        delete data.field.file;
+        var dataArr = data.field;
+        var arr = [];
+        for (var d in dataArr) {
+            arr.push({"name": d, "value": dataArr[d]});
+        }
+        NBV5.post("/management/settings/updateBatch", {
+            params: JSON.stringify(arr)
+        }, function (resp) {
+            layer.msg(resp.message);
+        });
+        return false;
+    });
+
     form.on('submit(bottom-logo)', function () {
         NBV5.post("/management/settings/update", {
             name: 'bottom_logo',
@@ -96,7 +111,6 @@ layui.define(['element', 'form', 'upload'], function (exports) {
         })
     });
 
-
     form.on('radio(article_page_style)', function (data) {
         NBV5.post("/management/settings/update", {
             type: 'text'
@@ -116,6 +130,7 @@ layui.define(['element', 'form', 'upload'], function (exports) {
         , done: function (res) {
             if (res.code === 0) {
                 $("#logo-avatar").find("img").attr("src", res.data.src);
+                $("input[name=bottom_logo]").val(res.data.src);
                 layer.msg(res.msg || res.message);
             } else {
                 layer.msg(res.message)

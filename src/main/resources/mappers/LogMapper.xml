@@ -5,9 +5,9 @@
 <mapper namespace="me.wuwenbin.noteblogv5.mapper.LogMapper">
 
     <select id="ipSummary" resultType="me.wuwenbin.noteblogv5.model.bo.EchartsBo">
-        SELECT CONCAT(ip_addr, '，', ip_info) AS name, COUNT(*) AS value
+        SELECT ip_info AS name, COUNT(*) AS value
         FROM nb_log
-        GROUP BY ip_addr, ip_info
+        GROUP BY ip_info
     </select>
 
     <select id="urlSummary" resultType="me.wuwenbin.noteblogv5.model.bo.EchartsUrlBo">

@@ -85,6 +85,22 @@ public class SettingsController extends BaseController {
         }
     }
 
+    @RequestMapping("/updateBatch")
+    @ResponseBody
+    public ResultBean updateBatch(String params) {
+        JSONArray array = JSONUtil.parseArray(params);
+        int cnt = 0;
+        for (int i = 0; i < array.size(); i++) {
+            Param p = array.get(i, Param.class);
+            System.out.println(p);
+            ResultBean rb = paramService.updateSettings(p.getName(), p.getValue());
+            if (rb.isSuccess()) {
+                cnt++;
+            }
+        }
+        return cnt == array.size() ? ResultBean.ok("修改成功") : ResultBean.error("修改失败");
+    }
+
 
     @RequestMapping("/pay/update")
     @ResponseBody

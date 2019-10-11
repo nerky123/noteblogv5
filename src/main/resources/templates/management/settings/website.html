@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="/static/assets/css/admin-nbv5.css" media="all">
     <style>
         .layui-col-md8 .layui-form-label {
-            width: 100px;
+            width: 100%;
+            text-align: center;
         }
 
         .layui-form-item {
@@ -23,107 +24,111 @@
 </head>
 <body>
 <div class="layui-fluid layui-anim layui-anim-upbit" id="LAY-settings-profile" style="padding-bottom: 50px;">
-    <div class="layui-row layui-col-space20 layui-form">
+    <div class="layui-row layui-col-space20">
         <div class="layui-col-md8">
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">网站基本设置</div>
                 <div class="layui-card-body">
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">logo文本</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">logo文本</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="website_logo_words" placeholder="请输入文本"
                                        th:value="${website_logo_words}" autocomplete="off" class="layui-input"></div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">网站LOGO图标</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">网站LOGO图标</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="website_fontawesome" placeholder="请输入font-awesome字体图标全称"
                                        th:value="${website_fontawesome}" autocomplete="off" class="layui-input"></div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">网站标题</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">网站标题</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="website_title" placeholder="请输入文本"
                                        th:value="${website_title}" autocomplete="off" class="layui-input"></div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">网站副标题</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">网站副标题</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="website_logo_small_words" placeholder="请输入文本"
                                        th:value="${website_logo_small_words}" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">底部LOGO图片</label>
-                        <div class="layui-input-inline">
-                            <p id="logo-avatar" style="cursor: pointer;border: 1px solid #eee;width: 300px;">
-                                <img th:src="${bottom_logo}" style="width: 300px;"/>
-                            </p>
-                        </div>
-                        <div class="layui-inline" style="margin-left: 150px;margin-top: 30px;">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="bottom-logo">提交</button>
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">底部LOGO图片</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
+                                <input type="hidden" name="bottom_logo" th:value="${bottom_logo}">
+                                <p id="logo-avatar" style="cursor: pointer;border: 1px solid #eee;width: 100%">
+                                    <img th:src="${bottom_logo}" style="width: 100%;"/>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">页眉文本</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">页眉文本</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="index_top_text"
                                        placeholder="请输入文本"
                                        th:value="${index_top_text}"
                                        autocomplete="off" class="layui-input"></div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">页脚文本</label>
-                            <div class="layui-input-inline" style="width: 350px;">
+                        <div class="layui-row layui-col-space15">
+                            <div class="layui-col-xs4 layui-col-sm3">
+                                <label class="layui-form-label">页脚文本</label>
+                            </div>
+                            <div class="layui-col-xs7 layui-col-sm8">
                                 <input type="text" name="footer_words"
                                        placeholder="请输入文本"
                                        th:value="${footer_words}"
                                        autocomplete="off" class="layui-input"></div>
                         </div>
-                        <div class="layui-inline">
-                            <button class="layui-btn-sm layui-btn" lay-submit lay-filter="settings">提交</button>
-                        </div>
                     </div>
 
+                    <div class="layui-form-item">
+                        <div class="layui-row">
+                            <div class="layui-col-xs7 layui-col-sm8 layui-col-xs-offset4 layui-col-sm-offset3">
+                                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="settingsBatch">提交
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">讨论设置</div>
                 <div class="layui-card-body">
 
@@ -180,7 +185,7 @@
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">第三方设置</div>
                 <div class="layui-card-body">
                     <div class="layui-form-item">
@@ -329,7 +334,7 @@
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">其他设置</div>
                 <div class="layui-card-body">
                     <div class="layui-form-item" id="sign-coin">
@@ -350,7 +355,8 @@
                             <label class="layui-form-label">充值卡购买地址</label>
                             <div class="layui-input-inline" style="min-width: 350px;">
                                 <input type="hidden" name="cash_recharge_url" th:value="${cash_recharge_url}">
-                                <textarea name="cash_recharge_url" placeholder="输入充值卡购买信息：<平台名称>,<购买url>，如：快发卡,https://www.xx.xx，多个平台请换行"
+                                <textarea name="cash_recharge_url"
+                                          placeholder="输入充值卡购买信息：<平台名称>,<购买url>，如：快发卡,https://www.xx.xx，多个平台请换行"
                                           th:text="${recharges}" autocomplete="off"
                                           class="layui-textarea"></textarea>
                             </div>
@@ -366,7 +372,7 @@
         </div>
         <div class="layui-col-md4">
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">个人信息板内容</div>
                 <div class="layui-card-body">
                        <textarea name="info_label_text" placeholder="请输入信息板内容"
@@ -379,7 +385,7 @@
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">网站设置</div>
                 <div class="layui-card-body">
 
@@ -465,7 +471,7 @@
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">首页排版设置</div>
                 <div class="layui-card-body">
                     <blockquote class="layui-elem-quote">说明：页面总共分为12列</blockquote>
@@ -482,7 +488,7 @@
                 </div>
             </div>
 
-            <div class="layui-card">
+            <div class="layui-card layui-form">
                 <div class="layui-card-header">文章详细页面布局设置</div>
                 <div class="layui-card-body">
                     <input type="radio" name="article_page_style" lay-filter="article_page_style" value="0"

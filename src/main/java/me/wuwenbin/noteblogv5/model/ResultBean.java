@@ -27,12 +27,6 @@ public class ResultBean extends ConcurrentHashMap<String, Object> {
         put(CODE, SUCCESS);
     }
 
-    @Override
-    public ResultBean put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
-
     /**
      * 返回默认的成功响应的实体
      *
@@ -67,7 +61,6 @@ public class ResultBean extends ConcurrentHashMap<String, Object> {
         resultBean.put("message", msg == null || "".equals(msg) ? "success!" : StrUtil.format(msg, param));
         return resultBean;
     }
-
 
     /**
      * 自定义成功响应数据，包含额外的返回数据
@@ -166,5 +159,15 @@ public class ResultBean extends ConcurrentHashMap<String, Object> {
      */
     public static <T> ResultBean custom(int code, String message, T data) {
         return custom(code, message).put(DATA, data);
+    }
+
+    @Override
+    public ResultBean put(String key, Object value) {
+        super.put(key, value);
+        return this;
+    }
+
+    public boolean isSuccess() {
+        return this.get(CODE).equals(SUCCESS);
     }
 }
