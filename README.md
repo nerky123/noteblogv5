@@ -1,5 +1,5 @@
 
-## 获取最新版本及更新日志请前往：[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
+## 获取最新版本及更新日志请前往：[点我前往](https://wuwenbin.me/article/u/noteblogv5_updates)
 github版本：5.0.0
 最新版本：5.3.11.8
 
@@ -32,7 +32,7 @@ github版本：5.0.0
 [点我前往](https://wuwenbin.me)
 
 ## 部署教程
-[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
+[点我前往](https://wuwenbin.me/article/u/noteblogv5_updates)
 
 
 1. 新增文章时候，可以直接新增分类 √
