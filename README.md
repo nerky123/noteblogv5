@@ -1,5 +1,5 @@
-+ 2019/09/24 --- 笔记博客第5版开发基本完成，正在准备发布阶段
-+ 2019/09/05 --- 笔记博客第5版升级开发中
+
+## 获取最新版本以及息请前往：[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
 
 ---
 点击链接加入群聊，获取SQL文件【[笔记博客 ~ 交流反馈：697053454](https://jq.qq.com/?_wv=1027&k=5ZEGGl8)】
@@ -27,10 +27,11 @@
 [请查看](https://gitee.com/wuwenbn/noteblogv5/tree/master/screenshot)
 
 ## 二次开发
-完善中...
+[点我前往](https://wuwenbin.me)
 
 ## 部署教程
-完善中...
+[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
+
 
 1. 新增文章时候，可以直接新增分类 √
 2. 可以直接从媒体库中选择已上传的图片
