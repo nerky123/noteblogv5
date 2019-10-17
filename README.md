@@ -1,5 +1,7 @@
 
-## 获取最新版本以及息请前往：[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
+## 获取最新版本及更新日志请前往：[点我前往](https://wuwenbin.me/article/noteblogv5_updates)
+github版本：5.0.0
+最新版本：5.3.11.8
 
 ---
 点击链接加入群聊，获取SQL文件【[笔记博客 ~ 交流反馈：697053454](https://jq.qq.com/?_wv=1027&k=5ZEGGl8)】
