@@ -1,10 +1,10 @@
 
 ## 获取最新版本及更新日志请前往：[点我前往](https://wuwenbin.me/article/u/noteblogv5_updates)
 开源版本：v5.0.0（2019/10/01日提交，此仓库只更新至5.0）<br/>
-最新版本：v5.8（2019/10/22日更新）（为了保持持续的更新，后续的更新都放在私有仓库中，需要的请前往[]()查看）
+最新版本：v5.8.3（2019/10/29日更新）（为了保持持续的更新，后续的更新都放在私有仓库中，需要的请前往[此处](https://wuwenbin.me)查看）
 
 ---
-点击链接加入群聊，获取 v5.0版 SQL文件【[笔记博客 ~ 交流反馈：697053454](https://jq.qq.com/?_wv=1027&k=5ZEGGl8)】
+点击链接加入群聊，获取 v5.0.0版 SQL文件【[笔记博客 ~ 交流反馈：697053454](https://jq.qq.com/?_wv=1027&k=5ZEGGl8)】
 
 ![avatar](noteblogqqgroup.png)
 ---
@@ -31,7 +31,7 @@
 [请查看](https://gitee.com/wuwenbn/noteblogv5/tree/master/screenshot)
 
 ## 二次开发文档（未完成...）
-[点我前往](https://wuwenbin.me)
+[点我前往](https://wuwenbin.me/article/5db02858e4b01c32641159c0)
 
 ## 部署教程
 [点我前往](https://wuwenbin.me/article/u/noteblogv5_updates)
