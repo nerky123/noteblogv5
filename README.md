@@ -30,9 +30,8 @@
 ## 截图预览
 [请查看](https://gitee.com/wuwenbn/noteblogv5/tree/master/screenshot)
 
-## 二次开发文档（未完成...）
+## 二次开发文档（持续更新中...）
 [点我前往](https://wuwenbin.me/article/5db02858e4b01c32641159c0)
 
-## 部署教程
+## 部署教程（持续更新中...）
 [点我前往](https://wuwenbin.me/article/u/noteblogv5_updates)
-
