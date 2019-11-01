@@ -6,7 +6,6 @@
 ---
 点击链接加入群聊，获取 v5.0.0版 SQL文件【[笔记博客 ~ 交流反馈：697053454](https://jq.qq.com/?_wv=1027&k=5ZEGGl8)】
 
-![avatar](noteblogqqgroup.png)
 ---
 ## noteblogv4 -> noteblogv5 的一些升级优化和BUG修复
 + 从jpa换成mybatis-plus，更易上手
