@@ -37,7 +37,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '{{# } }}' +
         '</spa>' +
         '</h2>' +
-        '<div class="search-content layui-mt15 layui-word-aux" style="word-break: break-word;">{{item.resContent}}...</div>' +
+        '<div class="search-content layui-mt15 layui-word-aux" style="word-break: break-word;">{{item.resContent}}<a style="margin-left: 15px; font-weight: 600; text-transform: capitalize; display: inline-block; text-decoration: none; color: #FF3657;-webkit-transition: all 0.3s linear;" href="/article/{{ item.id }}">阅读全文</a></div>' +
         '<p class="search-date layui-mt10">' +
         '<i class="fa fa-calendar-check-o"></i> ' +
         '<span class="timeago" datetime="{{nbv5front.timeAgo(item.post)}}"></span>' +

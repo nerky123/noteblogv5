@@ -2,18 +2,21 @@ package me.wuwenbin.noteblogv5.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.wuwenbin.noteblogv5.constant.OperateType;
 import me.wuwenbin.noteblogv5.constant.RoleEnum;
 import me.wuwenbin.noteblogv5.mapper.UserCoinRecordMapper;
 import me.wuwenbin.noteblogv5.mapper.UserMapper;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.User1;
 import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * created by Wuwenbin on 2019-08-14 at 15:31
@@ -84,6 +87,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             );
         }
         return res;
+    }
+
+    @Override
+    public List<User1> selectByPage(Page<User1> page,String username,String nickname) {
+        List<User1> list = userMapper.selectByPage(page,username,nickname);
+        return list;
     }
 
 

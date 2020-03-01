@@ -14,8 +14,9 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card" id="info-panel">' +
         '<div class="layui-card-body text-center" style="padding: 20px;">' +
-        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
+        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
         '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
+        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '<hr>' +
         '{{# if(d.nbv5su != null){}}' +
         '<p>当前登录: <a href="/login?redirectUrl=/ubs/token/index" class="no-hover"><img src="{{d.nbv5su.avatar}}" style="width: 30px;height: 30px;" class="layui-circle"></a>' +
@@ -24,13 +25,12 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '{{#}else{}}' +
         '<p class="layui-text">未检测到用户，<a href="/login?redirectUrl=/ubs/token/index" class="no-hover" style="color: #F44336;">点我</a>登录</p>' +
         '{{#}}}' +
-        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '</div>' +
         '</div>' +
 
         '<div class="layui-card" id="search-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">搜索 <small style="float: right;">' +
+        ' <p class="title"  style="font-size: 18px;"><strong>搜索 </strong><small style="float: right;">' +
         '   <a style="cursor: pointer;" onclick="aboutSearch();" target="_blank"><i>关于 <i class="fa fa-info-circle"></i></i></a></small> </p>' +
         '       <hr>' +
         '       <input name="words" onkeypress="searchAll(event);"' +
@@ -40,7 +40,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card" id="cate-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">分类 </p>' +
+        ' <p class="title"  style="font-size: 18px;"><strong>分类</strong> </p>' +
         ' <hr>' +
         ' <div class="layui-btn-container">' +
         '{{# layui.each(d.cateList, function(index, item){ }}' +
@@ -52,7 +52,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card" id="article-random-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">随便看看 </p>' +
+        ' <p class="title" style="font-size: 18px;"><strong>随便看看</strong> </p>' +
         ' <hr>' +
         '{{# layui.each(d.randomArticles, function(index, item){ }}' +
         '<blockquote class="layui-elem-quote" style="padding: 5px 10px;background: #f8f8f8;">' +
@@ -67,7 +67,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card layui-tags" id="tag-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">标签墙</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>标签墙</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.tagList, function(index, item){ }}' +
         '<span class="layui-badge-rim"><a href="/s/t?q={{item.name}}" target="_blank">{{item.name}} ({{item.cnt}})</a></span>' +
@@ -77,7 +77,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
 
         '<div class="layui-card layui-tags" id="link-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">友情链接</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>友情链接</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.linkList, function(index, item){ }}' +
         '<a href="{{linkSplit(item.name,1)}}" target="_blank" class="layui-text" style="margin-right: 10px;">{{ linkSplit(item.name,0) }}</a>' +
@@ -110,21 +110,25 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       {{# }else{ }}' +
         '       <a href="/article/{{ item.id }}">{{ item.title }}</a>' +
         '       {{# } }}' +
+        '{{# layui.each(d.catesMap[item.id], function(index, item){ }}' +
+        '       <span class="layui-badge no-select" style="margin-left: 5%;padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
+        '{{# });  }}' +
         '</legend>' +
-        '<blockquote class="layui-elem-quote" style="background-color: #f8f8f8;padding: 5px 5px 5px 10px;margin-top: 10px;">' +
+ /*       '<blockquote class="layui-elem-quote" style="background-color: #f8f8f8;padding: 5px 5px 5px 10px;margin-top: 10px;">' +
         '{{# layui.each(d.catesMap[item.id], function(index, item){ }}' +
         '       <span class="layui-badge no-select" style="margin-right: 10px;padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
         '{{# });  }}' +
-        '</blockquote>' +
+        '</blockquote>' +*/
         '</fieldset>' +
         '<div class="layui-fluid layui-row layui-col-space20">' +
         '       {{# if(item.cover != null && item.cover !=""){ }}' +
-        '<div class="layui-col-md9 layui-col-xs12">' +
+        '<div class="layui-col-md9 layui-col-xs12" style="position: static;">' +
         '       {{# }else{ }}' +
-        '<div class="layui-col-xs12">' +
+        '<div class="layui-col-xs12" >' +
         '       {{# } }}' +
-        '   <div style="text-indent: 35px;line-height: 28px;color: #999 !important;word-break: break-all;">' +
-        '{{ item.summary }}<a href="/article/{{ item.id }}">...</a></div>' +
+        '   <div style="text-indent: 35px;margin-top: 1%;line-height: 28px;color: #999 !important;word-break: break-all;">' +
+        '{{ item.summary }}</div>' +
+
         '</div>' +
         '       {{# if(item.cover != null && item.cover !=""){ }}' +
         '<div class="layui-hide-xs layui-hide-sm layui-show-md-block layui-col-md3" style="text-align: center;">' +
@@ -134,8 +138,20 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '</a> ' +
         '</div>' +
         '       {{# } }}' +
+
+        '<div class="layui-fluid layui-row" >' +
+        '       <p class="article-footer">' +
+        '           <span class="layui-mr15"><i class="fa fa-thermometer-1"></i> 热度：<span style="font-weight: bold;font-style: italic;">{{ item.views }}℃</span></span>' +
+        '           {{# if(d.articleCommentCountMap[item.id] > 0){ }}' +
+        '           <span class="layui-mr15"><i class="fa fa-commenting-o"></i> 评论: <span style="font-weight: bold;font-style: italic;">{{ d.articleCommentCountMap[item.id] }}</span>条</span>' +
+        '           {{# } }}' +
+        '           <span class="layui-mr15"><i class="fa fa-user-o"></i> 作者：<span style="font-weight: bold;color: #986b0d;font-style: italic;">{{ d.articleAuthors[item.id] }}</span></span>' +
+        '           <span><i class="fa fa-calendar"></i> 时间：<span style="font-weight: bold;font-style: italic;" class="timeago" datetime="{{ nbv5front.timeAgo(item.post) }}"></span></span>' +
+        ' <a style="margin-left: 15px; font-weight: 600; text-transform: capitalize; display: inline-block; text-decoration: none; color: #FF3657;-webkit-transition: all 0.3s linear;" href="/article/{{ item.id }}">阅读全文</a>'+
+        '       </p>' +
         '</div>' +
-        '<div class="layui-fluid layui-row">' +
+        '</div>' +
+     /*   '<div class="layui-fluid layui-row">' +
         '       <p class="article-footer">' +
         '           <span class="layui-mr15"><i class="fa fa-thermometer-1"></i> 热度：<span style="font-weight: bold;font-style: italic;">{{ item.views }}℃</span></span>' +
         '           {{# if(d.articleCommentCountMap[item.id] > 0){ }}' +
@@ -144,7 +160,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '           <span class="layui-mr15"><i class="fa fa-user-o"></i> 作者：<span style="font-weight: bold;color: #986b0d;font-style: italic;">{{ d.articleAuthors[item.id] }}</span></span>' +
         '           <span><i class="fa fa-calendar"></i> 时间：<span style="font-weight: bold;font-style: italic;" class="timeago" datetime="{{ nbv5front.timeAgo(item.post) }}"></span></span>' +
         '       </p>' +
-        '</div>' +
+        '</div>' +*/
         '</div>' +
         '</div>' +
         '{{# });  }}' +

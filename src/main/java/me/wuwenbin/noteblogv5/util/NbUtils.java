@@ -339,7 +339,6 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
         int count = 0;
         for (char aT1 : t1) {
             if (Character.toString(aT1).matches("[^\\x00-\\xff]")) {
-                System.out.println(aT1);
                 count++;
             }
         }
@@ -441,7 +440,8 @@ public class NbUtils implements ApplicationContextAware, ServletContextListener 
     public static boolean noteBlogIsInstalled() {
         boolean appInstalled = NbUtils.installedFileIsExist();
         Param initStatusParam = NbUtils.getBean(ParamMapper.class).selectOne(Wrappers.<Param>query().eq("name", NBV5.INIT_STATUS));
-        return appInstalled && initStatusParam != null && "1".equals(initStatusParam.getValue());
+//        return appInstalled && initStatusParam != null && "1".equals(initStatusParam.getValue());
+        return true;
     }
 
     public static ApplicationContext getApplicationContext() {

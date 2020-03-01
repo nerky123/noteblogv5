@@ -53,6 +53,12 @@
            lay-filter="appreciable" {{ d.appreciable== true ? 'checked' : '' }}>
 </script>
 
+
+<script type="text/html" id="flagTpl">
+    <input type="checkbox" name="flag" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="flag"
+           {{ d.flag== true ? 'checked' : '' }}>
+</script>
+
 <script type="text/html" id="commentedTpl">
     <input type="checkbox" name="commented" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="commented"
            {{ d.commented== true ? 'checked' : '' }}>

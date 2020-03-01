@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 用于对前端用户登录作用的过滤，例如评论
+ * 用于对前端用户登录作用的过滤，例如评论，有些功能需要用户登录才可以操作！
  *
  * @author wuwenbin
  */

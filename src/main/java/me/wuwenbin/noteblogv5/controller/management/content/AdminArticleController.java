@@ -1,5 +1,6 @@
 package me.wuwenbin.noteblogv5.controller.management.content;
 
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +54,7 @@ public class AdminArticleController extends BaseController {
     @GetMapping("/add")
     public String publishArticlePage(HttpServletRequest request) {
         request.setAttribute("cateList", dictService.list(Wrappers.<Dict>query().eq("`group`", DictGroup.GROUP_CATE)));
+        request.setAttribute("biaoqianList",dictService.list(Wrappers.<Dict>query().eq("`group`", DictGroup.GROUP_TAG)));
         return "management/article/add";
     }
 
@@ -61,6 +66,7 @@ public class AdminArticleController extends BaseController {
         model.addAttribute("editArticle", article);
         model.addAttribute("tags", dictService.findTagsByArticleId(id));
         model.addAttribute("cates", dictService.findCatesByArticleId(id));
+        model.addAttribute("biaoqianList",dictService.list(Wrappers.<Dict>query().eq("`group`", DictGroup.GROUP_TAG)));
         return "management/article/edit";
     }
 
@@ -82,8 +88,11 @@ public class AdminArticleController extends BaseController {
     @ResponseBody
     public ResultBean articleCreate(@Valid Article article, BindingResult result, HttpServletRequest request,
                                     @RequestParam(required = false, value = "cateIds[]") List<Integer> cateIds,
-                                    @RequestParam(required = false, value = "tagNames[]") List<String> tagNames) {
+                                    @RequestParam(required = false, value = "tagNames[]") List<String> tagNames){
         if (result.getErrorCount() == 0) {
+            if (cateIds == null || cateIds.size() == 0){
+                return ResultBean.error("分类选择最多至少选择一个！");
+            }
             if (cateIds.size() > 3) {
                 return ResultBean.error("分类选择最多不能超过3个！");
             }
@@ -111,11 +120,11 @@ public class AdminArticleController extends BaseController {
     @ResponseBody
     @PostMapping("/update/{field}")
     public ResultBean updateArticle(String id, @PathVariable("field") String field, Boolean status) {
-        String appreciable = "appreciable", commented = "commented", top = "top";
+        String appreciable = "appreciable", commented = "commented", top = "top" , flag="flag";
         if (top.equalsIgnoreCase(field)) {
             boolean res = articleService.updateTopById(id, status);
             return handle(res, "操作成功！", "操作失败！");
-        } else if (appreciable.equalsIgnoreCase(field) || commented.equalsIgnoreCase(field)) {
+        } else if (appreciable.equalsIgnoreCase(field) || commented.equalsIgnoreCase(field) || flag.equalsIgnoreCase(field)) {
             boolean res = articleService.update(Wrappers.<Article>update().set(field, status).eq("id", id));
             return handle(res, "修改成功！", "修改失败！");
         } else {

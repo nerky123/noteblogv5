@@ -1,12 +1,16 @@
 package me.wuwenbin.noteblogv5.initialization;
 
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.setting.Setting;
 import lombok.extern.slf4j.Slf4j;
 import me.wuwenbin.noteblogv5.constant.NBV5;
 import me.wuwenbin.noteblogv5.exception.AppSetException;
 import me.wuwenbin.noteblogv5.mapper.ParamMapper;
+import me.wuwenbin.noteblogv5.model.entity.Dict;
 import me.wuwenbin.noteblogv5.model.entity.Param;
+import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.Order;
@@ -37,6 +41,8 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
     private final Environment environment;
 
     private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private DictService dictService;
 
     public InitListener(ParamMapper paramMapper, Environment environment,
                         JdbcTemplate jdbcTemplate) {
@@ -57,6 +63,23 @@ public class InitListener implements ApplicationListener<ContextRefreshedEvent> 
             }
             setUpSystemInitTime();
             log.info("设置参数表完成");
+
+            ArrayList<String> list = new ArrayList<>();
+            File file = new File(InitListener.class.getClass().getResource("/").getPath()+"min_word.txt");
+            List<String> strings = new FileReader(file).readLines();
+            strings.forEach(str->{
+                String[] split = str.split("，");
+                for (String s : split) {
+                    list.add(s);
+                }
+            });
+            list.forEach(str->{
+                Dict dict = new Dict();
+                dict.setName(str);
+                dict.setGroup("keyword");
+                dictService.save(dict);
+                System.out.println("["+str+"]插入成功。。。。。。。");
+            });
         }
         setUploadPath();
         setUpSystemStartedTime();

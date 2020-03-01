@@ -45,12 +45,24 @@ layui.define(['form', 'layer', 'table', 'element'], function (exports) {
             , {field: 'username', title: '用户名'}
             , {field: 'remainCoin', title: '硬币', width: 80, edit: 'text'}
             , {title: '状态', width: 95, align: 'center', toolbar: '#enableTpl', fixed: 'right'}
+            , {title: '会员次数', field : 'vipCount'}
+            ,{title: '会员时间', field : 'vipTime'}
+            ,{title: '会员状态',  width: 95, align: 'center', toolbar: '#vipStateTpl', fixed: 'right'}
         ]]
     });
 
 
     form.on('switch(enable)', function (obj) {
         NBV5.ajax("/management/user/update",
+            {id: this.value, enable: obj.elem.checked},
+            function (json) {
+                NBV5.okMsgHandle(json);
+                layer.tips('状态：' + ((obj.elem.checked) ? "正常" : "隐藏"), obj.othis);
+            });
+    });
+
+    form.on('switch(vipState)', function (obj) {
+        NBV5.ajax("/management/user/updateVip",
             {id: this.value, enable: obj.elem.checked},
             function (json) {
                 NBV5.okMsgHandle(json);

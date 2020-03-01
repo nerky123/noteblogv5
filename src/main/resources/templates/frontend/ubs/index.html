@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ZH-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/static/assets/css/simple.css">
     <link rel="stylesheet" href="/static/plugins/ubs-font/iconfont.css">
     <link rel="stylesheet" href="/static/assets/css/ubs.css">
+    <link rel="stylesheet" href="/static/plugins/layui/css/modules/layui-icon-extend/iconfont.css">
     <title th:text="${nbv5su!=null?nbv5su.nickname:'用户中心'}"></title>
 </head>
 <body class="layui-anim layui-anim-fadein simple">
@@ -24,7 +25,7 @@
         <div class="layui-row nav-header">
             <div class="layui-col-xs9 layui-col-sm4">
                 <a class="logo" href="/index">
-                    <i th:class="${settings.website_fontawesome}"></i>&nbsp;[[${settings.website_logo_words}]]</a>
+                    <i th:class="${settings.website_fontawesome}"></i>&nbsp;<strong>[[${settings.website_logo_words}]]</strong></a>
                 <small th:text="${settings.website_logo_small_words}"></small>
             </div>
             <div class="layui-col-xs3 layui-col-sm-offset2 layui-col-sm4 layui-hide-md layui-hide-lg nav-btn">
@@ -38,14 +39,22 @@
                     <i class="layui-icon layui-icon-home"></i>
                     <span th:text="${settings.menu_home}"></span>
                 </a>
-                <a href="/note" th:data-title="${settings.menu_note}">
+                <!--<a href="/note" th:data-title="${settings.menu_note}">
                     <i class="layui-icon layui-icon-form"></i>
                     <span th:text="${settings.menu_note}"></span>
+                </a>-->
+                <a href="/note" th:data-title="${settings.menu_note}">
+                    <i class="iconfont2 layui-extend-gongyijuankuan"></i>
+                    <span th:text="${settings.menu_note}"></span>
                 </a>
-                <a href="/message" th:data-title="${settings.menu_message}">
+               <!-- <a href="/message" th:data-title="${settings.menu_message}">
                     <i class="layui-icon layui-icon-chat"></i>
                     <span th:text="${settings.menu_message}"></span>
-                </a>
+                </a>-->
+                <!--<a href="/login?redirectUrl=/ubs/token/index" data-title="会员">
+                    <i class="iconfont1 layui-extend-member_icon"></i>
+                    <span>会员</span>
+                </a>-->
                 <a href="/login?redirectUrl=/ubs/token/index" class="active" data-title="用户">
                     <i class="layui-icon layui-icon-user"></i>
                     <span>用户</span>
@@ -88,9 +97,9 @@
                 <li class="layui-nav-item">
                     <a href="/ubs/token/comment"><i class="fa fa-comment"></i> 我的评论</a>
                 </li>
-                <li class="layui-nav-item">
+                <!--<li class="layui-nav-item">
                     <a href="/ubs/token/purchase"><i class="fa fa-shopping-cart"></i> 我的购买</a>
-                </li>
+                </li>-->
             </ul>
 
         </div>
@@ -98,7 +107,7 @@
             <div class="layui-card">
                 <div class="layui-card-body" style="padding: 30px;">
                     <blockquote class="layui-elem-quote"
-                                th:text="'Hi!,'+${nbv5su.nickname}+'。'+${settings.ubs_top_notice}"></blockquote>
+                                th:text="'Hi! '+${nbv5su.nickname}+'。'+${settings.ubs_top_notice}"></blockquote>
                     <hr>
                     <div class="layui-row layui-mt20">
                         <img th:src="${nbv5su.avatar}" id="avatar" class="layui-circle">
@@ -107,6 +116,7 @@
                         <label th:if="${nbv5su.role == 2}"><b>[注册用户]</b></label>
                         <label th:if="${nbv5su.role == 3}"><b>[QQ用户]</b></label>
                         <label th:if="${nbv5su.role == 4}"><b>[Github用户]</b></label>
+                        <label th:if="${vip == 1}"><b>[<span style="color: #ff262e;">会员</span>]</b></label>
                         <a href="/token/logout" class="layui-btn layui-btn-primary layui-btn-sm"><i
                                 class="fa fa-sign-out"></i> 退出</a>
                     </div>
@@ -127,7 +137,7 @@
                         </label>
                     </div>
                     <div class="layui-row layui-mt10">
-                        <p class="layui-word-aux layui-text layui-show-sm-inline-block layui-hide-md">请使用PC浏览器进行充值</p>
+                        <p class="layui-word-aux layui-text layui-show-sm-inline-block layui-hide-md"><span style="color: red"> 请使用PC浏览器进行充值</span></p>
                         <button id="recharge" type="button"
                                 class="layui-btn layui-btn-sm layui-show-md-inline-block layui-hide-sm layui-hide-xs">充值
                         </button>
@@ -135,7 +145,7 @@
                     <hr>
                     <div class="layui-row layui-mt10">
                         <label for="nickname">
-                            <input type="text" id="nickname" th:value="${nbv5su.nickname}" class="layui-input"
+                            <input type="text" id="nickname" th:value="${nbv5su.nickname}" class="layui-input" placeholder="输入新用户名"
                                    style="max-width: 200px;display: inline-block;">
                         </label>
                         <button type="button" class="layui-btn layui-btn-primary" id="nickname-change">修改</button>
@@ -168,40 +178,69 @@
 <!--底部导航栏-->
 <div class="layui-fluid bottom-nav">
     <div class="layui-row bottom-logo">
-        <div class="layui-col-md4 layui-col-md-offset4 text-center">
-            <img th:src="${settings.bottom_logo}" alt="笔记博客">
-        </div>
+        <!--<div class="layui-col-md4 layui-col-md-offset4 text-center">
+            <img th:src="${settings.bottom_logo}" alt="零破解">
+        </div>-->
     </div>
     <hr style="background: rgba(230, 230, 230, 0.54);">
-    <div class="layui-row layui-col-space30" style="padding-top: 20px;">
-        <div class="layui-col-md4 copyright">
-            <p style="text-align: center;">
-                <i class="fa fa-copyright"></i>&nbsp;[[${settings.footer_words}]] powered by
-                <a href="//wuwenbin.me" target="_blank" style="color: #1E9FFF;">NoteBlog</a> in 2019 v5.
+    <div class="layui-row layui-col-space30" style="padding-top: 20px; background-color: #030D28">
+        <div class="layui-col-md2 " style="margin-left: 5%">
+            <p style="font-size: 16px;color: navajowhite">关于本站</p><br>
+            <p style="color: white">
+                [[${settings.footer_words}]]
             </p>
         </div>
-        <div class="layui-col-md4 cates">
-            <p>分类</p>
-            <span class="layui-badge-rim no-select" th:each="cate :${cateList}"><a
-                    th:href="${'/s/c?q='+cate.name}" th:text="${cate.name}"></a>
-            </span>
+        <div class="layui-col-md2 cates" style="margin-left: 5%">
+            <p style="font-size: 16px;color: navajowhite">联系我</p><br>
+
+            <p style="color: white" >如有侵权、广告合作、充值有关事项，请联系QQ：3285552556</p>
+
         </div>
-        <div class="layui-col-md4 manage">
-            <p style="margin-bottom: 10px;">数据・用户</p>
-            <p class="data">
-                <span>[[${#numbers.formatDecimal(blogCount,1,'COMMA',0,'POINT')}]] <b>文章</b></span>
-                <span>[[${#numbers.formatDecimal(commentCount,1,'COMMA',0,'POINT')}]] <b>评论</b></span>
-                <span>[[${#numbers.formatDecimal(runningDays,1,'COMMA',0,'POINT')}]] <b>天</b></span>
-                <span>[[${#numbers.formatDecimal(blogWords,1,'COMMA',0,'POINT')}]] <b>字数</b></span>
+        <div class="layui-col-md2 cates" style="margin-left: 5%">
+            <p style="font-size: 16px;color: navajowhite">关注交流</p><br>
+
+            <div class="textwidget"><p>&nbsp;</p>
+                <div class="textwidget">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="float: left;margin-right: 30%">
+                            <p><img class="alignnone wp-image-6359" src="/static/assets/img/wechat.jpg" alt="" width="72" height="72"></p>
+                            <p style="color: white">微信公众号<br>
+                                yulejxs</p>
+                        </div>
+                        <!--<div class="col-md-4 col-sm-4 col-xs-4" style="float: left;    margin-left: 12%;
+    margin-right: 10%;">
+                            <p><img class="alignnone wp-image-6361" src="/static/assets/img/weibo.png" alt="" width="72" height="72"></p>
+                            <p style="color: white">站长个人微博<br>
+                                欢迎关注</p>
+                        </div>-->
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <p><img class="alignnone size-full wp-image-6360" src="/static/assets/img/qq.png" alt="" width="72" height="72"></p>
+                            <p style="color: white">QQ扫描加群<br>
+                                975911290</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="layui-col-md2 manage" style="margin-left: 5%">
+            <p style="margin-bottom: 10px;font-size: 16px;color: navajowhite">数据・用户</p><br>
+            <p class="data" style="color: white">
+                <span>文章：[[${#numbers.formatDecimal(blogCount,1,'COMMA',0,'POINT')}]] <b>篇</b></span>
+                <span>评论：[[${#numbers.formatDecimal(commentCount,1,'COMMA',0,'POINT')}]] <b>条</b></span>
+                <span>运营：[[${#numbers.formatDecimal(runningDays,1,'COMMA',0,'POINT')}]] <b>天</b></span>
+                <!-- <span>[[${#numbers.formatDecimal(blogWords,1,'COMMA',0,'POINT')}]] <b>字数</b></span>-->
             </p>
-            <p>
+            <p style="color: white">
                 <a th:if="${nbv5su ==null}" onclick="nbv5front.bottomLogin();"
                    class="layui-btn layui-btn-sm layui-btn-primary">登录</a>
                 <span th:if="${nbv5su !=null}" class="layui-mr15">
                     <img th:src="${nbv5su.avatar}" class="layui-circle" style="width: 30px;"/>
                     <a th:text="${nbv5su.nickname}" class="layui-text layui-word-aux"
                        href="/login?redirectUrl=/ubs/token/index"></a>
-                </span> <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
+                </span>
+                <a onclick="nbv5front.tokenLogout();" class="layui-btn layui-btn-sm layui-btn-primary">退出</a>
             </p>
         </div>
     </div>
@@ -216,36 +255,33 @@
         <p class="layui-breadcrumb" lay-separator="|" style="text-align: center;margin-top: 10px;">
             <a href="/index" th:text="${settings.menu_home}"></a>
             <a href="/note" th:text="${settings.menu_note}"></a>
-            <a href="/message" th:text="${settings.menu_message}"></a>
+            <!--<a href="/message" th:text="${settings.menu_message}"></a>-->
             <a href="/login?redirectUrl=/ubs/token/index">用户</a>
             <a href="/s/w">搜索</a>
         </p>
-        <ul class="layui-timeline"
-            style="margin-top: 10px;padding-top: 15px;margin-bottom: 30px;border-top: 1px dotted #EEEEEE;">
+        <ul class="layui-timeline" style="margin-top: 10px;padding-top: 15px;margin-bottom: 30px;border-top: 1px dotted #EEEEEE;">
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title" style="font-size: 16px;">博客信息</h3>
-                    <p style="padding-bottom: 5px;" th:utext="${settings.info_label_text}"></p>
+                    <h3 class="layui-timeline-title" style="font-size: 16px;">网站信息</h3>
+                    <!--                    <p style="padding-bottom: 5px;" th:utext="${settings.info_label_text}"></p>-->
                     <p style="border-top: 1px solid #f5f5f5;padding-top: 5px;padding-bottom: 5px;">
-                        交流讨论：<i class="fa fa-qq"></i>
-                        <a target="_blank"
-                           href="//shang.qq.com/wpa/qunwpa?idkey=7bd7c01acf4e6124bfaab5a6d10504b917d5292f029b66887d00006a16a00930">
-                            697053454
-                        </a>。
+                        介绍：
+                        <span>专注破解和开源</span>
                     </p>
-                    <p style="border-top:1px solid #F5F5F5;padding-top: 5px;">
+                    <!--<p style="border-top:1px solid #F5F5F5;padding-top: 5px;">
+                        1
                         项目源码：<i class="fa fa-github-alt"></i>
                         <a target="_blank" href="https://github.com/miyakowork/noteblogv5">miyakowork/noteblogv5</a>。
-                    </p>
+                    </p>-->
                 </div>
             </li>
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                 <div class="layui-timeline-content layui-text">
                     <h3 class="layui-timeline-title" style="font-size: 16px;">作者 </h3>
-                    <p>联系作者：<i class="fa fa-envelope"></i> <a href="#">wuwenbinwork#163.com</a></p>
-                    <p>作者网站：<i class="fa fa-link"></i> <a href="https://wuwenbin.me">https://wuwenbin.me</a></p>
+                    <p>联系方式：任何问题直接联系qq:3285552556<!--<i class="fa fa-envelope"></i> <a href="#">wuwenbinwork#163.com</a></p>-->
+                        <!-- <p>：<i class="fa fa-link"></i> <a href="https://wuwenbin.me">https://wuwenbin.me</a></p>-->
                 </div>
             </li>
         </ul>
@@ -254,21 +290,22 @@
 
 <div style="display: none;" id="dialog">
     <div class="layui-container dialog-title">
-        <p><img src="/static/assets/img/noavatar.png" class="layui-circle avatar"><label style="margin-left: 10px;">啦啦啦2.1</label><a
-                class="pull-right close-dialog" id="closeDialog">x</a></p>
+        <p><img src="/static/assets/img/favicon.png" class="layui-circle avatar"><label style="margin-left: 10px;">会员注册</label><!--<a
+                class="pull-right close-dialog" id="closeDialog">x</a>--></p>
     </div>
     <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
-            <li class="layui-this"><i class="iconfont icon-card"></i> 充值卡充值</li>
-            <li><i class="iconfont icon-changgewechat"></i> 微信扫码</li>
-            <li><i class="iconfont icon-ali-pay"></i> 支付宝扫码</li>
-            <li><i class="fa fa-user-md"></i> 购买会员</li>
+<!--            <li class="layui-this"><i class="iconfont icon-card"></i> 充值卡充值</li>-->
+            <!--<li class="layui-this"><i class="iconfont icon-changgewechat"></i> 微信扫码</li>-->
+            <li class="layui-this"><i class="iconfont icon-ali-pay"></i> 支付宝扫码</li>
+            <li ><i class="iconfont iconfont icon-card"></i> 硬币兑换</li>
+            <!--<li><i class="fa fa-user-md"></i> 购买会员</li>-->
         </ul>
         <div class="layui-tab-content" style="height: 100px;padding: 30px;">
-            <div class="layui-tab-item layui-show animated fadeIn">
+            <!--<div class="layui-tab-item  animated fadeIn">
                 <p class="layui-elem-quote">充值卡购买地址：<a th:each="recharge:${settings.recharges}"
                                                        th:href="${recharge.url}" target="_blank"
-                                                       style="margin-left: 10px;text-decoration: underline;">[[${recharge.name}]]</a>
+                                                       style="margin-left: 10px;text-decoration: underline;"></a>
                 </p>
                 <p class="layui-text layui-word-aux">卡密充值即时到账，但是卡密数量有限，且没有充值奖励。</p>
                 <p class="layui-mt20">
@@ -287,47 +324,63 @@
                           style="font-style: italic;">注：1. 此商品为虚拟商品，一经售出恕不退换。</span><br>
                     <span class="layui-text layui-word-aux" style="font-style: italic;">2. 充值卡充值的硬币兑换比为 1RMB = 10硬币，没有任何充值奖励。</span>
                 </p>
-            </div>
-            <div class="layui-tab-item animated fadeIn">
+            </div>-->
+            <span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+           <!-- <div class="layui-tab-item layui-show animated fadeIn">
                 <div class="layui-row">
                     <div class="layui-col-xs4">
-                        <img style="width: 150px;" src="/static/assets/img/noqrcode.jpg">
+                        <img style="width: 150px;" src="/static/assets/img/weixin.png">
                     </div>
                     <div class="layui-col-xs8">请使用<span style="color: #F44336;">【<b>微信</b>】</span>扫码。
-                        <p class="layui-mt15"><b>注：微信扫码付款需要等待确认（最快30秒，最慢不会超过2分钟）。</b></p>
-                        <p class="layui-mt15">待确认完毕30秒之内硬币就会到账。</p>
+                        <p class="layui-mt15"><b>注：微信扫码付款成功后，请重新登录</b></p>
                     </div>
                 </div>
                 <div class="layui-row layui-mt20" style="font-style: italic;">
                     <p class="layui-text layui-word-aux">1. 特别注意：此付款方式为直接转账，请悉知。</p>
-                    <p class="layui-text layui-word-aux">2. 硬币兑换比：1 RMB = 18(10+8) 硬币，8硬币为微信充值额外奖励。</p>
-                    <p class="layui-text layui-word-aux">3. 转账中出现的小数一律视为舍去，如：29.3取29，30.8取30。</p>
-                    <p class="layui-text layui-word-aux">4. 若充值当中出现任何疑问，请联系QQ：<a target="_blank"
-                                                                                 href="http://wpa.qq.com/msgrd?v=3&amp;uin=876686736&amp;site=qq&amp;menu=yes">876686736</a>。
+                    <p class="layui-text layui-word-aux">4. 若充值当中出现任何疑问，请qq联系：<a target="_blank"
+                                                                                 href="http://wpa.qq.com/msgrd?v=3&amp;uin=3285552556&amp;site=qq&amp;menu=yes">3285552556</a>。
+                    </p>
+                </div>
+            </div>-->
+            <div class="layui-tab-item layui-show animated fadeIn">
+                <div class="layui-row">
+                    <div class="layui-col-xs4">
+                        <img style="width: 150px;" src="/static/assets/img/zhifubao.png">
+                    </div>
+                    <div class="layui-col-xs8">请使用<span style="color: #F44336;">【<b>支付宝</b>】</span>扫码。
+                        <p class="layui-mt15"><b>1.扫码支付时请<span style="color: #F44336;">备注用户名！</span></b></p>
+                        <p class="layui-mt15"><b>2.扫码支付成功后一定要点击<span style="color: #F44336;">【<b >确认支付</b>】</span></b></p>
+                    </div>
+                    <div class="layui-col-xs8">
+                        <button id="confirm" type="button" style="margin-top: 60px !important; left: 184px;position: absolute;" class="layui-btn layui-btn-sm layui-show-md-inline-block layui-hide-sm layui-hide-xs" onclick="charge(0);">确认支付</button>
+                    </div>
+                </div>
+                <div class="layui-row layui-mt20" style="font-style: italic;">
+                    <p class="layui-text layui-word-aux">1. 特别注意：充值成功一般十分钟内会到账，<span style="color: #F44336;">请十分钟后重新登录。</span></p>
+                    <p class="layui-text layui-word-aux">2. 特别注意：<span style="color: #F44336;">没有付款请勿点击确认支付，若次数过多可能会封号</span></p>
+                    <p class="layui-text layui-word-aux">3. 若充值当中出现任何疑问，请qq联系：<a target="_blank"
+                                                                                  href="http://wpa.qq.com/msgrd?v=3&amp;uin=3285552556&amp;site=qq&amp;menu=yes">3285552556</a>。
                     </p>
                 </div>
             </div>
             <div class="layui-tab-item animated fadeIn">
                 <div class="layui-row">
-                    <div class="layui-col-xs4">
-                        <img style="width: 150px;" src="/static/assets/img/noqrcode.jpg">
-                    </div>
-                    <div class="layui-col-xs8">请使用<span style="color: #F44336;">【<b>支付宝</b>】</span>扫码。
-                        <p class="layui-mt15"><b>注：支付宝扫码付款需要等待确认（最快30秒，最慢不会超过2分钟）。</b></p>
-                        <p class="layui-mt15">待确认完毕30秒之内硬币就会到账。</p>
+                    <!--<div class="layui-col-xs4">
+                        <img style="width: 150px;" src="/static/assets/img/zhifubao1.png">
+                    </div>-->
+                    <div class="layui-col-xs8">需花费50硬币兑换，<span style="color: #F44336;cursor: pointer">【<b onclick="charge(1);">点我兑换</b>】</span>。
+                        <p class="layui-mt15"><b>注：1.硬币兑换成功后，请重新登录。</b></p>
                     </div>
                 </div>
                 <div class="layui-row layui-mt20" style="font-style: italic;">
-                    <p class="layui-text layui-word-aux">1. 特别注意：此付款方式为直接转账，请悉知。</p>
-                    <p class="layui-text layui-word-aux">2. 硬币兑换比：1 RMB = 20(10+10) 硬币，10硬币为微信充值额外奖励。</p>
-                    <p class="layui-text layui-word-aux">3. 转账中出现的小数一律视为舍去，如：29.3取29，30.8取30。</p>
-                    <p class="layui-text layui-word-aux">4. 若充值当中出现任何疑问，请联系QQ：<a target="_blank"
-                                                                                 href="http://wpa.qq.com/msgrd?v=3&amp;uin=876686736&amp;site=qq&amp;menu=yes">876686736</a>。
+                    <p class="layui-text layui-word-aux">2. 若充值当中出现任何疑问，请qq联系：<a target="_blank"
+                                                                                 href="http://wpa.qq.com/msgrd?v=3&amp;uin=3285552556&amp;site=qq&amp;menu=yes">3285552556</a>。
                     </p>
                 </div>
             </div>
-            <div class="layui-tab-item animated fadeIn"><b>即将开放...</b></div>
+            <!--<div class="layui-tab-item animated fadeIn"><b>即将开放...</b></div>-->
         </div>
+        <div></div>
     </div>
 
 </div>
@@ -367,6 +420,30 @@
         });
 
     });
+
+
+    //购买会员
+    var charge = function(type){
+        var json1 = {'userId':'[[${nbv5su.id}]]','type':type};
+        $.ajax({
+            type: "POST",
+            url: "/vip/token",
+            contentType: 'application/json',
+            data: JSON.stringify(json1),
+            dataType: 'json',
+            success: function(msg){
+                if (msg.code == 0){
+                    alert(msg.message);
+                    window.location.href = "/ubs/token/index";
+                }else{
+                    alert( msg.message );
+                }
+            },
+            error: function(msg){
+                alert(msg);
+            }
+        });
+    }
 </script>
 </body>
 </html>

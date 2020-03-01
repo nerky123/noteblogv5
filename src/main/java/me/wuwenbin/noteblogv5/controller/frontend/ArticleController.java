@@ -8,18 +8,22 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.wuwenbin.noteblogv5.constant.DictGroup;
 import me.wuwenbin.noteblogv5.constant.OperateType;
+import me.wuwenbin.noteblogv5.constant.RoleEnum;
 import me.wuwenbin.noteblogv5.controller.common.BaseController;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.bo.CommentBo;
 import me.wuwenbin.noteblogv5.model.entity.Article;
 import me.wuwenbin.noteblogv5.model.entity.User;
 import me.wuwenbin.noteblogv5.model.entity.UserCoinRecord;
+import me.wuwenbin.noteblogv5.model.entity.Vip;
 import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.ArticleService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import me.wuwenbin.noteblogv5.service.interfaces.dict.DictService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
+import me.wuwenbin.noteblogv5.service.interfaces.vip.VipService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +48,8 @@ public class ArticleController extends BaseController {
     private final CommentService commentService;
     private final HideService hideService;
     private final UserCoinRecordService userCoinRecordService;
+    @Autowired
+    private VipService vipService;
 
     public ArticleController(ArticleService articleService, DictService dictService,
                              UserService userService, CommentService commentService,
@@ -67,6 +73,18 @@ public class ArticleController extends BaseController {
             return "redirect:/";
         }
         articleService.updateViewsById(aId);
+        if(article.getFlag() == 1){
+            User sessionUser = getSessionUser(request);
+            if(sessionUser == null){
+                return "redirect:/login?redirectUrl="+request.getRequestURI();
+            }
+            if (sessionUser.getRole() != RoleEnum.ADMIN){
+                Vip vip = vipService.selectByUserId(sessionUser.getId());
+                if (vip == null || vip.getState() != 1){
+                    return "/error/not_vip";
+                }
+            }
+        }
 
         model.addAttribute("author", userService.getById(article.getAuthorId()).getNickname());
 

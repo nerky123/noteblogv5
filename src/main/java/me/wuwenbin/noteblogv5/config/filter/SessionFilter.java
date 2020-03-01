@@ -58,11 +58,13 @@ public class SessionFilter extends BaseController implements HandlerInterceptor 
             }
         }
 
-        boolean develop = NbUtils.getBean(Environment.class).getProperty(DEVELOP_KEY, Boolean.class, true);
-        String ipAddr = NbUtils.getRemoteAddress(request);
+
         String statistics = paramService.findByName(NBV5.STATISTICS_ONOFF).getValue();
+        //查看是否开启统计
         boolean openAnalysis = Integer.parseInt(statistics) == 1;
         if (openAnalysis) {
+            String ipAddr = NbUtils.getRemoteAddress(request);
+            boolean develop = NbUtils.getBean(Environment.class).getProperty(DEVELOP_KEY, Boolean.class, true);
             Log logger = Log.builder()
                     .ipAddr(ipAddr)
                     .ipInfo(develop ? "开发中内网地址" : NbUtils.getIpInfo(ipAddr).getAddress())

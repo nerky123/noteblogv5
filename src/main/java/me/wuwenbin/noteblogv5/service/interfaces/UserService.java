@@ -1,7 +1,11 @@
 package me.wuwenbin.noteblogv5.service.interfaces;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.User1;
+
+import java.util.List;
 
 /**
  * created by Wuwenbin on 2019-08-14 at 15:29
@@ -61,4 +65,6 @@ public interface UserService extends IService<User> {
      * @param nickname
      */
     int userRegister(String username, String password, String email, String nickname);
+
+    List<User1> selectByPage(Page<User1> page, String username, String nickname);
 }

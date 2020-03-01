@@ -45,6 +45,11 @@
            d.enable== true ? 'checked' : '' }}>
 </script>
 
+<script type="text/html" id="vipStateTpl">
+    <input type="checkbox" name="vipState" value="{{d.id}}" lay-skin="switch" lay-text="激活|未激活" lay-filter="vipState" {{
+           d.vipState== true ? 'checked' : '' }}>
+</script>
+
 
 <script src="/static/plugins/layui/layui.js"></script>
 <script src="/static/assets/js/noteblogv5.js"></script>

@@ -66,8 +66,8 @@ public class BeansConfig {
 
 
     /**
-     * 添加全局拦截的error移除处理类
-     *
+     * 添加全局拦截的error异常处理类
+     *      *
      * @return
      */
     @Bean
@@ -96,6 +96,7 @@ public class BeansConfig {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         String temp = System.getProperty("user.dir");
         factory.setLocation(temp);
+        factory.setMaxFileSize("10MB");
         return factory.createMultipartConfig();
     }
 

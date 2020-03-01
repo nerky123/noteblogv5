@@ -119,17 +119,17 @@ public class UserController extends BaseController {
 
     @PostMapping("/registration")
     @ResponseBody
-    public ResultBean doRegister(String nbv5regUsername, String nbv5regPassword, String nbv5regMail, String mailCode, String nbv5regNickname) {
+    public ResultBean doRegister(String nbv5regUsername, String nbv5regPassword, String nbv5regMail,/* String mailCode,*/ String nbv5regNickname) {
         int min = 4, minPass = 6, max = 20;
         if (StringUtils.isEmpty(nbv5regUsername) || StringUtils.isEmpty(nbv5regPassword)
-                || StringUtils.isEmpty(mailCode) || StringUtils.isEmpty(nbv5regNickname)) {
+                /*|| StringUtils.isEmpty(mailCode) */|| StringUtils.isEmpty(nbv5regNickname)) {
             return ResultBean.error("所填信息不完整！");
         } else if (nbv5regUsername.length() < min || nbv5regUsername.length() > max
                 || nbv5regPassword.length() < minPass) {
             return ResultBean.error("所填信息不规范！");
         } else {
-            String sessionMailCode = codeCache.get(nbv5regMail + "-" + NBV5.MAIL_CODE_KEY);
-            if (mailCode.equalsIgnoreCase(sessionMailCode)) {
+            /*String sessionMailCode = codeCache.get(nbv5regMail + "-" + NBV5.MAIL_CODE_KEY);
+            if (mailCode.equalsIgnoreCase(sessionMailCode)) {*/
                 if (userService.countEmailAndUsername(nbv5regMail, nbv5regUsername) == 0) {
                     try {
                         int c = userService.userRegister(nbv5regUsername, nbv5regPassword, nbv5regMail, nbv5regNickname);
@@ -140,9 +140,9 @@ public class UserController extends BaseController {
                 } else {
                     return ResultBean.error("已存在此邮箱/账号，请勿重复注册！");
                 }
-            } else {
+            /*} else {
                 return ResultBean.error("注册失败，邮箱验证码错误或过期！");
-            }
+            }*/
         }
     }
 

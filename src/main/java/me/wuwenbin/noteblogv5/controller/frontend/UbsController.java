@@ -20,12 +20,15 @@ import me.wuwenbin.noteblogv5.model.bo.HideBo;
 import me.wuwenbin.noteblogv5.model.bo.ReplyBo;
 import me.wuwenbin.noteblogv5.model.entity.Upload;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.Vip;
 import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
 import me.wuwenbin.noteblogv5.service.interfaces.content.HideService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.CommentService;
 import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
+import me.wuwenbin.noteblogv5.service.interfaces.vip.VipService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +45,8 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/ubs/token")
 public class UbsController extends BaseController {
+    @Autowired
+    private VipService vipService;
 
     private final CommentService commentService;
     private final HideService hideService;
@@ -65,6 +70,10 @@ public class UbsController extends BaseController {
         if ("index".equalsIgnoreCase(page)) {
             User su = getSessionUser(request);
             model.addAttribute("signed", userCoinRecordService.todayIsSigned(su.getId()));
+            Vip vip = vipService.selectByUserId(su.getId());
+            if (vip!=null && vip.getState()==1){
+                model.addAttribute("vip",1);
+            }
         }
         return "frontend/ubs/" + page;
     }

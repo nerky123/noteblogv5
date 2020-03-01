@@ -19,6 +19,7 @@ import me.wuwenbin.noteblogv5.service.interfaces.mail.MailService;
 import me.wuwenbin.noteblogv5.service.interfaces.msg.MessageService;
 import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,6 +43,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/message")
 public class MessageController extends BaseController {
+    private static final String regEx = "[\\u4e00-\\u9fa5]";
 
     private final ParamService paramService;
     private final DictService dictService;
@@ -78,6 +81,13 @@ public class MessageController extends BaseController {
     @PostMapping("/token/sub")
     @ResponseBody
     public ResultBean sub(@Valid Message message, BindingResult bindingResult, HttpServletRequest request) {
+        String comment = message.getComment();
+        String term = comment.replaceAll(regEx, "aa");
+        int count = term.length()-comment.length();
+        if (count>150){
+            return ResultBean.error("字数限制在150字以内哦~");
+        }
+
         Param messageOnoff = paramService.findByName("message_onoff");
         if ("1".equals(messageOnoff.getValue())) {
             if (!bindingResult.hasErrors()) {

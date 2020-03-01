@@ -159,6 +159,12 @@
                 <div class="layui-card-header">
                     标签
                 </div>
+                <select xm-select="tags1" xm-select-search="" xm-select-max="3">
+                    <option value="">请选择分类，可多选</option>
+                    <option th:each="cate : ${biaoqianList}"
+                            th:value="${cate.name}"
+                            th:text="${cate.name}"></option>
+                </select>
                 <div class="layui-card-body">
                     <div class="tags" id="tags">
                         <input type="text" name="" id="inputTags" placeholder="输入标签名称，回车生成标签"

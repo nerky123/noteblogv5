@@ -141,10 +141,7 @@ public class ParamServiceImpl extends ServiceImpl<ParamMapper, Param> implements
     }
 
     @Override
-    public long calcRunningDays() {
-        String initDateStr = paramMapper.selectOne(Wrappers.<Param>query().eq("name", "system_init_datetime")).getValue();
-        Date initDate = DateUtil.parse(initDateStr);
-        Date now = DateUtil.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return DateUtil.between(initDate, now, DateUnit.DAY);
+    public String calcRunningDays() {
+        return paramMapper.selectOne(Wrappers.<Param>query().eq("name", "system_init_datetime")).getValue();
     }
 }

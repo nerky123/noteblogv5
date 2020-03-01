@@ -1,0 +1,38 @@
+#是否是开发中
+app:
+  develop: false
+  upload:
+    #上传文件路径，需要以file:打头
+    #windows下使用磁盘符开头，Linux和MacOs使用/开头，以/结尾，两者都是绝对路径
+    # eg：file:F://upload/noteblogv5/（windows下），file:/home/noteblogv5/（Linux，MacOs下）
+    path: file:E://aaa/uploadv5/
+
+
+spring:
+  datasource:
+    username: root
+    password: root123
+    url: jdbc:mysql://localhost:3306/myblog?useUnicode=true&characterEncoding=utf-8&useSSL=false
+
+
+logging:
+  level:
+    me.wuwenbin.noteblogv5.mapper: info
+
+
+server:
+  #若启用ssl配置，此项则表示https端口，否则为http端口，
+  https:
+    port: 443
+  ssl:
+    #网站是否启用ssl，默认false（不启用）
+    enabled: false
+    #启用ssl之后配置证书，证书的绝对路径，需要以file:打头
+    # eg：file:F://nbv5/certificate.jks（windows下），file:/home/nbv5/certificate.jks（Linux，MacOs下）
+    key-store: file:C:\Users\73666\Desktop\certificate.jks
+    #证书密码
+    key-password: jT7R5f2d
+    #证书类型，默认jks，如需要ssl配置，放开此配置项属性即可
+    key-store-type: JKS
+  #项目监听的http的端口号，默认80，若启用ssl配置，则配置此项监听此端口转向https，不启用则此配置项无效
+  port: 8080

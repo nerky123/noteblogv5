@@ -19,8 +19,8 @@ import org.springframework.core.env.Environment;
 public class SslConfig {
 
     private static final String SSL_ENABLED = "server.ssl.enabled";
-    private static final String SERVER_HTTP_PORT = "server.http.port";
-    private static final String SERVER_HTTPS_PORT = "server.port";
+    private static final String SERVER_HTTP_PORT = "server.port";
+    private static final String SERVER_HTTPS_PORT = "server.https.port";
     private final Environment environment;
 
 

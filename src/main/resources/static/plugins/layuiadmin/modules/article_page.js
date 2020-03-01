@@ -46,6 +46,7 @@ layui.define(["form", "table", "element"], function (exports) {
                 }
             }
             , {field: 'views', title: '浏览数', width: 90, sort: true,}
+            , {title: '会员', width : 100, align: 'center', toolbar: '#flagTpl'}
             , {title: '评论', width: 100, align: 'center', toolbar: '#commentedTpl'}
             , {title: '打赏', width: 100, align: 'center', toolbar: '#appreciableTpl'}
             , {field: 'top', title: '置顶', width: 110, templet: '#topTpl'}
@@ -106,6 +107,14 @@ layui.define(["form", "table", "element"], function (exports) {
     form.on('switch(commented)', function (obj) {
         var objId = this.value;
         NBV5.post("/management/article/update/commented", {
+            id: objId,
+            status: obj.elem.checked
+        });
+    });
+
+    form.on('switch(flag)', function (obj) {
+        var objId = this.value;
+        NBV5.post("/management/article/update/flag", {
             id: objId,
             status: obj.elem.checked
         });

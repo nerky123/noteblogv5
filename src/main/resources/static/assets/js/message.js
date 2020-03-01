@@ -86,8 +86,9 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="info-panel">' +
         '<div class="layui-card-body text-center" style="padding: 20px;">' +
-        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
+        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
         '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
+        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '<hr>' +
         '{{# if(d.nbv5su != null){}}' +
         '<p>当前登录: <a href="/login?redirectUrl=/ubs/token/index" class="no-hover"><img src="{{d.nbv5su.avatar}}" style="width: 30px;height: 30px;" class="layui-circle"></a>' +
@@ -96,11 +97,10 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '{{#}else{}}' +
         '<p class="layui-text">未检测到用户，<a href="/login?redirectUrl=/ubs/token/index" class="no-hover" style="color: #F44336;">点我</a>登录</p>' +
         '{{#}}}' +
-        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '</div>' +
         '</div>' +
 
-        '<div class="layui-card" id="search-panel">' +
+      /*  '<div class="layui-card" id="search-panel">' +
         '<div class="layui-card-body">' +
         ' <p class="title">搜索 <small style="float: right;">' +
         '   <a style="cursor: pointer;" onclick="aboutSearch();" target="_blank"><i>关于 <i class="fa fa-info-circle"></i></i></a></small> </p>' +
@@ -129,7 +129,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '<a href="{{linkSplit(item.name,1)}}" target="_blank" class="layui-text" style="margin-right: 10px;">{{ linkSplit(item.name,0) }}</a>' +
         '{{# });  }}' +
         '</div>' +
-        '</div>' +
+        '</div>' +*/
 
 
         '</div>' +
@@ -291,6 +291,8 @@ function submitComment(e) {
             comment = replyId !== null && replyId !== "" ? "回复@<span style='color: #00c4ff;'>" + nickname + ")</span>: " + comment : comment;
             if (comment === "") {
                 layer.msg("请填写你想发表的内容！");
+            }else if(comment.length >150){
+                layer.msg("字数限制在150字以内哦~");
             } else {
                 $.ajax({
                     url: "/message/token/sub",

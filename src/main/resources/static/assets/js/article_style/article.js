@@ -19,8 +19,9 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="info-panel">' +
         '<div class="layui-card-body text-center" style="padding: 20px;">' +
-        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" class="layui-circle" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
+        '<a class="no-hover" href="/login" target="_blank"><img src="{{d.settings.info_label_logo}}" style="max-width: 150px;" alt="{{d.settings.info_label_nickname}}"></a>' +
         '<p class="layui-text nbv5-font" style="margin: 10px;color: #F44336;">Master：<b>{{d.settings.info_label_nickname}}</b></p>' +
+        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '<hr>' +
         '{{# if(d.nbv5su != null){}}' +
         '<p>当前登录: <a href="/login?redirectUrl=/ubs/token/index" class="no-hover"><img src="{{d.nbv5su.avatar}}" style="width: 30px;height: 30px;" class="layui-circle"></a>' +
@@ -29,13 +30,12 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '{{#}else{}}' +
         '<p class="layui-text">未检测到用户，<a href="/login?redirectUrl=/ubs/token/index" class="no-hover" style="color: #F44336;">点我</a>登录</p>' +
         '{{#}}}' +
-        '<div class="layui-mt10">{{d.settings.info_label_text}}</div>' +
         '</div>' +
         '</div>' +
 
         '<div class="layui-card" id="search-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">搜索 <small style="float: right;">' +
+        ' <p class="title"  style="font-size: 18px;"><strong>搜索</strong> <small style="float: right;">' +
         '   <a style="cursor: pointer;" onclick="aboutSearch();" target="_blank"><i>关于 <i class="fa fa-info-circle"></i></i></a></small> </p>' +
         '       <hr>' +
         '       <input name="words" onkeypress="searchAll(event);"' +
@@ -45,7 +45,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="cate-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">分类 </p>' +
+        ' <p class="title"  style="font-size: 18px;"><strong>分类</strong> </p>' +
         ' <hr>' +
         ' <div class="layui-btn-container">' +
         '{{# layui.each(d.cateList, function(index, item){ }}' +
@@ -57,7 +57,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="article-random-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">随便看看 </p>' +
+        ' <p class="title"  style="font-size: 18px;"><strong>随便看看</strong> </p>' +
         ' <hr>' +
         '{{# layui.each(d.randomArticles, function(index, item){ }}' +
         '<blockquote class="layui-elem-quote" style="padding: 5px 10px;background: #f8f8f8;">' +
@@ -72,7 +72,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card layui-tags" id="tag-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">标签墙</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>标签墙</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.tagList, function(index, item){ }}' +
         '<span class="layui-badge-rim"><a href="/" target="_blank">{{item.name}} ({{item.cnt}})</a></span>' +
@@ -82,7 +82,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card layui-tags" id="link-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">友情链接</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>友情链接</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.linkList, function(index, item){ }}' +
         '<a href="{{linkSplit(item.name,1)}}" target="_blank" class="layui-text" style="margin-right: 10px;">{{ linkSplit(item.name,0) }}</a>' +
@@ -131,7 +131,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
         '       <div class="layui-col-md12 text-center article-meta">' +
         '             <span><i class="fa fa-clock-o"></i> {{nbv5front.wholeCnDate(d.articleObj.post)}}</span>' +
         '              <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">{{d.author}}</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>' +
-        '              <span><i class="fa fa-comment-o"></i> 666</span>' +
+        '              <span><i class="fa fa-comment-o"></i> {{d.comments.records.length}}</span>' +
         '              <span><i class="fa fa-eye"></i> {{d.articleObj.views}}</span>' +
         '        </div>' +
         '      </div>' +
@@ -251,7 +251,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="search-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">搜索 <small style="float: right;">' +
+        ' <p class="title"  style="font-size: 18px;"><strong>搜索</strong> <small style="float: right;">' +
         '   <a style="cursor: pointer;" onclick="aboutSearch();" target="_blank"><i>关于 <i class="fa fa-info-circle"></i></i></a></small> </p>' +
         '       <hr>' +
         '       <input name="words" onkeypress="searchAll(event);"' +
@@ -261,7 +261,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="cate-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">分类 </p>' +
+        ' <p class="title"  style="font-size: 18px;"><strong>分类</strong> </p>' +
         ' <hr>' +
         ' <div class="layui-btn-container">' +
         '{{# layui.each(d.cateList, function(index, item){ }}' +
@@ -273,7 +273,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card" id="article-random-panel">' +
         '<div class="layui-card-body">' +
-        ' <p class="title">随便看看 </p>' +
+        ' <p class="title"  style="font-size: 18px;"><strong>随便看看</strong> </p>' +
         ' <hr>' +
         '{{# layui.each(d.randomArticles, function(index, item){ }}' +
         '<blockquote class="layui-elem-quote" style="padding: 5px 10px;background: #f8f8f8;">' +
@@ -288,7 +288,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card layui-tags" id="tag-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">标签墙</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>标签墙</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.tagList, function(index, item){ }}' +
         '<span class="layui-badge-rim"><a href="/" target="_blank">{{item.name}} ({{item.cnt}})</a></span>' +
@@ -298,7 +298,7 @@ layui.define(['laytpl', 'timeago', 'laypage'], function (exports) {
 
         '<div class="layui-card layui-tags" id="link-panel">' +
         '<div class="layui-card-body">' +
-        '<p class="title">友情链接</p>' +
+        '<p class="title"  style="font-size: 18px;"><strong>友情链接</strong></p>' +
         '<hr>' +
         '{{# layui.each(d.linkList, function(index, item){ }}' +
         '<a href="{{linkSplit(item.name,1)}}" target="_blank" class="layui-text" style="margin-right: 10px;">{{ linkSplit(item.name,0) }}</a>' +
@@ -527,6 +527,8 @@ function submitComment(e) {
             comment = replyId !== null && replyId !== "" ? "回复@<span style='color: #00c4ff;'>" + nickname + ")</span>: " + comment : comment;
             if (comment === "") {
                 layer.msg("请填写你想发表的内容！");
+            }else if(comment.length >150){
+                layer.msg("字数限制在150字以内哦~");
             } else {
                 $.ajax({
                     url: "/token/comment/sub",

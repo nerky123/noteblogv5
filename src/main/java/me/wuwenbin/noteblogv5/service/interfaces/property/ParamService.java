@@ -72,7 +72,7 @@ public interface ParamService extends IService<Param> {
      *
      * @return
      */
-    long calcRunningDays();
+    String calcRunningDays();
 
     /**
      * 默认更新操作

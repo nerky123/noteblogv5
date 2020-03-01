@@ -28,7 +28,7 @@ public class Article implements Serializable {
     @Builder.Default
     private Boolean appreciable = Boolean.FALSE;
     @Builder.Default
-    private Integer approveCnt = randomInt(6, 169);
+    private Integer approveCnt = randomInt(0, 2);
     private Long authorId;
     @Builder.Default
     private Boolean commented = Boolean.FALSE;
@@ -53,7 +53,10 @@ public class Article implements Serializable {
     private Integer top = 0;
     private String urlSeq;
     @Builder.Default
-    private Integer views = randomInt(666, 1609);
+    private Integer views = randomInt(1, 10);
+
+    private Integer flag;
+
 
 
 }

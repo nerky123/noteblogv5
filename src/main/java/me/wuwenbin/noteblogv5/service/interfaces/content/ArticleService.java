@@ -45,7 +45,7 @@ public interface ArticleService extends IService<Article> {
     String HIDE_PURCHASE_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容需购买（{price}硬币），" +
             "<a class=\"layui-text\" onclick=\"purchaseContent('{articleId}','{hideId}');\">点我购买</a></blockquote>";
     String HIDE_LOGIN_REPLACEMENT = "<blockquote data-htype=\"{hideType}\" data-hid=\"{hideId}\" class=\"layui-elem-quote\">此处内容登录之后可见，" +
-            "<a class=\"layui-text\" href=\"/login?t={currentTimes}\" target=\"_blank\">点我登录</a></blockquote>";
+            "<a class=\"layui-text\" href=\"/login?redirectUrl=/article/{articleId}\" target=\"_blank\">点我登录</a></blockquote>";
 
 
     /**
@@ -71,7 +71,7 @@ public interface ArticleService extends IService<Article> {
     int updateArticle(Article article, List<Integer> cateIds, List<String> tagNames) throws PinyinException;
 
     /**
-     * 统计素有文章的总字数
+     * 统计所有文章的总字数
      *
      * @return
      */
@@ -119,9 +119,15 @@ public interface ArticleService extends IService<Article> {
             File f = new File(imgSrc);
             ImgUtil.scale(f, f, 500, 312, new Color(238, 238, 238));
         }
-        article.setPost(new Date());
-        article.setViews(randomInt(666, 1609));
-        article.setApproveCnt(randomInt(6, 169));
+        if (StringUtils.isEmpty(article.getPost())){
+            article.setPost(new Date());
+        }
+        if (StringUtils.isEmpty(article.getViews())){
+            article.setViews(randomInt(1,10));
+        }
+        if (StringUtils.isEmpty(article.getApproveCnt())){
+            article.setApproveCnt(randomInt(0,2));
+        }
         if (StringUtils.isEmpty(article.getAppreciable())) {
             article.setAppreciable(false);
         }
@@ -211,6 +217,7 @@ public interface ArticleService extends IService<Article> {
             String hideId = IdUtil.objectId();
             hideMap.put("hideId", hideId);
             hideMap.put("hideType", HIDE_LOGIN);
+            hideMap.put("articleId", article.getId());
             hideMap.put("currentTimes", System.currentTimeMillis());
             String replacement = StrUtil.format(HIDE_LOGIN_REPLACEMENT, hideMap);
             contentHtml = contentHtml.replace(html, replacement);
@@ -348,4 +355,6 @@ public interface ArticleService extends IService<Article> {
             jdbcTemplate.update("insert into refer_article_tag (article_id, tag_id) values (?,?);", articleId, tagId);
         }
     }
+
+    List<Map<String, String>> getAllInfo(String substring);
 }

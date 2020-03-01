@@ -3,8 +3,10 @@ package me.wuwenbin.noteblogv5.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.wuwenbin.noteblogv5.annotation.Mapper;
 import me.wuwenbin.noteblogv5.model.entity.Article;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuwen
@@ -55,4 +57,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @return
      */
     int updateApproveCntById(String articleId);
+
+    List<Map<String, String>> getAllInfo(@Param("ids") String substring);
 }

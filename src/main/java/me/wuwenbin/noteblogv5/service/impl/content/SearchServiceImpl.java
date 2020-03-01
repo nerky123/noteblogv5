@@ -30,7 +30,7 @@ public class SearchServiceImpl implements SearchService {
     public Page<SearchBo> searchWithWords(String words, int pageNo) {
         String baseSql =
                 "SELECT a.id,'article' AS type, a.title, a.summary AS  res_content, a.post " +
-                        "FROM nb_article a WHERE a.title LIKE  CONCAT('%',?,'%') OR a.text_content LIKE  CONCAT('%',?,'%') " +
+                        "FROM nb_article a WHERE a.draft != 1 and (a.title LIKE  CONCAT('%',?,'%') OR a.text_content LIKE  CONCAT('%',?,'%'))" +
                         "UNION " +
                         "SELECT n.id, 'note' AS type, n.title, n.clear_content AS content, n.post " +
                         "FROM nb_note n WHERE n.title LIKE  CONCAT('%',?,'%') OR n.clear_content LIKE CONCAT('%',?,'%') " +
@@ -48,10 +48,10 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Page<SearchArticleBo> searchWithDict(String dictGroup, String dictName, int pageNo) {
         String baseSql =
-                "SELECT a.*,'article' AS type,a.text_content AS res_content FROM nb_article a WHERE a.id IN " +
+                "SELECT a.*,'article' AS type,a.summary AS res_content FROM nb_article a WHERE a.id IN " +
                         "(SELECT {} FROM {} WHERE {} IN " +
                         "(SELECT d.id FROM nb_dict d WHERE d.name LIKE CONCAT('%',?,'%') AND `group` = '{}') " +
-                        ")";
+                        ") order by a.post desc";
         if (dictGroup.equalsIgnoreCase(DictGroup.GROUP_CATE)) {
             baseSql = StrUtil.format(baseSql,
                     "rac.article_id", "refer_article_cate rac", "rac.cate_id", DictGroup.GROUP_CATE);

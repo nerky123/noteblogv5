@@ -9,10 +9,17 @@ import me.wuwenbin.noteblogv5.controller.common.BaseController;
 import me.wuwenbin.noteblogv5.model.LayuiTable;
 import me.wuwenbin.noteblogv5.model.ResultBean;
 import me.wuwenbin.noteblogv5.model.entity.User;
+import me.wuwenbin.noteblogv5.model.entity.User1;
+import me.wuwenbin.noteblogv5.model.entity.Vip;
 import me.wuwenbin.noteblogv5.service.interfaces.UserCoinRecordService;
 import me.wuwenbin.noteblogv5.service.interfaces.UserService;
+import me.wuwenbin.noteblogv5.service.interfaces.vip.VipService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuwen
@@ -23,6 +30,8 @@ public class AdminUserController extends BaseController {
 
     private final UserService userService;
     private final UserCoinRecordService userCoinRecordService;
+    @Autowired
+    private VipService vipService;
 
     public AdminUserController(UserService userService, UserCoinRecordService userCoinRecordService) {
         this.userService = userService;
@@ -36,16 +45,17 @@ public class AdminUserController extends BaseController {
 
     @PostMapping("/list")
     @ResponseBody
-    public LayuiTable<User> userLayuiTable(Page<User> page, String username,
+    public LayuiTable<User1> userLayuiTable(Page<User1> page, String username,
                                            String nickname, String sort, String order) {
         addPageOrder(page, order, sort);
-        IPage<User> userPage = userService.page(page,
+        /*IPage<User> userPage = userService.page(page,
                 Wrappers.<User>query()
                         .like(StrUtil.isNotEmpty(username), "username", username)
                         .or().like(StrUtil.isNotEmpty(nickname), "nickname", nickname)
                         .ne("role", RoleEnum.ADMIN.getValue())
-        );
-        return new LayuiTable<>(userPage.getTotal(), userPage.getRecords());
+        );*/
+        page.setRecords(userService.selectByPage(page, username, nickname));
+        return new LayuiTable<>(page.getTotal(), page.getRecords());
     }
 
     @RequestMapping("/update")
@@ -53,6 +63,33 @@ public class AdminUserController extends BaseController {
     public ResultBean update(@RequestParam("id") Long id, boolean enable) {
         boolean res = userService.update(Wrappers.<User>update().set("enable", enable).eq("id", id));
         return handle(res, "状态修改成功！", "状态修改失败！");
+    }
+
+    //更新vip状态
+    @RequestMapping("/updateVip")
+    @ResponseBody
+    public ResultBean updateVip(@RequestParam("id") Long id, boolean enable) {
+        if (enable){
+            Vip vip1 = vipService.selectByUserId(id);
+            if (vip1 == null){
+                Vip vip = new Vip();
+                vip.setUserId(id);
+                vip.setState(1);
+                vip.setCount(0);
+                vip.setSource(2);
+                return handle(vipService.insert(vip) == 1?true:false, "状态修改成功！", "状态修改失败！");
+            }else{
+                Vip vip = new Vip();
+                vip.setUserId(id);
+                vip.setState(1);
+                return handle(vipService.updateByUserId(vip) == 1?true:false, "状态修改成功！", "状态修改失败！");
+            }
+        }else{
+            Vip vip = new Vip();
+            vip.setState(-1);
+            vip.setUserId(id);
+            return handle(vipService.updateByUserId(vip) == 1?true:false, "状态修改成功！", "状态修改失败！");
+        }
     }
 
     @RequestMapping("/update/nickname")

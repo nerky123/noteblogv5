@@ -3,9 +3,9 @@ spring:
     cache: false
     prefix: classpath:/templates/
   profiles:
-    active: noteblogv5
+    active: dev
   application:
-    name: NoteBlog
+    name: noteBlog
   resources:
     static-locations: classpath:/static/
   jackson:
@@ -13,7 +13,7 @@ spring:
     time-zone: GMT+8
   servlet:
     multipart:
-      max-file-size: 20MB
+      max-file-size: 10MB
   cache:
     #使用默认的ConcurrentMap
     type: simple
@@ -23,9 +23,23 @@ spring:
       force: true
       charset: utf-8
       enabled: true
-logging:
-  level:
-    me.wuwenbin.noteblogv5.mapper: DEBUG
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: -1
+      filters: stat,wall,slf4j
 mybatis-plus:
   global-config:
     db-config:
@@ -38,3 +52,6 @@ mybatis-plus:
 server:
   tomcat:
     uri-encoding: UTF-8
+
+druidUsername: root
+druidPassword: YXWyxw110110

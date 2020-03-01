@@ -4,6 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.wuwenbin.noteblogv5.mapper.UserMapper">
 
+    <resultMap id="user" type="me.wuwenbin.noteblogv5.model.entity.User1">
+        <result column="id" property="id"></result>
+        <result column="role" property="role"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="create_date" property="createDate"></result>
+        <result column="email" property="email"></result>
+        <result column="enable" property="enable"></result>
+        <result column="nickname" property="nickname"></result>
+        <result column="password" property="password"></result>
+        <result column="open_id" property="openId"></result>
+        <result column="username" property="username"></result>
+        <result column="remain_coin" property="remainCoin"></result>
+        <result column="vip_count" property="vipCount"></result>
+        <result column="vip_state" property="vipState"></result>
+        <result column="vip_time" property="vipTime"></result>
+    </resultMap>
+
     <select id="findTodayUser" resultType="long">
         select count(1)
         from nb_user
@@ -22,5 +39,24 @@
         set remain_coin = #{remainCoin}
         where id = #{userId}
     </update>
+
+    <select id="selectByPage" resultMap="user">
+        SELECT
+            t1.*,
+            t2.count vip_count,
+            t2.create_time AS vip_time,
+            t2.state vip_state
+        FROM
+            nb_user t1
+            LEFT JOIN nb_vip t2 ON t1.id = t2.user_id
+        WHERE
+            t1.role != 1
+            <if test="nickname !=null and nickname != ''">
+                AND t1.nickname LIKE #{nickname}
+            </if>
+            <if test="username !=null and username != ''">
+                AND t1.username LIKE #{username}
+            </if>
+    </select>
 
 </mapper>

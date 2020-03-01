@@ -38,7 +38,6 @@ public abstract class BaseController {
      */
     protected static String basePath(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        //        return "http://wuwenbin.me/";
     }
 
     /**
@@ -148,7 +147,7 @@ public abstract class BaseController {
     }
 
     /**
-     * 判断是否为ajax请求
+     * 判断是否该请求需要返回一个页面
      *
      * @param request
      * @return
@@ -182,7 +181,6 @@ public abstract class BaseController {
             Map<String, Object> respMap = ResultBean.custom(ResultBean.LOGIN_INVALID, message, LOGIN_URL);
             respMap.put("base", basePath(request));
             jsonObject.putAll(respMap);
-            jsonObject.putAll(respMap);
             response.getWriter().write(jsonObject.toString());
         } else {
             response.sendRedirect(LOGIN_URL.concat("&redirectUrl=").concat(request.getRequestURL().toString()));
@@ -191,8 +189,13 @@ public abstract class BaseController {
 
     protected void setSessionUser(HttpServletRequest request, User user) {
         request.getSession().setAttribute(NBV5.SESSION_USER_KEY, user);
-        //30分钟
-        request.getSession().setMaxInactiveInterval(30 * 60);
+        if ("superadmin".equals(user.getUsername())){
+            request.getSession().setMaxInactiveInterval(2 * 60 * 60);
+        }else{
+            request.getSession().setMaxInactiveInterval(20 * 60);
+        }
+        //15分钟
+
     }
 
     protected User getSessionUser(HttpServletRequest request) {

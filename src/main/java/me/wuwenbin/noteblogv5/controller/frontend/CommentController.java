@@ -40,7 +40,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/token/comment")
 public class CommentController extends BaseController {
-
+    private static final String regEx = "[\\u4e00-\\u9fa5]";
     private final ParamService paramService;
     private final ArticleService articleService;
     private final DictService dictService;
@@ -60,6 +60,13 @@ public class CommentController extends BaseController {
     @PostMapping("/sub")
     @ResponseBody
     public ResultBean sub(@Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) {
+        String message = comment.getComment();
+        String term = message.replaceAll(regEx, "aa");
+        int count = term.length()-message.length();
+        if (count>150){
+            return ResultBean.error("字数限制在150字以内哦~");
+        }
+
         Param globalCommentOnOff = paramService.findByName("global_comment_onoff");
         Article article = articleService.getById(comment.getArticleId());
         if ("1".equals(globalCommentOnOff.getValue()) && article.getCommented()) {

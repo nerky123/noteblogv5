@@ -21,13 +21,13 @@ layui.define(['form', 'formSelects', 'upload', 'element', 'inputTags', 'admin'],
         layer.alert("最多只能选择3个");
     });
 
-    inputTags.render({
+    /*inputTags.render({
         elem: '#inputTags',
         content: ['笔记博客v5'],
         aldaBtn: false,
         done: function (value) {
         }
-    });
+    });*/
 
     $("#refreshCate").click(function () {
         $.get("/management/dict/cate/list", function (resp) {
@@ -237,6 +237,10 @@ layui.define(['form', 'formSelects', 'upload', 'element', 'inputTags', 'admin'],
             tns.push($(elem).find("em").text())
         });
         data.field.tagNames = tns;
+        var tagsarr = formSelects.value('tags1','val');
+        for(var i = 0;i<tagsarr.length;i++){
+            data.field.tagNames.push(tagsarr[i]);
+        };
         NBV5.post("/management/article/create", data.field);
 
     };
@@ -249,6 +253,12 @@ layui.define(['form', 'formSelects', 'upload', 'element', 'inputTags', 'admin'],
 
     form.on('submit(draftSubmit)', function (data) {
         post(data, true, "保存草稿成功！");
+        return false;
+    });
+
+    form.on('submit(vipPostSubmit)', function (data) {
+        data.field.flag = 1;
+        post(data, false, "发布博文成功！");
         return false;
     });
 

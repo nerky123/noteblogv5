@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuwen
@@ -85,6 +86,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (!CollectionUtils.isEmpty(tagNames)) {
             jdbcTemplate.update("delete from refer_article_tag where article_id = ?", articleId);
             saveArticleTags(articleId, tagNames);
+        }else{
+            jdbcTemplate.update("delete from refer_article_tag where article_id = ?", articleId);
         }
         return affect;
     }
@@ -120,5 +123,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public int updateApproveCntById(String articleId) {
         return articleMapper.updateApproveCntById(articleId);
+    }
+
+
+    @Override
+    public List<Map<String, String>> getAllInfo(String substring) {
+        return articleMapper.getAllInfo(substring);
     }
 }

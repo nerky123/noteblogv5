@@ -1,0 +1,23 @@
+{
+  "id": "1617235",
+  "name": "测试",
+  "font_family": "iconfont",
+  "css_prefix_text": "layui-extend-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2118491",
+      "name": "公益捐款",
+      "font_class": "gongyijuankuan",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "2150388",
+      "name": "会员",
+      "font_class": "member_icon",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    }
+  ]
+}

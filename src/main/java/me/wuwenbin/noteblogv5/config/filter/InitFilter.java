@@ -1,6 +1,5 @@
 package me.wuwenbin.noteblogv5.config.filter;
 
-import me.wuwenbin.noteblogv5.service.interfaces.property.ParamService;
 import me.wuwenbin.noteblogv5.util.NbUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,17 +14,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InitFilter extends HandlerInterceptorAdapter {
 
-    private static final String INIT_SUCCESS = "1";
+    //private static final String INIT_SUCCESS = "1";
     private static final String INIT_URL = "/init";
-    private ParamService paramService = NbUtils.getBean(ParamService.class);
+    private static boolean init_flag = false;
+    //private ParamService paramService = NbUtils.getBean(ParamService.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (NbUtils.noteBlogIsInstalled()) {
-            return true;
-        } else {
-            response.sendRedirect(INIT_URL);
-            return false;
+        if (!init_flag){
+            if (NbUtils.noteBlogIsInstalled()) {
+                init_flag = true;
+            } else {
+                response.sendRedirect(INIT_URL);
+                return false;
+            }
         }
+        return true;
     }
 }

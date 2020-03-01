@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,6 @@ public class HomeController extends BaseController {
         setPageNoSize(page, !NumberUtil.isNumber(p) || NumberUtil.parseInt(p) <= 0 ? 1 : NumberUtil.parseInt(p));
         setPageOrder(page, OrderItem.desc("top"), OrderItem.desc("post"));
         model.addAttribute("indexPage", articleService.page(page, Wrappers.<Article>query().ne("draft", 1)));
-
         String typesetting = MapUtil.getStr(settingsMap, "typesetting");
 
         Map<String, String> articleAuthorNames = page.getRecords().stream()

@@ -124,6 +124,12 @@
                 <div class="layui-card-header">
                     标签
                 </div>
+                <select xm-select="tags1" xm-select-search="" xm-select-max="3">
+                    <option value="">请选择分类，可多选</option>
+                    <option th:each="cate : ${biaoqianList}"
+                            th:value="${cate.name}"
+                            th:text="${cate.name}"></option>
+                </select>
                 <div class="layui-card-body">
                     <div class="tags" id="tags">
                         <input type="text" name="" id="inputTags" placeholder="输入标签名称，回车生成标签"
@@ -146,7 +152,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">评论功能</label>
                         <div class="layui-inline">
-                            <input type="checkbox" name="commented" value="true" lay-skin="switch"
+                            <input type="checkbox" name="commented" value="true" lay-skin="switch" checked="checked"
                                    lay-text="开启|关闭"
                                    title="评论">
                         </div>
@@ -174,8 +180,8 @@
                 <div class="layui-card-header">撰写完成</div>
                 <div class="layui-card-body">
                     <button class="layui-btn" lay-submit lay-filter="postSubmit">立即发布</button>
-                    <button class="layui-btn layui-btn-primary" lay-submit lay-filter="draftSubmit">保存草稿
-                    </button>
+                    <button class="layui-btn layui-btn-primary" lay-submit lay-filter="draftSubmit">保存草稿</button>
+                    <button class="layui-btn" lay-submit lay-filter="vipPostSubmit">会员发布</button>
                 </div>
             </div>
         </div>

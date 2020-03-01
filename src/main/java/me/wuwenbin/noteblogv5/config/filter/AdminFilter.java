@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 只有admin权限才能访问的拦截器，其他用户访问跳转到首页
  * @author wuwen
  */
 public class AdminFilter extends BaseController implements HandlerInterceptor {

@@ -60,6 +60,10 @@ layui.define(['element', 'form', 'layer', 'upload', 'formSelects', 'inputTags'],
         if (!hasUrlSeq) {
             data.field.urlSeq = "";
         }
+        var tagsarr = formSelects.value('tags1','val');
+        for(var i = 0;i<tagsarr.length;i++){
+            data.field.tagNames.push(tagsarr[i]);
+        };
         NBV5.post("/management/article/update", data.field);
 
     };

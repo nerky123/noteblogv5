@@ -40,4 +40,7 @@
         where id = #{articleId}
     </update>
 
+    <select id="getAllInfo" parameterType="java.lang.String" resultType="java.util.Map">
+
+    </select>
 </mapper>
