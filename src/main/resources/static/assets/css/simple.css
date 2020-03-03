@@ -169,6 +169,18 @@ col12
     color: #888;
 }
 
+@media screen and (max-width: 992px) {
+    .meitichaxun {
+        position: static
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .meitichaxun {
+        position: absolute;
+    }
+}
+
 .article-footer > span {
     margin-right: 5px;
 }

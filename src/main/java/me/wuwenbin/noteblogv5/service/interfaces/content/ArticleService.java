@@ -110,7 +110,7 @@ public interface ArticleService extends IService<Article> {
      *
      * @param article
      */
-    default void decorateArticle(Article article) {
+    default void decorateArticle(Article article,boolean flag) {
         String cover = article.getCover();
         if (StrUtil.isNotEmpty(cover)) {
             UploadMapper uploadMapper = NbUtils.getBean(UploadMapper.class);
@@ -119,7 +119,7 @@ public interface ArticleService extends IService<Article> {
             File f = new File(imgSrc);
             ImgUtil.scale(f, f, 500, 312, new Color(238, 238, 238));
         }
-        if (StringUtils.isEmpty(article.getPost())){
+        if (flag){
             article.setPost(new Date());
         }
         if (StringUtils.isEmpty(article.getViews())){

@@ -30,7 +30,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       <a href="/article/{{ item.id }}">{{ item.title }}</a>' +
         '       {{# } }}' +
         '{{# layui.each(d.catesMap[item.id], function(index, item){ }}' +
-        '       <span class="layui-badge no-select" style="margin-left: 5%%;padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
+        '       <span class="layui-badge no-select" style="margin-left: 5%;padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
         '{{# });  }}' +
         '</legend>' +
       /*  '<blockquote class="layui-elem-quote" style="background-color: #f8f8f8;padding: 5px 5px 5px 10px;margin-top: 10px;">' +
@@ -47,7 +47,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       {{# } }}' +
         '   <div style="text-indent: 35px;margin-top: 1%;line-height: 28px;color: #999 !important;word-break: break-all;">' +
         '{{ item.summary }}</div>' +
-        '       <p class="article-footer" style="position: absolute">' +
+        '       <p class="article-footer meitichaxun">' +
         '           <span class="layui-mr15"><i class="fa fa-thermometer-1"></i> 热度：<span style="font-weight: bold;font-style: italic;">{{ item.views }}℃</span></span>' +
         '           {{# if(d.articleCommentCountMap[item.id] > 0){ }}' +
         '           <span class="layui-mr15"><i class="fa fa-commenting-o"></i> 评论: <span style="font-weight: bold;font-style: italic;">{{ d.articleCommentCountMap[item.id] }}</span>条</span>' +

@@ -51,7 +51,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         handleHideArticle(article);
         setArticleSummaryAndTxt(article);
-        decorateArticle(article);
+        decorateArticle(article,true);
         int affect = articleMapper.insert(article);
         String articleId = article.getId();
         cateIds.forEach(cateId -> jdbcTemplate.update("insert into refer_article_cate values (?,?)", articleId, cateId));
@@ -78,7 +78,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         handleHideArticle(article);
         setArticleSummaryAndTxt(article);
-        decorateArticle(article);
+        decorateArticle(article,false);
         int affect = articleMapper.updateById(article);
         String articleId = article.getId();
         jdbcTemplate.update("delete from refer_article_cate where article_id = ?", articleId);
