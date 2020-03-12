@@ -30,7 +30,7 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       <a href="/article/{{ item.id }}">{{ item.title }}</a>' +
         '       {{# } }}' +
         '{{# layui.each(d.catesMap[item.id], function(index, item){ }}' +
-        '       <span class="layui-badge no-select" style="margin-left: 5%;padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
+        '       <span class="layui-badge no-select" style="padding: 5px; background-color: #e6e6e6;color: #0c0c0c;"><i class="fa fa-tag"></i> {{ item.name }} </span>' +
         '{{# });  }}' +
         '</legend>' +
       /*  '<blockquote class="layui-elem-quote" style="background-color: #f8f8f8;padding: 5px 5px 5px 10px;margin-top: 10px;">' +
@@ -60,8 +60,8 @@ layui.define(['laytpl', 'laypage', 'timeago'], function (exports) {
         '       {{# if(item.cover != null && item.cover !=""){ }}' +
         '<div class="layui-hide-xs layui-hide-sm layui-show-md-block layui-col-md3" style="text-align: center;">' +
         '<a href="/article/{{item.id}}"><img src="{{item.cover}}" alt="" ' +
-        'style="width: 100%;height:125px;display: inline-block;padding: 7px;border: 1px solid #dedede;' +
-        'box-shadow: 0 1px 3px rgba(0, 0, 0, .3);border-radius: 4px;margin-top: 5px;cursor: pointer;"/> ' +
+        'style="width: 100%;height:125px;display: inline-block;padding: 7px;' +
+        'box-shadow: 0 1px 3px rgba(0, 0, 0, .3);border-radius: 4px;cursor: pointer;"/> ' +
         '</a> ' +
         '</div>' +
         '       {{# } }}' +

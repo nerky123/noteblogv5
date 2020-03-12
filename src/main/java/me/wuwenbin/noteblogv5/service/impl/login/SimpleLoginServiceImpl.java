@@ -30,9 +30,10 @@ public class SimpleLoginServiceImpl implements LoginService<ResultBean, SimpleLo
     @Override
     public ResultBean doLogin(SimpleLoginData data) {
         User user = userService.getOne(Wrappers.<User>query()
-                .eq("username", data.getNbv5name())
                 .eq("password", data.getNbv5pass())
                 .eq("enable", true)
+                .and(wrapper -> wrapper.eq("username", data.getNbv5name()).or().eq("email",data.getNbv5name()))
+
         );
         if (user != null) {
             String redirectUrl =

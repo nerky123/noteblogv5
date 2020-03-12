@@ -31,10 +31,10 @@ layui.use(['form', 'jquery', 'sliderVerify'], function () {
     window.$ = layui.$;
     form.verify({
         username: function (value) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+            /*if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
                 slider.reset();
                 return '用户名不能有特殊字符';
-            }
+            }*/
             if (/(^\_)|(\__)|(\_+$)/.test(value)) {
                 slider.reset();
                 return '用户名首尾不能出现下划线\'_\'';
@@ -43,10 +43,10 @@ layui.use(['form', 'jquery', 'sliderVerify'], function () {
                 slider.reset();
                 return '用户名不能全为数字';
             }
-            if (value.length < 4 || value.length > 12) {
+            /*if (value.length < 4 || value.length > 12) {
                 slider.reset();
                 return "用户名必须4~12位，且不能包含空格";
-            }
+            }*/
         }
         , pass: function (value) {
             if (!/^[\S]{6,12}$/.test(value)) {

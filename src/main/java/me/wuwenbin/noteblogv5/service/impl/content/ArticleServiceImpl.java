@@ -11,6 +11,7 @@ import me.wuwenbin.noteblogv5.exception.AppRunningException;
 import me.wuwenbin.noteblogv5.mapper.ArticleMapper;
 import me.wuwenbin.noteblogv5.model.entity.Article;
 import me.wuwenbin.noteblogv5.service.interfaces.content.ArticleService;
+import me.wuwenbin.noteblogv5.util.SEOUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (!CollectionUtils.isEmpty(tagNames)) {
             saveArticleTags(articleId, tagNames);
         }
+        SEOUtils.sendToBaiDu(articleId);
         return affect;
     }
 
